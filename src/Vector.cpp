@@ -55,9 +55,9 @@ namespace pdm {
             return true;
         }
 
-        float x_diff = (std::fabs(v._x) - std::fabs(w._x));
-        float y_diff = (std::fabs(v._y) - std::fabs(w._y));
-        float z_diff = (std::fabs(v._z) - std::fabs(w._z));
+        float x_diff = (fabsf(v._x) - fabsf(w._x));
+        float y_diff = (fabsf(v._y) - fabsf(w._y));
+        float z_diff = (fabsf(v._z) - fabsf(w._z));
 
         return x_diff < vec3::epsilon &&
                y_diff < vec3::epsilon &&
