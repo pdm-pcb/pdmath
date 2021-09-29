@@ -55,19 +55,15 @@ namespace pdm {
             return true;
         }
 
-        float recip = 1.0f/vec3::epsilon;
+        float x_diff = (std::fabs(v._x) - std::fabs(w._x));
+        float y_diff = (std::fabs(v._y) - std::fabs(w._y));
+        float z_diff = (std::fabs(v._z) - std::fabs(w._z));
 
-        int32_t v_x = static_cast<int32_t>(v._x * recip);
-        int32_t v_y = static_cast<int32_t>(v._y * recip);
-        int32_t v_z = static_cast<int32_t>(v._z * recip);
+        std::cout << x_diff << ", " << y_diff << ", " << z_diff << std::endl;
 
-        int32_t w_x = static_cast<int32_t>(w._x * recip);
-        int32_t w_y = static_cast<int32_t>(w._y * recip);
-        int32_t w_z = static_cast<int32_t>(w._z * recip);
-
-        return v_x == w_x &&
-               v_y == w_y &&
-               v_z == w_z;
+        return x_diff < vec3::epsilon &&
+               y_diff < vec3::epsilon &&
+               z_diff < vec3::epsilon;
     }
 
     vec3 operator+(const vec3 &v, const vec3 &w) {
