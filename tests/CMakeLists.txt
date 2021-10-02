@@ -26,6 +26,6 @@ target_link_libraries(
 
 set_target_properties(
     tests PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/
 )
 

@@ -15,6 +15,7 @@ target_include_directories(
 
 target_compile_options(
     PDMath PRIVATE
+    -march=native -mtune=native
     -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
     -fdiagnostics-color=always
     -ggdb3

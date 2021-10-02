@@ -1,6 +1,7 @@
 #include "pdmath/Vector.hpp"
 
 #include <cmath>
+#include <iomanip>
 
 namespace pdm {
     vec3::vec3(const float x, const float y, const float z):
@@ -113,9 +114,10 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const vec3 &vec) {
-        os << "(" << vec._x << ", "
-                  << vec._y << ", "
-                  << vec._z << ")";
+        os << std::fixed << std::setprecision(7) << "("
+           << vec._x << ", "
+           << vec._y << ", "
+           << vec._z << ")";
         return os;
     }
 

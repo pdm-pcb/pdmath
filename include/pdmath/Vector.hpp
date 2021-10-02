@@ -24,7 +24,7 @@ namespace pdm {
             float _y;
             float _z;
 
-            static constexpr float epsilon = 1.0e-5f;
+            static constexpr float epsilon = 1.0e-6f;
     };
 
 

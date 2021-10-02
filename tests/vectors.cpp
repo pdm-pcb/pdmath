@@ -65,15 +65,15 @@ TEST_CASE("Projected vectors are correct", "[vectors]") {
     w = vec3(-3, 1, 1);
     proj = v.project_onto(w);
     perp = v.projection_perp(w);
-    REQUIRE(proj == vec3(-5.72727f, 1.90909f, 1.90909f));
-    REQUIRE(perp == vec3(0.72727f, -0.90909f, 3.09090f));
+    REQUIRE(proj == vec3(-5.7272725, 1.9090909, 1.9090909));
+    REQUIRE(perp == vec3(0.7272725, -0.9090909, 3.0909090));
 
     v = vec3( 2, 3,  3);
     w = vec3(-1, 4, -3);
     proj = v.project_onto(w);
     perp = v.projection_perp(w);
-    REQUIRE(proj == vec3(-0.03846f, 0.15384f, -0.11538f));
-    REQUIRE(perp == vec3( 2.03846f, 2.84615f,  3.11538f));
+    REQUIRE(proj == vec3(-0.0384615, 0.1538462, -0.1153846));
+    REQUIRE(perp == vec3(2.0384614, 2.8461537, 3.1153846));
 }
 
 TEST_CASE("Cross products are accurate and perpendicular", "[vectors]") {
