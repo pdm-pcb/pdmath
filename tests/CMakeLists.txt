@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(Catch2)
 
 add_executable(
     tests
+    points.cpp
     vectors.cpp
 )
 
@@ -20,7 +21,7 @@ target_include_directories(
 
 target_link_libraries(
     tests PRIVATE
-    PDMath
+    pdMath
     Catch2::Catch2WithMain
 )
 

@@ -1,20 +1,16 @@
-set(
-    pdmath_src
-    ${CMAKE_SOURCE_DIR}/src/Vector.cpp
-)
-
 add_library(
-    PDMath STATIC
-    ${pdmath_src}
+    pdMath STATIC
+    Point.cpp
+    Vector.cpp
 )
 
 target_include_directories(
-    PDMath PUBLIC
+    pdMath PUBLIC
     ${CMAKE_SOURCE_DIR}/include
 )
 
 target_compile_options(
-    PDMath PRIVATE
+    pdMath PRIVATE
     -march=native -mtune=native
     -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
     -fdiagnostics-color=always
@@ -24,7 +20,7 @@ target_compile_options(
 #set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set_target_properties(
-    PDMath PROPERTIES
+    pdMath PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED on
     CXX_EXTENSIONS off

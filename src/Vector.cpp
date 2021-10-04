@@ -1,54 +1,96 @@
 #include "pdmath/Vector.hpp"
 
 #include <cmath>
-#include <iomanip>
 
 namespace pdm {
     vec3::vec3(const float x, const float y, const float z):
-        _x{x}, _y{y}, _z{z}
+        point(x, y, z)
     { }
 
-    void vec3::normalize() {
-        float scaling_factor = 1.0f/length();
+    float vec3::dot(const vec3 &other, bool log) const {
+        if(log) {
+            std::cout << *this << " dot " << other << std::endl;
+        }
 
-        _x *= scaling_factor;
-        _y *= scaling_factor;
-        _z *= scaling_factor;
-    }
-
-    float vec3::length() const {
-        float sum_of_squares = { _x*_x + _y*_y + _z*_z };
-        return std::sqrt(sum_of_squares);
-    }
-
-    float vec3::dot(const vec3 &other) const {
         return _x * other._x +
                _y * other._y +
                _z * other._z;
     }
 
-    vec3 vec3::cross(const vec3 &other) const {
+    vec3 vec3::cross(const vec3 &other, bool log) const {
         vec3 result(_y * other._z - _z * other._y,
                     _z * other._x - _x * other._z,
                     _x * other._y - _y * other._x);
+
+        if(log) {
+            std::cout << "v cross w = " << result << "\n"
+                      << "perpendicular to v? "
+                      << (result.is_perpendicular(*this, true)?"true":"false")
+                      << "\n"
+                      << "perpendicular to w? "
+                      << (result.is_perpendicular(other, true)?"true":"false")
+                      << "\n"
+                      << std::endl;
+        }
+
         return result;
     }
 
-    vec3 vec3::project_onto(const vec3 &other) const {
+    vec3 vec3::project_onto(const vec3 &other, bool log) const {
         float projection_length = dot(other)/other.dot(other);
-        vec3 projection = other;
-        return projection * projection_length;
+        vec3 projection = other * projection_length;
+
+        if(log) {
+            std::cout << "v dot w = " << dot(other) << "\n"
+                      << "w dot w = " << other.dot(other) << "\n"
+                      << "projection length = " << projection_length << "\n"
+                      << "projection = " << projection
+                      << std::endl;
+        }
+
+        return projection;
     }
 
-    vec3 vec3::projection_perp(const vec3 &other) const {
+    vec3 vec3::projection_perp(const vec3 &other, bool log) const {
         vec3 perp = *this - project_onto(other);
         return perp;
     }
 
-    bool vec3::is_perpendicular(const vec3 &other) const {
-        float dot_product = dot(other);
+    float vec3::length(bool log) const {
+        float sum_of_squares = { _x*_x + _y*_y + _z*_z };
 
-        return dot_product == 0.0f;
+        if(log) {
+            std::cout << *this << "\n"
+                      << "x^2: " << _x*_x << ", "
+                      << "y^2: " << _y*_y << ", "
+                      << "z^2: " << _z*_z << "\n"
+                      << "Sum of suqares: " << sum_of_squares << "\n"
+                      << "sqrt(sum): " << sqrtf(sum_of_squares) << "\n"
+                      << std::endl;
+        }
+
+        return sqrtf(sum_of_squares);
+    }
+
+    void vec3::normalize(bool log) {
+        float scale = 1.0f/length();
+        _x *= scale;
+        _y *= scale;
+        _z *= scale;
+    }
+
+    bool vec3::is_collinear(const vec3 &other, bool log) const {
+        return cross(other, log).is_zero();
+    }
+
+    bool vec3::is_perpendicular(const vec3 &other, bool log) const {
+        return dot(other, log) == 0.0f;
+    }
+
+    bool vec3::is_zero() const {
+        return (_x == 0.0f) &&
+               (_y == 0.0f) &&
+               (_z == 0.0f);
     }
 
     bool operator==(const vec3 &v, const vec3 &w) {
@@ -79,18 +121,32 @@ namespace pdm {
         return result;
     }
 
-    vec3 operator*(vec3 &v, const float multiplier) {
-        v._x *= multiplier;
-        v._y *= multiplier;
-        v._z *= multiplier;
-
-        return v;
+    vec3 operator*(const vec3 &v, const float multiplier) {
+        vec3 result(v._x * multiplier,
+                    v._y * multiplier,
+                    v._z * multiplier);
+        return result;
     }
 
-    vec3 operator/(vec3 &v, const float divisor) {
-        v._x /= divisor;
-        v._y /= divisor;
-        v._z /= divisor;
+    vec3 operator*(const float multiplier, const vec3 &v) {
+        return v * multiplier;
+    }
+
+    vec3 operator/(const vec3 &v, const float divisor) {
+        vec3 result(v._x / divisor,
+                    v._y / divisor,
+                    v._z / divisor);
+        return result;
+    }
+
+    vec3 operator/(const float divisor, const vec3 &v) {
+        return v / divisor;
+    }
+
+    vec3 operator*=(vec3 &v, const float multiplier) {
+        v._x /= multiplier;
+        v._y /= multiplier;
+        v._z /= multiplier;
 
         return v;
     }
@@ -101,24 +157,6 @@ namespace pdm {
         v._z /= divisor;
 
         return v;
-    }
-
-    vec3 operator*(const float multiplier, const vec3 &vec) {
-        vec3 result = vec;
-
-        result._x *= multiplier;
-        result._y *= multiplier;
-        result._z *= multiplier;
-
-        return result;
-    }
-
-    std::ostream& operator<<(std::ostream &os, const vec3 &vec) {
-        os << std::fixed << std::setprecision(7) << "("
-           << vec._x << ", "
-           << vec._y << ", "
-           << vec._z << ")";
-        return os;
     }
 
 }

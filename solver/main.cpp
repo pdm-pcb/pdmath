@@ -1,7 +1,10 @@
 #include <iostream>
-#include <map>
+#include <vector>
+#include <utility>
 #include <functional>
 #include <limits>
+
+#include "pdmath/Vector.hpp"
 
 void vec_projection();
 void vec_cross_prod();
@@ -10,40 +13,77 @@ void enemy_player_hit_test();
 void plane_bisection();
 void plane_line_test();
 
-std::map<std::string, std::function<void()>> menu_choices = {
-    {"1. Vector projection", vec_projection},
-    {"2. Vector cross product", vec_cross_prod},
-    {"3. Colinear points", point_colinear},
-    {"4. Enemy-player hit testing", enemy_player_hit_test},
-    {"5. Planar bisection left-right testing", plane_bisection},
-    {"6. Plane-line testing", plane_line_test}
+std::vector<std::pair<std::string, std::function<void()>>>
+menu_choices = {
+    std::make_pair("1. Vector projection", vec_projection),
+    std::make_pair("2. Vector cross product", vec_cross_prod),
+    std::make_pair("3. Colinear points", point_colinear),
+    std::make_pair("4. Enemy-player hit testing", enemy_player_hit_test),
+    std::make_pair("5. Planar bisection left-right testing", plane_bisection),
+    std::make_pair("6. Plane-line testing", plane_line_test),
 };
 
 int main() {
-    for(const auto &entry : menu_choices) {
-        std::cout << entry.first << "\n";
-    }
-    std::cout << std::endl;
+    uint8_t user_choice;
 
-    size_t user_choice;
-
-    do {
-        std::cout << ">>";
-        std::cin >> user_choice;
-        if(std::cin.fail()) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<int>::max(), '\n');
+    while(true) {
+        for(const auto &entry : menu_choices) {
+            std::cout << entry.first << "\n";
         }
-    } while(user_choice <= 0 || user_choice > menu_choices.size());
 
+        do {
+            std::cout << ">>";
+            scanf("%d", &user_choice);
+        } while(user_choice <= 0 || user_choice > menu_choices.size());
+
+        auto chosen_function = menu_choices.begin() + (user_choice - 1);
+        (chosen_function->second)();
+
+        std::cout << std::endl;
+    }
     return 0;
 }
 
 void vec_projection() {
+    std::cout << "Define v(x, y, z):" << std::endl;
+    float x, y, z;
+    do {
+        std::cout << ">>";
+        scanf("%f, %f, %f", &x, &y, &z);
+    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
 
+    pdm::vec3 v(x, y, z);
+
+    std::cout << "Define w(x, y, z):" << std::endl;
+    do {
+        std::cout << ">>";
+        scanf("%f, %f, %f", &x, &y, &z);
+    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
+
+    pdm::vec3 w(x, y, z);
+
+    v.project_onto(w, true);
 }
 
 void vec_cross_prod() {
+    std::cout << "Define v(x, y, z):" << std::endl;
+    float x, y, z;
+    do {
+        std::cout << ">>";
+        scanf("%f, %f, %f", &x, &y, &z);
+    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
+
+    pdm::vec3 v(x, y, z);
+
+    std::cout << "Define w(x, y, z):" << std::endl;
+    do {
+        std::cout << ">>";
+        scanf("%f, %f, %f", &x, &y, &z);
+    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
+
+    pdm::vec3 w(x, y, z);
+
+    v.cross(w, true);
 
 }
 

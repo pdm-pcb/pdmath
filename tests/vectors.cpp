@@ -58,22 +58,22 @@ TEST_CASE("Projected vectors are correct", "[vectors]") {
     vec3 w(-4, 3, -1);
     vec3 proj = v.project_onto(w);
     vec3 perp = v.projection_perp(w);
-    REQUIRE(proj == vec3(-2,  1.5, -0.5));
-    REQUIRE(perp == vec3( 0, -0.5, -1.5));
+    REQUIRE(proj == vec3(-2,  1.5f, -0.5f));
+    REQUIRE(perp == vec3( 0, -0.5f, -1.5f));
 
     v = vec3(-5, 1, 5);
     w = vec3(-3, 1, 1);
     proj = v.project_onto(w);
     perp = v.projection_perp(w);
-    REQUIRE(proj == vec3(-5.7272725, 1.9090909, 1.9090909));
-    REQUIRE(perp == vec3(0.7272725, -0.9090909, 3.0909090));
+    REQUIRE(proj == vec3(-5.7272725f, 1.9090909f, 1.9090909f));
+    REQUIRE(perp == vec3(0.7272725f, -0.9090909f, 3.0909090f));
 
     v = vec3( 2, 3,  3);
     w = vec3(-1, 4, -3);
     proj = v.project_onto(w);
     perp = v.projection_perp(w);
-    REQUIRE(proj == vec3(-0.0384615, 0.1538462, -0.1153846));
-    REQUIRE(perp == vec3(2.0384614, 2.8461537, 3.1153846));
+    REQUIRE(proj == vec3(-0.0384615f, 0.1538462f, -0.1153846f));
+    REQUIRE(perp == vec3(2.0384614f, 2.8461537f, 3.1153846f));
 }
 
 TEST_CASE("Cross products are accurate and perpendicular", "[vectors]") {
@@ -97,4 +97,22 @@ TEST_CASE("Cross products are accurate and perpendicular", "[vectors]") {
     REQUIRE(w == vec3(56, 35, -21));
     REQUIRE(u.is_perpendicular(w));
     REQUIRE(v.is_perpendicular(w));
+}
+
+TEST_CASE("Scalar multiples are collinear", "[vectors]") {
+    vec3 v(8, -6, 5);
+    vec3 w = v * 4;
+    REQUIRE(v.is_collinear(w));
+    REQUIRE(w.is_collinear(v));
+
+    v = vec3(-3, 0, 2);
+    w = v * -2;
+    REQUIRE(v.is_collinear(w));
+    REQUIRE(w.is_collinear(v));
+
+    v = vec3(0.25f, -6.83f, 3.0f);
+    w = v * 5.12f;
+    REQUIRE(v.is_collinear(w));
+    REQUIRE(w.is_collinear(v));
+
 }
