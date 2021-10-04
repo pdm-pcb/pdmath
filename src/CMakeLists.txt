@@ -22,11 +22,14 @@ target_compile_options(
     -ggdb3
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set_target_properties(
     pdMath PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED on
     CXX_EXTENSIONS off
+    CXX_CLANG_TIDY clang-tidy
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/
 )

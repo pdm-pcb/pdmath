@@ -8,7 +8,7 @@ namespace pdm {
         _x{x}, _y{y}, _z{z}
     { }
 
-    point point::operator-(const point &p) {
+    point point::operator-(const point &p) const {
         return point(_x - p._x,
                      _y - p._y,
                      _z - p._z);
@@ -38,4 +38,4 @@ namespace pdm {
            << p._z << ")";
         return os;
     }
-}
+} // namespace pdm

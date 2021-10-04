@@ -1,5 +1,5 @@
-#ifndef PDM_VECTOR_HPP
-#define PDM_VECTOR_HPP
+#ifndef PDMATH_VECTOR_HPP
+#define PDMATH_VECTOR_HPP
 
 #include "pdmath/Point.hpp"
 
@@ -8,23 +8,23 @@ namespace pdm {
         public:
             vec3() = default;
             vec3(const float x, const float y, const float z);
-            vec3(const point &p);
+            explicit vec3(const point &p);
             vec3(const point &p, const point &s);
 
-            float dot(const vec3 &other) const;
-            vec3  cross(const vec3 &other) const;
-            vec3  project_onto(const vec3 &other) const;
-            vec3  projection_perp(const vec3 &other) const;
+            [[nodiscard]] float dot(const vec3 &other) const;
+            [[nodiscard]] vec3  cross(const vec3 &other) const;
+            [[nodiscard]] vec3  project_onto(const vec3 &other) const;
+            [[nodiscard]] vec3  projection_perp(const vec3 &other) const;
 
-            float length() const;
+            [[nodiscard]] float length() const;
             void  normalize();
 
-            bool  is_collinear(const vec3 &other) const;
-            bool  is_perpendicular(const vec3 &other) const;
-            bool  is_zero() const;
+            [[nodiscard]] bool  is_collinear(const vec3 &other) const;
+            [[nodiscard]] bool  is_perpendicular(const vec3 &other) const;
+            [[nodiscard]] bool  is_zero() const;
     };
 
-    bool operator==(const vec3 &v, const vec3 &);
+    bool operator==(const vec3 &v, const vec3 & /*w*/);
     vec3 operator+ (const vec3 &v, const vec3 &w);
     vec3 operator- (const vec3 &v, const vec3 &w);
     vec3 operator* (const vec3 &v, const float multiplier);
@@ -36,6 +36,6 @@ namespace pdm {
     vec3 operator*=(const float multiplier, vec3 &vec);
     vec3 operator/=(vec3 &v, const float divisor);
     vec3 operator/=(const float divisor, vec3 &v);
-}
+} // namespace pdm
 
-#endif // PDM_VECTOR_HPP
+#endif // PDMATH_VECTOR_HPP

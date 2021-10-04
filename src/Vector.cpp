@@ -159,4 +159,4 @@ namespace pdm {
 
         return v;
     }
-}
+} // namespace pdm
