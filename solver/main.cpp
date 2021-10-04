@@ -92,7 +92,7 @@ void point_colinear() {
     scanf("%f, %f, %f", &x, &y, &z);
     pdm::point c(x, y, z);
 
-    pdm::are_collinear(a, b, c);
+    a.are_collinear(b, c);
 }
 
 void enemy_player_hit_test() {

@@ -14,9 +14,9 @@ namespace pdm {
                      _z - p._z);
     }
 
-    bool are_collinear(const point &a, const point &b, const point &c) {
-        vec3 vec_ab(a, b);
-        vec3 vec_ac(a, c);
+    bool point::are_collinear(const point &b, const point &c) const {
+        vec3 vec_ab(*this, b);
+        vec3 vec_ac(*this, c);
 #ifdef SOLVER_LOG
             std::cout << "Is vector ab collinear with vector ac?\n"
                       << (vec_ab.is_collinear(vec_ac)?"true":"false")
