@@ -11,16 +11,16 @@ namespace pdm {
             vec3(const point &p);
             vec3(const point &p, const point &s);
 
-            float dot(const vec3 &other,              bool log = false) const;
-            vec3  cross(const vec3 &other,            bool log = false) const;
-            vec3  project_onto(const vec3 &other,     bool log = false) const;
-            vec3  projection_perp(const vec3 &other,  bool log = false) const;
+            float dot(const vec3 &other) const;
+            vec3  cross(const vec3 &other) const;
+            vec3  project_onto(const vec3 &other) const;
+            vec3  projection_perp(const vec3 &other) const;
 
-            float length(bool log = false) const;
-            void  normalize(bool log = false);
+            float length() const;
+            void  normalize();
 
-            bool  is_collinear(const vec3 &other,     bool log = false) const;
-            bool  is_perpendicular(const vec3 &other, bool log = false) const;
+            bool  is_collinear(const vec3 &other) const;
+            bool  is_perpendicular(const vec3 &other) const;
             bool  is_zero() const;
     };
 

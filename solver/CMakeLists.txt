@@ -10,7 +10,7 @@ target_include_directories(
 
 target_link_libraries(
     solver PRIVATE
-    pdMath
+    pdMath-logging
 )
 
 set_target_properties(

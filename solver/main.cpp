@@ -56,7 +56,7 @@ void vec_projection() {
     scanf("%f, %f, %f", &x, &y, &z);
     pdm::vec3 w(x, y, z);
 
-    v.project_onto(w, true);
+    v.project_onto(w);
 }
 
 void vec_cross_prod() {
@@ -71,7 +71,7 @@ void vec_cross_prod() {
     scanf("%f, %f, %f", &x, &y, &z);
     pdm::vec3 w(x, y, z);
 
-    v.cross(w, true);
+    v.cross(w);
 
 }
 
@@ -92,7 +92,7 @@ void point_colinear() {
     scanf("%f, %f, %f", &x, &y, &z);
     pdm::point c(x, y, z);
 
-    pdm::are_collinear(a, b, c, true);
+    pdm::are_collinear(a, b, c);
 }
 
 void enemy_player_hit_test() {
