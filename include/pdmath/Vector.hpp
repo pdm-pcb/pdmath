@@ -36,9 +36,6 @@ namespace pdm {
     vec3 operator*=(const float multiplier, vec3 &vec);
     vec3 operator/=(vec3 &v, const float divisor);
     vec3 operator/=(const float divisor, vec3 &v);
-
-    bool are_collinear(const point &a, const point &b, const point &c,
-                       bool log = false);
 }
 
 #endif // PDM_VECTOR_HPP

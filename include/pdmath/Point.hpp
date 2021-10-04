@@ -18,6 +18,9 @@ namespace pdm {
             point operator-(const point &p);
     };
 
+    bool are_collinear(const point &a, const point &b, const point &c,
+                       bool log = false);
+
     std::ostream& operator<<(std::ostream &os, const point &p);
 }
 
