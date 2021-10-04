@@ -24,7 +24,7 @@ menu_choices = {
 };
 
 int main() {
-    uint8_t user_choice;
+    int user_choice;
 
     while(true) {
         for(const auto &entry : menu_choices) {
@@ -34,7 +34,8 @@ int main() {
         do {
             std::cout << ">>";
             scanf("%d", &user_choice);
-        } while(user_choice <= 0 || user_choice > menu_choices.size());
+        } while(user_choice <= 0 ||
+                user_choice > static_cast<int>(menu_choices.size()));
 
         auto chosen_function = menu_choices.begin() + (user_choice - 1);
         (chosen_function->second)();
