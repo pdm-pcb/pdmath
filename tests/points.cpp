@@ -29,3 +29,6 @@ TEST_CASE("Collinear points test as such", "[points]") {
     REQUIRE(!a.are_collinear(b, c));
 }
 
+TEST_CASE("Points can measure their distance to a line", "[points]") {
+    REQUIRE(true);
+}

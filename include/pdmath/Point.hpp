@@ -4,6 +4,8 @@
 #include <iostream>
 
 namespace pdm {
+    class vec3;
+
     class point {
         public:
             point() = default;
@@ -16,6 +18,7 @@ namespace pdm {
             float _z;
 
             bool are_collinear(const point &b, const point &c) const;
+            float distance_to_line(const vec3 &v, const point &s) const;
 
             point operator-(const point &p);
     };

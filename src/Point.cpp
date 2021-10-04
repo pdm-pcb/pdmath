@@ -25,6 +25,12 @@ namespace pdm {
         return vec_ab.is_collinear(vec_ac);
     }
 
+    float point::distance_to_line(const vec3 &v, const point &s) const {
+        vec3 s_minus_p(*this, s);
+        vec3 perp = s_minus_p - ((s_minus_p.dot(v))/(v.dot(v))) * v;
+        return perp.length();
+    }
+
     std::ostream& operator<<(std::ostream &os, const point &p) {
         os << std::fixed << std::setprecision(2) << "("
            << p._x << ", "
