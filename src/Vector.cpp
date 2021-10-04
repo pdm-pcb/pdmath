@@ -60,7 +60,7 @@ namespace pdm {
     }
 
     float vec3::length() const {
-        float sum_of_squares = { _x*_x + _y*_y + _z*_z };
+        float sum_of_squares { _x*_x + _y*_y + _z*_z };
 #ifdef SOLVER_LOG
             std::cout << *this << "\n"
                       << "x^2: " << _x*_x << ", "
@@ -74,10 +74,10 @@ namespace pdm {
     }
 
     void vec3::normalize() {
-        float scale = 1.0f/length();
-        _x *= scale;
-        _y *= scale;
-        _z *= scale;
+        float _length = length();
+        _x /= _length;
+        _y /= _length;
+        _z /= _length;
     }
 
     bool vec3::is_collinear(const vec3 &other) const {
