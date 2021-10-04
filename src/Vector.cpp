@@ -7,6 +7,14 @@ namespace pdm {
         point(x, y, z)
     { }
 
+    vec3::vec3(const point &p) :
+        point(p)
+    { }
+
+    vec3::vec3(const point &p, const point &s) :
+        point(s - p)
+    { }
+
     float vec3::dot(const vec3 &other, bool log) const {
         if(log) {
             std::cout << *this << " dot " << other << std::endl;
@@ -23,13 +31,13 @@ namespace pdm {
                     _x * other._y - _y * other._x);
 
         if(log) {
-            std::cout << "v cross w = " << result << "\n"
+            std::cout << *this << " cross " << other << " = " << result
+                      << "\n"
                       << "perpendicular to v? "
                       << (result.is_perpendicular(*this, true)?"true":"false")
                       << "\n"
                       << "perpendicular to w? "
                       << (result.is_perpendicular(other, true)?"true":"false")
-                      << "\n"
                       << std::endl;
         }
 
@@ -65,7 +73,7 @@ namespace pdm {
                       << "y^2: " << _y*_y << ", "
                       << "z^2: " << _z*_z << "\n"
                       << "Sum of suqares: " << sum_of_squares << "\n"
-                      << "sqrt(sum): " << sqrtf(sum_of_squares) << "\n"
+                      << "sqrt(sum): " << sqrtf(sum_of_squares)
                       << std::endl;
         }
 
@@ -159,4 +167,17 @@ namespace pdm {
         return v;
     }
 
+    bool are_collinear(const point &a, const point &b, const point &c,
+                       bool log) {
+        vec3 vec_ab(a, b);
+        vec3 vec_ac(a, c);
+
+        if(log) {
+            std::cout << "Is vector ab collinear with vector ac?\n"
+                      << (vec_ab.is_collinear(vec_ac, true)?"true":"false")
+                      << std::endl;
+        }
+
+        return vec_ab.is_collinear(vec_ac);
+    }
 }

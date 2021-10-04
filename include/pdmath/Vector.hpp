@@ -8,6 +8,8 @@ namespace pdm {
         public:
             vec3() = default;
             vec3(const float x, const float y, const float z);
+            vec3(const point &p);
+            vec3(const point &p, const point &s);
 
             float dot(const vec3 &other,              bool log = false) const;
             vec3  cross(const vec3 &other,            bool log = false) const;
@@ -22,7 +24,6 @@ namespace pdm {
             bool  is_zero() const;
     };
 
-
     bool operator==(const vec3 &v, const vec3 &);
     vec3 operator+ (const vec3 &v, const vec3 &w);
     vec3 operator- (const vec3 &v, const vec3 &w);
@@ -35,6 +36,9 @@ namespace pdm {
     vec3 operator*=(const float multiplier, vec3 &vec);
     vec3 operator/=(vec3 &v, const float divisor);
     vec3 operator/=(const float divisor, vec3 &v);
+
+    bool are_collinear(const point &a, const point &b, const point &c,
+                       bool log = false);
 }
 
 #endif // PDM_VECTOR_HPP

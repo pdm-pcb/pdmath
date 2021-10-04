@@ -45,42 +45,30 @@ int main() {
 }
 
 void vec_projection() {
-    std::cout << "Define v(x, y, z):" << std::endl;
     float x, y, z;
-    do {
-        std::cout << ">>";
-        scanf("%f, %f, %f", &x, &y, &z);
-    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
-
+    std::cout << "Define v(x, y, z):" << std::endl;
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
     pdm::vec3 v(x, y, z);
 
     std::cout << "Define w(x, y, z):" << std::endl;
-    do {
-        std::cout << ">>";
-        scanf("%f, %f, %f", &x, &y, &z);
-    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
-
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
     pdm::vec3 w(x, y, z);
 
     v.project_onto(w, true);
 }
 
 void vec_cross_prod() {
-    std::cout << "Define v(x, y, z):" << std::endl;
     float x, y, z;
-    do {
-        std::cout << ">>";
-        scanf("%f, %f, %f", &x, &y, &z);
-    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
-
+    std::cout << "Define v(x, y, z):" << std::endl;
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
     pdm::vec3 v(x, y, z);
 
     std::cout << "Define w(x, y, z):" << std::endl;
-    do {
-        std::cout << ">>";
-        scanf("%f, %f, %f", &x, &y, &z);
-    } while(x < -25 || x > 25 || y < -25 || y > 25 || z < -25 || z > 25);
-
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
     pdm::vec3 w(x, y, z);
 
     v.cross(w, true);
@@ -88,7 +76,23 @@ void vec_cross_prod() {
 }
 
 void point_colinear() {
+    float x, y, z;
+    std::cout << "Define a(x, y, z):" << std::endl;
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
+    pdm::point a(x, y, z);
 
+    std::cout << "Define b(x, y, z):" << std::endl;
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
+    pdm::point b(x, y, z);
+
+    std::cout << "Define c(x, y, z):" << std::endl;
+    std::cout << ">>";
+    scanf("%f, %f, %f", &x, &y, &z);
+    pdm::point c(x, y, z);
+
+    pdm::are_collinear(a, b, c, true);
 }
 
 void enemy_player_hit_test() {
