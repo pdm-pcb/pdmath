@@ -22,6 +22,7 @@ add_executable(
     tests
     points.cpp
     vectors.cpp
+    lines_and_planes.cpp
 )
 
 target_include_directories(
@@ -37,6 +38,8 @@ target_link_libraries(
 
 set_target_properties(
     tests PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/
+    RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_SOURCE_DIR}/bin/
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/bin/debug/
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/release/
 )
 

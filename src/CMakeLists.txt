@@ -2,6 +2,8 @@ set(
     PDMATH_SRC
     Point.cpp
     Vector.cpp
+    Line.cpp
+    Plane.cpp
 )
 
 add_library(
@@ -18,8 +20,7 @@ target_compile_options(
     pdMath PRIVATE
     -march=native -mtune=native
     -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
-    -fdiagnostics-color=always
-    -ggdb3
+    "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -53,8 +54,7 @@ target_compile_options(
     pdMath-logging PRIVATE
     -march=native -mtune=native
     -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
-    -fdiagnostics-color=always
-    -ggdb3
+    "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
 )
 
 set_target_properties(

@@ -2,28 +2,58 @@
 #define PDMATH_POINT_HPP
 
 #include <iostream>
+#include <cmath>
 
 namespace pdm {
-    class vec3;
+    class Vec3;
+    class Line;
+    class Plane;
 
-    class point {
+    class Point {
         public:
-            point() = default;
-            point(const float x, const float y, const float z);
+            Point() = default;
+            Point(const float x, const float y, const float z);
 
             static constexpr float epsilon = 1.0e-6f;
+            static constexpr uint8_t _output_precision = 7;
 
             float _x;
             float _y;
             float _z;
 
-            [[nodiscard]] bool are_collinear(const point &b, const point &c) const;
-            [[nodiscard]] float distance_to_line(const vec3 &v, const point &s) const;
+            bool  are_collinear(const Point &b, const Point &c) const;
+            float distance_to_line(const Line &line) const;
+            bool  is_on_plane(const Plane &plane) const;
+            float distance_to_plane(const Plane &plane) const;
 
-            point operator-(const point &p) const;
+            bool is_zero() const;
+            bool operator==(const Point &p) const;
+
+            Point& operator+=(const Point &p);
+            Point& operator-=(const Point &p);
+
+            Point& operator+=(const float scalar);
+            Point& operator-=(const float scalar);
+            Point& operator*=(const float scalar);
+            Point& operator/=(const float scalar);
+
+            operator Vec3() const;
     };
 
-    std::ostream& operator<<(std::ostream &os, const point &p);
+    Point operator+(Point p, const Point &t);
+    Point operator-(Point p, const Point &t);
+
+    Point operator+(Point p, const float scalar);
+    Point operator-(Point p, const float scalar);
+    Point operator*(Point p, const float scalar);
+    Point operator/(Point p, const float scalar);
+
+    Point operator+(const float scalar, Point p);
+    Point operator-(const float scalar, Point p);
+    Point operator*(const float scalar, Point p);
+    Point operator/(const float scalar, Point p);
+
+    std::ostream& operator<<(std::ostream &os, const Point &p);
 } // namespace pdm
 
 #endif // PDMATH_POINT_HPP

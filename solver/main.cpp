@@ -8,7 +8,7 @@
 
 void vec_projection();
 void vec_cross_prod();
-void point_colinear();
+void Point_colinear();
 void enemy_player_hit_test();
 void plane_bisection();
 void plane_line_test();
@@ -50,12 +50,12 @@ void vec_projection() {
     std::cout << "Define v(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::vec3 v(x, y, z);
+    pdm::Vec3 v(x, y, z);
 
     std::cout << "Define w(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::vec3 w(x, y, z);
+    pdm::Vec3 w(x, y, z);
 
     std::cout << v.project_onto(w) << std::endl;
 }
@@ -65,32 +65,32 @@ void vec_cross_prod() {
     std::cout << "Define v(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::vec3 v(x, y, z);
+    pdm::Vec3 v(x, y, z);
 
     std::cout << "Define w(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::vec3 w(x, y, z);
+    pdm::Vec3 w(x, y, z);
 
     std::cout << v.cross(w) << std::endl;
 }
 
-void point_colinear() {
+void Point_colinear() {
     float x, y, z;
     std::cout << "Define a(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::point a(x, y, z);
+    pdm::Point a(x, y, z);
 
     std::cout << "Define b(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::point b(x, y, z);
+    pdm::Point b(x, y, z);
 
     std::cout << "Define c(x, y, z):" << std::endl;
     std::cout << ">>";
     scanf("%f, %f, %f", &x, &y, &z);
-    pdm::point c(x, y, z);
+    pdm::Point c(x, y, z);
 
     std::cout << a.are_collinear(b, c) << std::endl;
 }

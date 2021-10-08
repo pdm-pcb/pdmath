@@ -13,12 +13,14 @@ Checks: 'boost-*,
          performance-*,
          portability-*,
          readability-*,
-        -modernize-use-trailing-return-type,
-        -readability-avoid-const-params-in-decls,
-        -readability-uppercase-literal-suffix,
-        -hicpp-uppercase-literal-suffix,
-        -google-readability-namespace-comments,
-        -misc-non-private-member-variables-in-classes'
+         -llvm-include-order,
+         -modernize-use-trailing-return-type,
+         -modernize-use-nodiscard,
+         -readability-avoid-const-params-in-decls,
+         -readability-uppercase-literal-suffix,
+         -hicpp-uppercase-literal-suffix,
+         -google-readability-namespace-comments,
+         -misc-non-private-member-variables-in-classes'
 WarningsAsErrors: ''
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false
