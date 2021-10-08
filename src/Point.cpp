@@ -13,11 +13,6 @@ namespace pdm {
     bool Point::are_collinear(const Point &b, const Point &c) const {
         Vec3 vec_ab(*this, b);
         Vec3 vec_ac(*this, c);
-#ifdef SOLVER_LOG
-            std::cout << "Is vector ab collinear with vector ac?\n"
-                      << (vec_ab.is_collinear(vec_ac)?"true":"false")
-                      << std::endl;
-#endif // SOLVER_LOG
         return vec_ab.is_collinear(vec_ac);
     }
 
@@ -163,7 +158,7 @@ namespace pdm {
                      p._y / scalar,
                      p._z / scalar);
     }
-    
+
     std::ostream& operator<<(std::ostream &os, const Point &p) {
         os << std::fixed << std::setprecision(Point::_output_precision) << "("
            << p._x << ", "

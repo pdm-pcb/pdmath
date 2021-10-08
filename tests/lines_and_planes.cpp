@@ -9,7 +9,7 @@
 using namespace pdm;
 using namespace Catch;
 
-TEST_CASE("Lines understand their relationship to planes", "[lines]") {
+TEST_CASE("Lines understand their relationship to planes", "[lines][planes]") {
     Plane plane(Point(-1, -3, -8), Vec3(-18, -35, -50));
     Line line(Point(-9, -9, 0), Vec3(-3, 8, 2));
     REQUIRE(line.parallel_to_plane(plane) == false);
@@ -23,4 +23,18 @@ TEST_CASE("Lines understand their relationship to planes", "[lines]") {
     line = Line(Point(8, -3, 2), Vec3(-5, -6, 6));
     REQUIRE(line.parallel_to_plane(plane) == true);
     REQUIRE(line.within_plane(plane) == false);
+}
+
+TEST_CASE("We can tell if a point on a plane is to the left or right"
+          " of a line on that same plane.", "[lines][planes]") {
+    Plane plane(Point(-8, -5, -6), Vec3(-16, 12, -8));
+    Line bisect(Point(-8, -5, -6), Vec3(-2, 0, 4));
+    Point point(-6, -1, -4);
+    REQUIRE(plane.direction_test(bisect, point) > 0.0f);
+
+    point = Point(-4, 3, -2);
+    REQUIRE(plane.direction_test(bisect, point) > 0.0f);
+
+    point = Point(-10, -9, -8);
+    REQUIRE(plane.direction_test(bisect, point) < 0.0f);
 }
