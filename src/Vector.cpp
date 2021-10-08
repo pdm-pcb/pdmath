@@ -9,19 +9,19 @@ namespace pdm {
         Point(p - s)
     { }
 
-    float Vec3::dot(const Vec3 &other) const {
+    float Vec3::dot(const Vec3 &v) const {
 #ifdef SOLVER_LOG
             std::cout << *this << " dot " << other << std::endl;
 #endif // SOLVER_LOG
-        return _x * other._x +
-               _y * other._y +
-               _z * other._z;
+        return this->_x * v._x +
+               this->_y * v._y +
+               this->_z * v._z;
     }
 
-    Vec3 Vec3::cross(const Vec3 &other) const {
-        Vec3 result(_y * other._z - _z * other._y,
-                    _z * other._x - _x * other._z,
-                    _x * other._y - _y * other._x);
+    Vec3 Vec3::cross(const Vec3 &v) const {
+        Vec3 result(this->_y * v._z - this->_z * v._y,
+                    this->_z * v._x - this->_x * v._z,
+                    this->_x * v._y - this->_y * v._x);
 #ifdef SOLVER_LOG
             std::cout << *this << " cross " << other << " = " << result
                       << "\n"
@@ -74,11 +74,11 @@ namespace pdm {
         _z /= _length;
     }
 
-    bool Vec3::is_collinear(const Vec3 &other) const {
-        return cross(other).is_zero();
+    bool Vec3::is_collinear(const Vec3 &v) const {
+        return cross(v).is_zero();
     }
 
-    bool Vec3::is_perpendicular(const Vec3 &other) const {
-        return dot(other) == 0.0f;
+    bool Vec3::is_perpendicular(const Vec3 &v) const {
+        return dot(v) == 0.0f;
     }
 } // namespace pdm

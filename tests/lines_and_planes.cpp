@@ -9,7 +9,7 @@
 using namespace pdm;
 using namespace Catch;
 
-TEST_CASE("Lines know whether or not they're parallel to a plane", "[lines]") {
+TEST_CASE("Lines understand their relationship to planes", "[lines]") {
     Plane plane(Point(-1, -3, -8), Vec3(-18, -35, -50));
     Line line(Point(-9, -9, 0), Vec3(-3, 8, 2));
     REQUIRE(line.parallel_to_plane(plane) == false);

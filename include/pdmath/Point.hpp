@@ -40,18 +40,18 @@ namespace pdm {
             operator Vec3() const;
     };
 
-    Point operator+(Point p, const Point &t);
-    Point operator-(Point p, const Point &t);
+    Point operator+(const Point &p, const Point &t);
+    Point operator-(const Point &p, const Point &t);
 
-    Point operator+(Point p, const float scalar);
-    Point operator-(Point p, const float scalar);
-    Point operator*(Point p, const float scalar);
-    Point operator/(Point p, const float scalar);
+    Point operator+(const Point &p, const float scalar);
+    Point operator-(const Point &p, const float scalar);
+    Point operator*(const Point &p, const float scalar);
+    Point operator/(const Point &p, const float scalar);
 
-    Point operator+(const float scalar, Point p);
-    Point operator-(const float scalar, Point p);
-    Point operator*(const float scalar, Point p);
-    Point operator/(const float scalar, Point p);
+    Point operator+(const float scalar, const Point &p);
+    Point operator-(const float scalar, const Point &p);
+    Point operator*(const float scalar, const Point &p);
+    Point operator/(const float scalar, const Point &p);
 
     std::ostream& operator<<(std::ostream &os, const Point &p);
 } // namespace pdm

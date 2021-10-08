@@ -104,56 +104,66 @@ namespace pdm {
         return Vec3(this->_x, this->_y, this->_z);
     }
 
-    Point operator+(Point p, const Point &t) {
-        p += t;
-        return p;
+    Point operator+(const Point &p, const Point &t) {
+        return Point(p._x + t._x,
+                     p._y + t._y,
+                     p._z + t._z);
     }
 
-    Point operator-(Point p, const Point &t) {
-        p -= t;
-        return p;
+    Point operator-(const Point &p, const Point &t) {
+        return Point(p._x - t._x,
+                     p._y - t._y,
+                     p._z - t._z);
     }
 
-    Point operator+(Point p, const float scalar) {
-        p += scalar;
-        return p;
+    Point operator+(const Point &p, const float scalar) {
+        return Point(p._x + scalar,
+                     p._y + scalar,
+                     p._z + scalar);
     }
 
-    Point operator-(Point p, const float scalar) {
-        p -= scalar;
-        return p;
+    Point operator-(const Point &p, const float scalar) {
+        return Point(p._x - scalar,
+                     p._y - scalar,
+                     p._z - scalar);
     }
     
-    Point operator*(Point p, const float scalar) {
-        p *= scalar;
-        return p;
+    Point operator*(const Point &p, const float scalar) {
+        return Point(p._x * scalar,
+                     p._y * scalar,
+                     p._z * scalar);
     }
     
-    Point operator/(Point p, const float scalar) {
-        p /= scalar;
-        return p;
+    Point operator/(const Point &p, const float scalar) {
+        return Point(p._x / scalar,
+                     p._y / scalar,
+                     p._z / scalar);
     }
 
-    Point operator+(const float scalar, Point p) {
-        p += scalar;
-        return p;
+    Point operator+(const float scalar, const Point &p) {
+        return Point(p._x + scalar,
+                     p._y + scalar,
+                     p._z + scalar);
     }
 
-    Point operator-(const float scalar, Point p) {
-        p -= scalar;
-        return p;
+    Point operator-(const float scalar, const Point &p) {
+        return Point(p._x - scalar,
+                     p._y - scalar,
+                     p._z - scalar);
+    }
+
+    Point operator*(const float scalar, const Point &p) {
+        return Point(p._x * scalar,
+                     p._y * scalar,
+                     p._z * scalar);
     }
     
-    Point operator*(const float scalar, Point p) {
-        p *= scalar;
-        return p;
+    Point operator/(const float scalar, const Point &p) {
+        return Point(p._x / scalar,
+                     p._y / scalar,
+                     p._z / scalar);
     }
     
-    Point operator/(const float scalar, Point p) {
-        p /= scalar;
-        return p;
-    }
-
     std::ostream& operator<<(std::ostream &os, const Point &p) {
         os << std::fixed << std::setprecision(Point::_output_precision) << "("
            << p._x << ", "
