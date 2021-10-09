@@ -14,7 +14,7 @@ namespace pdm {
     { }
 
     float Plane::direction_test(const Line &bisect, const Point &p) const {
-        Vec3 v_left = bisect._v.cross(this->_n);
-        return v_left.dot(p);
+        Vec3 v_left = this->_n.cross(bisect._v);
+        return v_left.dot(p - this->_p);
     }
 } // namespace pdm
