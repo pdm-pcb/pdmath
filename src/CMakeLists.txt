@@ -4,6 +4,7 @@ set(
     Vector.cpp
     Line.cpp
     Plane.cpp
+    Matrix.cpp
 )
 
 add_library(
