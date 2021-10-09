@@ -25,31 +25,31 @@ TEST_CASE("Dot products are correct and symmetrical", "[vectors]") {
 
 TEST_CASE("Euclidean norm is correct", "[vectors]") {
     Vec3 v(-5, -10, -6);
-    REQUIRE(v.length() == Catch::Approx(12.68858f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(12.68858f).margin(Vec3::_epsilon));
 
     v = Vec3(10, -1, -1);
-    REQUIRE(v.length() == Catch::Approx(10.0995f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(10.0995f).margin(Vec3::_epsilon));
 
     v = Vec3(10, -6, 8);
-    REQUIRE(v.length() == Catch::Approx(14.14214f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(14.14214f).margin(Vec3::_epsilon));
 
 }
 
 TEST_CASE("Normalized vectors have length 1", "[vectors]") {
     Vec3 v(-5, -5, 3);
-    REQUIRE(v.length() == Catch::Approx(7.68115f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(7.68115f).margin(Vec3::_epsilon));
     v.normalize();
-    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
 
     v = Vec3(2, -2, 1);
-    REQUIRE(v.length() == Catch::Approx(3.0f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(3.0f).margin(Vec3::_epsilon));
     v.normalize();
-    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
 
     v = Vec3(1, -2, 5);
-    REQUIRE(v.length() == Catch::Approx(5.47723f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(5.47723f).margin(Vec3::_epsilon));
     v.normalize();
-    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::epsilon));
+    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
 
 }
 

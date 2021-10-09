@@ -36,7 +36,7 @@ TEST_CASE("Points can measure their distance to a line", "[Points]") {
     Point player_loc(0, -5, 8);
 
     REQUIRE(player_loc.distance_to_line(enemy_line) ==
-            Catch::Approx(0.892288f).margin(Vec3::epsilon));
+            Catch::Approx(0.892288f).margin(Vec3::_epsilon));
 }
 
 TEST_CASE("Points know if they're on a plane", "[Points]") {
@@ -55,13 +55,13 @@ TEST_CASE("Points how far they are from a plane", "[Points]") {
     Plane plane(Point(0, 0, 0), Vec3(0, 1, 0));
     Point test_point(5, 0, -5);
     REQUIRE(test_point.distance_to_plane(plane) ==
-            Catch::Approx(0.0f).margin(Vec3::epsilon));
+            Catch::Approx(0.0f).margin(Vec3::_epsilon));
 
     test_point  = Point(5, 2, -5);
     REQUIRE(test_point.distance_to_plane(plane) ==
-            Catch::Approx(2.0f).margin(Vec3::epsilon));
+            Catch::Approx(2.0f).margin(Vec3::_epsilon));
 
     test_point  = Point(5, -2, -5);
     REQUIRE(test_point.distance_to_plane(plane) ==
-            Catch::Approx(-2.0f).margin(Vec3::epsilon));
+            Catch::Approx(-2.0f).margin(Vec3::_epsilon));
 }
