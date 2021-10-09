@@ -3,10 +3,8 @@
 
 #include <iostream>
 #include <cmath>
-#include <type_traits>
 
 namespace pdm {
-    class Vec3;
     class Line;
     class Plane;
 
@@ -100,9 +98,9 @@ namespace pdm {
     }
     template<class A> A operator-(const A &p, const A &t) {
         static_assert(std::is_base_of<Point, A>::value);
-        return A(p._x + t._x,
-                 p._y + t._y,
-                 p._z + t._z);
+        return A(p._x - t._x,
+                 p._y - t._y,
+                 p._z - t._z);
     }
     template<class A, class B> A operator+(const A &p, const B &t) {
         static_assert(std::is_base_of<Point, A>::value);
@@ -115,9 +113,9 @@ namespace pdm {
     template<class A, class B> A operator-(const A &p, const B &t) {
         static_assert(std::is_base_of<Point, A>::value);
         static_assert(std::is_base_of<Point, B>::value);
-        return A(p._x + t._x,
-                 p._y + t._y,
-                 p._z + t._z);
+        return A(p._x - t._x,
+                 p._y - t._y,
+                 p._z - t._z);
     }
 
     template<class A> A operator+(const A &p, const float scalar) {
