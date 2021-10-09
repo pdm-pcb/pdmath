@@ -8,7 +8,7 @@ namespace pdm {
         public:
             Vec3() = default;
             Vec3(const float x, const float y, const float z);
-            Vec3(const Point &p, const Point &s);
+            explicit Vec3(const Point &p);
 
             void  normalize();
 
@@ -20,6 +20,11 @@ namespace pdm {
 
             bool  is_collinear(const Vec3 &v) const;
             bool  is_perpendicular(const Vec3 &v) const;
+    };
+
+    class Vec4 : public Point {
+        public:
+            Vec4() = default;
     };
 } // namespace pdm
 

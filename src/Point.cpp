@@ -11,13 +11,13 @@ namespace pdm {
     { }
 
     bool Point::are_collinear(const Point &b, const Point &c) const {
-        Vec3 vec_ab(*this, b);
-        Vec3 vec_ac(*this, c);
+        Vec3 vec_ab(b - *this);
+        Vec3 vec_ac(c - *this);
         return vec_ab.is_collinear(vec_ac);
     }
 
     float Point::distance_to_line(const Line &line) const {
-        Vec3 s_minus_p(*this, line._p);
+        Vec3 s_minus_p(line._p - *this);
         Vec3 perp = s_minus_p - ((s_minus_p.dot(line._v))/
                                  (line._v.dot(line._v))) * line._v;
         return perp.length();
@@ -37,126 +37,6 @@ namespace pdm {
         return (_x == 0.0f) &&
                (_y == 0.0f) &&
                (_z == 0.0f);
-    }
-
-    bool Point::operator==(const Point &p) const {
-        if(&p == this) {
-            return true;
-        }
-
-        float x_diff = (fabsf(p._x) - fabsf(this->_x));
-        float y_diff = (fabsf(p._y) - fabsf(this->_y));
-        float z_diff = (fabsf(p._z) - fabsf(this->_z));
-
-        return x_diff < Point::epsilon &&
-               y_diff < Point::epsilon &&
-               z_diff < Point::epsilon;
-    }
-
-    Point& Point::operator+=(const Point &p) {
-        this->_x += p._x;
-        this->_y += p._y;
-        this->_z += p._z;
-        return *this;
-    }
-
-    Point& Point::operator-=(const Point &p) {
-        this->_x -= p._x;
-        this->_y -= p._y;
-        this->_z -= p._z;
-        return *this;
-    }
-
-    Point& Point::operator+=(const float scalar) {
-        this->_x += scalar;
-        this->_y += scalar;
-        this->_z += scalar;
-        return *this;
-    }
-
-    Point& Point::operator-=(const float scalar) {
-        this->_x -= scalar;
-        this->_y -= scalar;
-        this->_z -= scalar;
-        return *this;
-    }
-
-    Point& Point::operator*=(const float scalar) {
-        this->_x *= scalar;
-        this->_y *= scalar;
-        this->_z *= scalar;
-        return *this;
-    }
-
-    Point& Point::operator/=(const float scalar) {
-        this->_x /= scalar;
-        this->_y /= scalar;
-        this->_z /= scalar;
-        return *this;
-    }
-
-    Point::operator Vec3() const {
-        return Vec3(this->_x, this->_y, this->_z);
-    }
-
-    Point operator+(const Point &p, const Point &t) {
-        return Point(p._x + t._x,
-                     p._y + t._y,
-                     p._z + t._z);
-    }
-
-    Point operator-(const Point &p, const Point &t) {
-        return Point(p._x - t._x,
-                     p._y - t._y,
-                     p._z - t._z);
-    }
-
-    Point operator+(const Point &p, const float scalar) {
-        return Point(p._x + scalar,
-                     p._y + scalar,
-                     p._z + scalar);
-    }
-
-    Point operator-(const Point &p, const float scalar) {
-        return Point(p._x - scalar,
-                     p._y - scalar,
-                     p._z - scalar);
-    }
-    
-    Point operator*(const Point &p, const float scalar) {
-        return Point(p._x * scalar,
-                     p._y * scalar,
-                     p._z * scalar);
-    }
-    
-    Point operator/(const Point &p, const float scalar) {
-        return Point(p._x / scalar,
-                     p._y / scalar,
-                     p._z / scalar);
-    }
-
-    Point operator+(const float scalar, const Point &p) {
-        return Point(p._x + scalar,
-                     p._y + scalar,
-                     p._z + scalar);
-    }
-
-    Point operator-(const float scalar, const Point &p) {
-        return Point(p._x - scalar,
-                     p._y - scalar,
-                     p._z - scalar);
-    }
-
-    Point operator*(const float scalar, const Point &p) {
-        return Point(p._x * scalar,
-                     p._y * scalar,
-                     p._z * scalar);
-    }
-    
-    Point operator/(const float scalar, const Point &p) {
-        return Point(p._x / scalar,
-                     p._y / scalar,
-                     p._z / scalar);
     }
 
     std::ostream& operator<<(std::ostream &os, const Point &p) {

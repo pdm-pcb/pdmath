@@ -5,8 +5,8 @@ namespace pdm {
         Point(x, y, z)
     { }
 
-    Vec3::Vec3(const Point &p, const Point &s) :
-        Point(p - s)
+    Vec3::Vec3(const Point &p):
+        Point(p)
     { }
 
     float Vec3::dot(const Vec3 &v) const {
@@ -23,7 +23,7 @@ namespace pdm {
 
     Vec3 Vec3::project_onto(const Vec3 &v) const {
         float projection_length = dot(v)/v.dot(v);
-        return v * projection_length;
+        return Vec3(v * projection_length);
     }
 
     Vec3 Vec3::projection_perp(const Vec3 &v) const {

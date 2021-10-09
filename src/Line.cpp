@@ -5,7 +5,7 @@
 
 namespace pdm {
     Line::Line(const Point &a, const Point &b) :
-        _p{a}, _v{Vec3(b, a)}
+        _p{a}, _v{Vec3(b - a)}
     { }
     Line::Line(const Point &p, const Vec3 &vector) :
         _p{p}, _v{vector}
