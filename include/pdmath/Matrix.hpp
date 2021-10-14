@@ -25,7 +25,7 @@ namespace pdm {
                  const float x3, const float y3, const float z3);
 
             Mat3 inverse();
-            inline float determinant() const { return _determinant(_elem, 3); }
+            float determinant() const;
 
             float _elem[3][3];
 
