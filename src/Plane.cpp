@@ -1,4 +1,5 @@
 #include "pdmath/Plane.hpp"
+
 #include "pdmath/Line.hpp"
 
 namespace pdm {

@@ -23,6 +23,7 @@ add_executable(
     points.cpp
     vectors.cpp
     lines_and_planes.cpp
+    matrices.cpp
 )
 
 target_include_directories(

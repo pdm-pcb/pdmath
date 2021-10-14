@@ -1,4 +1,5 @@
 #include "pdmath/Line.hpp"
+
 #include "pdmath/Plane.hpp"
 #include "pdmath/Point.hpp"
 #include "pdmath/Vector.hpp"
@@ -20,9 +21,9 @@ namespace pdm {
     }
 
     Point Line::intersects_at(const Plane &plane) const {
-        float scalar = (Vec3(plane._p - this->_p).dot(plane._n));
-        scalar /= this->_v.dot(plane._n);
+        float lambda = (Vec3(plane._p - this->_p).dot(plane._n));
+        lambda /= this->_v.dot(plane._n);
 
-        return this->_p + this->_v * scalar;
+        return this->_p + this->_v * lambda;
     }
 } // namespace pdm
