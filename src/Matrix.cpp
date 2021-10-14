@@ -6,117 +6,187 @@
 #include <iomanip>
 
 namespace pdm {
-    Mat3::Mat3(const Vec3 &x, const Vec3 &y, const Vec3 &z) :
-        _x{x._x, x._y, x._z},
-        _y{y._x, y._y, y._z},
-        _z{z._x, z._y, z._z}
-    { }
-
     Mat3::Mat3(const Point &x, const Point &y, const Point &z) :
-        _x{x._x, x._y, x._z},
-        _y{y._x, y._y, y._z},
-        _z{z._x, z._y, z._z}
+        _elem{{x._x, x._y, x._z},
+              {y._x, y._y, y._z},
+              {z._x, z._y, z._z}}
     { }
 
     Mat3::Mat3(const std::array<float, 3> &x,
                const std::array<float, 3> &y,
                const std::array<float, 3> &z) :
-        _x{x[0], x[1], x[2]},
-        _y{y[0], y[1], y[2]},
-        _z{z[0], z[1], z[2]}
+        _elem{{x[0], y[0], z[0]},
+              {x[1], y[1], z[0]},
+              {x[2], y[2], z[2]}}
     { }
     
     Mat3::Mat3(const float x1, const float y1, const float z1,
                const float x2, const float y2, const float z2,
                const float x3, const float y3, const float z3) :
-        _x{x1, x2, x3},
-        _y{y1, y2, y3},
-        _z{z1, z2, z3}
+        _elem{{x1, y1, z1},
+              {x2, y2, z2},
+              {x3, y3, z3}}
     { }
+
+    Mat3 Mat3::inverse() {
+        Mat3 identity(1, 0, 0,
+                      0, 1, 0,
+                      0, 0, 1);
+
+        
+    }
 
     bool Mat3::operator==(const Mat3 &m) const {
         if(this == &m) {
             return true;
         }
     
-        return _x[0] == m._x[0] && _x[1] == m._x[1] && _x[2] == m._x[2] &&
-               _y[0] == m._y[0] && _y[1] == m._y[1] && _y[2] == m._y[2] &&
-               _z[0] == m._z[0] && _z[1] == m._z[1] && _z[2] == m._z[2];
+        return _elem[0][0] == m._elem[0][0] &&
+               _elem[1][0] == m._elem[1][0] &&
+               _elem[2][0] == m._elem[2][0] &&
+               _elem[0][1] == m._elem[0][1] &&
+               _elem[1][1] == m._elem[1][1] &&
+               _elem[2][1] == m._elem[2][1] &&
+               _elem[0][2] == m._elem[0][2] &&
+               _elem[1][2] == m._elem[1][2] &&
+               _elem[2][2] == m._elem[2][2];
     }
 
     const Mat3& Mat3::operator*=(const Mat3 &m) {
-        float x1 = (_x[0] * m._x[0]) + (_y[0] * m._x[1]) + (_z[0] * m._x[2]);
-        float x2 = (_x[1] * m._x[0]) + (_y[1] * m._x[1]) + (_z[1] * m._x[2]);
-        float x3 = (_x[2] * m._x[0]) + (_y[2] * m._x[1]) + (_z[2] * m._x[2]);
+        float x1 = (_elem[0][0] * m._elem[0][0]) +
+                   (_elem[0][1] * m._elem[1][0]) +
+                   (_elem[0][2] * m._elem[2][0]);
+    
+        float y1 = (_elem[0][0] * m._elem[0][1]) +
+                   (_elem[0][1] * m._elem[1][1]) +
+                   (_elem[0][2] * m._elem[2][1]);
 
-        float y1 = (_x[0] * m._y[0]) + (_y[0] * m._y[1]) + (_z[0] * m._y[2]);
-        float y2 = (_x[1] * m._y[0]) + (_y[1] * m._y[1]) + (_z[1] * m._y[2]);        
-        float y3 = (_x[2] * m._y[0]) + (_y[2] * m._y[1]) + (_z[2] * m._y[2]);
+        float z1 = (_elem[0][0] * m._elem[0][2]) +
+                   (_elem[0][1] * m._elem[1][2]) +
+                   (_elem[0][2] * m._elem[2][2]);
 
-        float z1 = (_x[0] * m._z[0]) + (_y[0] * m._z[1]) + (_z[0] * m._z[2]);
-        float z2 = (_x[1] * m._z[0]) + (_y[1] * m._z[1]) + (_z[1] * m._z[2]);
-        float z3 = (_x[2] * m._z[0]) + (_y[2] * m._z[1]) + (_z[2] * m._z[2]);
+        float x2 = (_elem[1][0] * m._elem[0][0]) +
+                   (_elem[1][1] * m._elem[1][0]) +
+                   (_elem[1][2] * m._elem[2][0]);
 
-        _x = {x1, x2, x3};
-        _y = {y1, y2, y3};
-        _z = {z1, z2, z3};
+        float y2 = (_elem[1][0] * m._elem[0][1]) +
+                   (_elem[1][1] * m._elem[1][1]) +
+                   (_elem[1][2] * m._elem[2][1]);
+
+        float z2 = (_elem[1][0] * m._elem[0][2]) +
+                   (_elem[1][1] * m._elem[1][2]) +
+                   (_elem[1][2] * m._elem[2][2]);
+
+        float x3 = (_elem[2][0] * m._elem[0][0]) +
+                   (_elem[2][1] * m._elem[1][0]) +
+                   (_elem[2][2] * m._elem[2][0]);
+
+        float y3 = (_elem[2][0] * m._elem[0][1]) +
+                   (_elem[2][1] * m._elem[1][1]) +
+                   (_elem[2][2] * m._elem[2][1]);
+
+        float z3 = (_elem[2][0] * m._elem[0][2]) +
+                   (_elem[2][1] * m._elem[1][2]) +
+                   (_elem[2][2] * m._elem[2][2]);
+
+        _elem[0][0] = x1;
+        _elem[1][0] = x2;
+        _elem[2][0] = x3;
+
+        _elem[0][1] = y1;
+        _elem[1][1] = y2;
+        _elem[2][1] = y3;
+
+        _elem[0][2] = z1;
+        _elem[1][2] = z2;
+        _elem[2][2] = z3;
 
         return *this;
     }
-    
+
     const Mat3& Mat3::operator*=(const float lambda) {
-        this->_x[0] *= lambda;
-        this->_x[1] *= lambda;
-        this->_x[2] *= lambda;
+        this->_elem[0][0] *= lambda;
+        this->_elem[1][0] *= lambda;
+        this->_elem[2][0] *= lambda;
 
-        this->_y[0] *= lambda;
-        this->_y[1] *= lambda;
-        this->_y[2] *= lambda;
+        this->_elem[0][1] *= lambda;
+        this->_elem[1][1] *= lambda;
+        this->_elem[2][1] *= lambda;
 
-        this->_z[0] *= lambda;
-        this->_z[1] *= lambda;
-        this->_z[2] *= lambda;
+        this->_elem[0][2] *= lambda;
+        this->_elem[1][2] *= lambda;
+        this->_elem[2][2] *= lambda;
 
         return *this;
     }
 
     const Mat3& Mat3::operator+=(const Mat3 &m) {
-        this->_x[0] += m._x[0];
-        this->_x[1] += m._x[1];
-        this->_x[2] += m._x[2];
+        this->_elem[0][0] += m._elem[0][0];
+        this->_elem[1][0] += m._elem[1][0];
+        this->_elem[2][0] += m._elem[2][0];
 
-        this->_y[0] += m._y[0];
-        this->_y[1] += m._y[1];
-        this->_y[2] += m._y[2];
+        this->_elem[0][1] += m._elem[0][1];
+        this->_elem[1][1] += m._elem[1][1];
+        this->_elem[2][1] += m._elem[2][1];
 
-        this->_z[0] += m._z[0];
-        this->_z[1] += m._z[1];
-        this->_z[2] += m._z[2];
+        this->_elem[0][2] += m._elem[0][2];
+        this->_elem[1][2] += m._elem[1][2];
+        this->_elem[2][2] += m._elem[2][2];
 
         return *this;
     }
 
     const Mat3& Mat3::operator-=(const Mat3 &m) {
-        this->_x[0] -= m._x[0];
-        this->_x[1] -= m._x[1];
-        this->_x[2] -= m._x[2];
+        this->_elem[0][0] -= m._elem[0][0];
+        this->_elem[1][0] -= m._elem[1][0];
+        this->_elem[2][0] -= m._elem[2][0];
 
-        this->_y[0] -= m._y[0];
-        this->_y[1] -= m._y[1];
-        this->_y[2] -= m._y[2];
-    
-        this->_z[0] -= m._z[0];
-        this->_z[1] -= m._z[1];
-        this->_z[2] -= m._z[2];
+        this->_elem[0][1] -= m._elem[0][1];
+        this->_elem[1][1] -= m._elem[1][1];
+        this->_elem[2][1] -= m._elem[2][1];
+
+        this->_elem[0][2] -= m._elem[0][2];
+        this->_elem[1][2] -= m._elem[1][2];
+        this->_elem[2][2] -= m._elem[2][2];
 
         return *this;
     }
 
+    Mat3 operator*(const Mat3 &m, const Mat3 &n) {
+        Mat3 l = m;
+        return l *= n;
+    }
+
+    Mat3 operator*(const Mat3 &m, const float lambda) {
+        Mat3 n = m;
+        n *= lambda;
+        return n;
+    }
+
+    Mat3 operator*(const float lambda, const Mat3 &m) {
+        Mat3 n = m;
+        n *= lambda;
+        return n;
+    }
+
+    Mat3 operator+(const Mat3 &m, const Mat3 &n) {
+        Mat3 l = m;
+        return l += n;
+    }
+
+    Mat3 operator-(const Mat3 &m, const Mat3 &n) {
+        Mat3 l = m;
+        return l -= n;
+    }
+
     std::ostream& operator<<(std::ostream &os, const Mat3 &m) {
         os << std::fixed << std::setprecision(Point::_output_precision)
-           << "[" << m._x[0] << ", " << m._y[0] << ", " << m._z[0] << "]\n"
-           << "[" << m._x[1] << ", " << m._y[1] << ", " << m._z[1] << "]\n"
-           << "[" << m._x[2] << ", " << m._y[2] << ", " << m._z[2] << "]";
+           << "[" << m._elem[0][0] << ", " << m._elem[0][1] << ", "
+           << m._elem[0][2] << "]\n"
+           << "[" << m._elem[1][0] << ", " << m._elem[1][1] << ", "
+           << m._elem[1][2] << "]\n"
+           << "[" << m._elem[2][0] << ", " << m._elem[2][1] << ", "
+           << m._elem[2][2] << "]";
         return os;
     }
 } // namespace pdm

@@ -102,17 +102,29 @@ TEST_CASE("Cross products are accurate and perpendicular", "[vectors]") {
 TEST_CASE("Scalar multiples of vectors are collinear", "[vectors]") {
     Vec3 v(8, -6, 5);
     Vec3 w = v * 4;
+    Vec3 u = v;
+    u *= 4;
     REQUIRE(v.is_collinear(w));
     REQUIRE(w.is_collinear(v));
+    REQUIRE(v.is_collinear(u));
+    REQUIRE(u.is_collinear(v));
 
     v = Vec3(-3, 0, 2);
     w = v * -2;
+    u = v;
+    u *= -2;
     REQUIRE(v.is_collinear(w));
     REQUIRE(w.is_collinear(v));
+    REQUIRE(v.is_collinear(u));
+    REQUIRE(u.is_collinear(v));
 
     v = Vec3(0.25f, -6.83f, 3.0f);
     w = v * 5.12f;
+    u = v;
+    u *= 5.12f;
     REQUIRE(v.is_collinear(w));
     REQUIRE(w.is_collinear(v));
+    REQUIRE(v.is_collinear(u));
+    REQUIRE(u.is_collinear(v));
 
 }
