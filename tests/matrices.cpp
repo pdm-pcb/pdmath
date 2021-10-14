@@ -31,3 +31,32 @@ TEST_CASE("Matrices can multiply", "[matrices]") {
                                8,  12, -29,
                               -4,  -7,  8));
 }
+
+TEST_CASE("Matrices can add", "[matrices]") {
+    Mat3 m(-4, -2, -2,
+           -4,  2, -3,
+            2, -3,  2);
+
+    Mat3 n(-1, -1,  1,
+            1,  3, -3,
+           -3, -5,  2);
+    
+    REQUIRE((m += n) == Mat3(-5, -3, -1,
+                             -3,  5, -6,
+                             -1, -8,  4));
+}
+
+TEST_CASE("Matrices can subtract", "[matrices]") {
+    Mat3 m(-2, -4,  4,
+            0,  0, -5,
+           -4,  0, -5);
+
+    Mat3 n(-1, -3,  4,
+            4,  4, -2,
+           -3,  3, -4);
+
+
+    REQUIRE((m += n) == Mat3(-3, -7,  8,
+                              4,  4, -7,
+                             -7,  3, -9));
+}

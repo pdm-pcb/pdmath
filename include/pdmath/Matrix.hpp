@@ -27,7 +27,6 @@ namespace pdm {
             bool operator==(const Mat3 &m) const;
 
             const Mat3& operator*=(const Mat3 &m);
-            const Mat3& operator*=(const Vec3 &v);
             const Mat3& operator*=(const float lambda);
 
             const Mat3& operator+=(const Mat3 &m);

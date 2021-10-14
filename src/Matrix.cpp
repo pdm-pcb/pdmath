@@ -63,12 +63,7 @@ namespace pdm {
 
         return *this;
     }
-
-    const Mat3& Mat3::operator*=(const Vec3 &v) {
-
-        return *this;
-    }
-
+    
     const Mat3& Mat3::operator*=(const float lambda) {
         this->_x[0] *= lambda;
         this->_x[1] *= lambda;
