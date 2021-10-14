@@ -47,6 +47,47 @@ namespace pdm {
         return identity;
     }
 
+    void Mat3::_cofactor(const float mat[3][3],  float cofactors[3][3],
+                         const size_t excl_row,  const size_t excl_col,
+                         const size_t dimension) const {
+        size_t cof_row = 0;
+        size_t cof_col = 0;
+    
+        for(size_t row = 0; row < dimension; row++) {
+            for(size_t col = 0; col < dimension; col++) {
+                if(row != excl_row && col != excl_col) {
+                    cofactors[cof_row][cof_col++] = mat[row][col];
+                    if(cof_col == dimension - 1) {
+                        cof_col = 0;
+                        cof_row++;
+                    }
+                }
+            }
+        }
+    }
+ 
+    float Mat3::_determinant(const float mat[3][3],
+                             const size_t dimension) const {
+        if(dimension == 1) {
+            return mat[0][0];
+        }
+
+        float determinant = 0.0f;
+        float cofactors[3][3];
+        int16_t sign = 1;
+    
+        for(size_t col = 0; col < dimension; col++) {
+            _cofactor(mat, cofactors, 0, col, dimension);
+    
+            determinant += 
+               sign * (mat[0][col] * _determinant(cofactors, dimension - 1));
+    
+            sign = -sign;
+        }
+    
+        return determinant;
+    }
+
     bool Mat3::operator==(const Mat3 &m) const {
         if(this == &m) {
             return true;

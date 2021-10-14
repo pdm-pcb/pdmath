@@ -90,3 +90,17 @@ TEST_CASE("Matrix Vector multiplication works", "[matrices][vectors]") {
     REQUIRE((n * v) == Vec3(-7, 6, 11));
     REQUIRE((m * n * v) == Vec3(-9, 31, 96));
 }
+
+TEST_CASE("Matrices can find their determinants", "[matrices]") {
+    Mat3 m(-5, -3,  1,
+           -4,  1,  0,
+            2, -4, -1);
+
+    REQUIRE(m.determinant() == 31);
+
+    m = Mat3( 2, 2, -5,
+              3, 2,  3,
+             -3, -5, 4);
+
+    REQUIRE(m.determinant() == 49);
+}
