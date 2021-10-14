@@ -33,7 +33,18 @@ namespace pdm {
                       0, 1, 0,
                       0, 0, 1);
 
-        
+        for(size_t col = 0; col < 3; col++) {
+            this->_r1[col]     /= this->_r1[0];
+            identity._r1[col]  /= this->_r1[0];
+
+            this->_r2[col]     /= this->_r2[1];
+            identity._r2[col]  /= this->_r2[1];
+
+            this->_r3[col]     /= this->_r3[2];
+            identity._r3[col]  /= this->_r3[2];
+        }
+
+        return identity;
     }
 
     bool Mat3::operator==(const Mat3 &m) const {
@@ -177,6 +188,23 @@ namespace pdm {
     Mat3 operator-(const Mat3 &m, const Mat3 &n) {
         Mat3 l = m;
         return l -= n;
+    }
+
+    Vec3 operator*(const Mat3 &m, const Vec3 &v) {
+
+        float x = (m._elem[0][0] * v._x) +
+                  (m._elem[0][1] * v._y) +
+                  (m._elem[0][2] * v._z);
+    
+        float y = (m._elem[1][0] * v._x) +
+                  (m._elem[1][1] * v._y) +
+                  (m._elem[1][2] * v._z);
+
+        float z = (m._elem[2][0] * v._x) +
+                  (m._elem[2][1] * v._y) +
+                  (m._elem[2][2] * v._z);
+
+        return Vec3(x, y, z);
     }
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m) {

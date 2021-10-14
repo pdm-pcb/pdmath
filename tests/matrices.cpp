@@ -1,4 +1,5 @@
 #include "pdmath/Matrix.hpp"
+#include "pdmath/Vector.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"
@@ -70,4 +71,22 @@ TEST_CASE("Matrices can subtract", "[matrices]") {
 
     REQUIRE((m - n)  == solution);
     REQUIRE((m -= n) == solution);
+}
+
+TEST_CASE("Matrix Vector multiplication works", "[matrices][vectors]") {
+    Mat3 m( 3,  2, 0,
+            1, -1, 4,
+           -4,  4, 4);
+
+    Mat3 n(-4, -1, -5,
+           -3,  3,  0,
+            0,  1,  3);
+
+    Vec3 v(-3, -1, 4);
+
+    REQUIRE((m * n) == Mat3(-18,  3, -15,
+                             -1,  0,   7,
+                              4, 20,  32));
+    REQUIRE((n * v) == Vec3(-7, 6, 11));
+    REQUIRE((m * n * v) == Vec3(-9, 31, 96));
 }

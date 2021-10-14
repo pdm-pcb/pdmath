@@ -27,6 +27,10 @@ namespace pdm {
             Mat3 inverse(); 
 
             float _elem[3][3];
+
+            float *_r1 = _elem[0];
+            float *_r2 = _elem[1];
+            float *_r3 = _elem[2];
     
             bool operator==(const Mat3 &m) const;
 
@@ -41,6 +45,8 @@ namespace pdm {
     Mat3 operator*(const float lambda, const Mat3 &m);
     Mat3 operator+(const Mat3 &m, const Mat3 &n);
     Mat3 operator-(const Mat3 &m, const Mat3 &n);
+
+    Vec3 operator*(const Mat3 &m, const Vec3 &v);
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m);
 } // namespace pdm
