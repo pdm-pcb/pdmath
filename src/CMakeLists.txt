@@ -1,10 +1,13 @@
 set(
     PDMATH_SRC
     Point3.cpp
-    Vector.cpp
+    Vector3.cpp
+    Matrix3.cpp
+    Point4.cpp
+    Vector4.cpp
+    Matrix4.cpp
     Line.cpp
     Plane.cpp
-    Matrix.cpp
 )
 
 add_library(

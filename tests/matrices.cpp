@@ -1,5 +1,5 @@
-#include "pdmath/Matrix.hpp"
-#include "pdmath/Vector.hpp"
+#include "pdmath/Matrix3.hpp"
+#include "pdmath/Vector3.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"

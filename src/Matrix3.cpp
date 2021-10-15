@@ -1,6 +1,6 @@
-#include "pdmath/Matrix.hpp"
+#include "pdmath/Matrix3.hpp"
 
-#include "pdmath/Vector.hpp"
+#include "pdmath/Vector3.hpp"
 #include "pdmath/Point3.hpp"
 
 #include <iomanip>
@@ -222,21 +222,36 @@ namespace pdm {
         return l -= n;
     }
 
-    Vec3 operator*(const Mat3 &m, const Vec3 &v) {
+    Point3 operator* (const Mat3 &m, const Point3 &p) {
+        return Point3((m._elem[0][0] * p._x) +
+                      (m._elem[0][1] * p._y) +
+                      (m._elem[0][2] * p._z), 
+                      (m._elem[1][0] * p._x) +
+                      (m._elem[1][1] * p._y) +
+                      (m._elem[1][2] * p._z),
+                      (m._elem[2][0] * p._x) +
+                      (m._elem[2][1] * p._y) +
+                      (m._elem[2][2] * p._z));
+    }
 
-        float x = (m._elem[0][0] * v._x) +
-                  (m._elem[0][1] * v._y) +
-                  (m._elem[0][2] * v._z);
-    
-        float y = (m._elem[1][0] * v._x) +
-                  (m._elem[1][1] * v._y) +
-                  (m._elem[1][2] * v._z);
+    Point3 operator* (const Point3 &p, const Mat3 &m) {
+        return m * p;
+    }
 
-        float z = (m._elem[2][0] * v._x) +
-                  (m._elem[2][1] * v._y) +
-                  (m._elem[2][2] * v._z);
+    Vec3 operator* (const Mat3 &m, const Vec3 &v) {
+        return Vec3((m._elem[0][0] * v._x) +
+                    (m._elem[0][1] * v._y) +
+                    (m._elem[0][2] * v._z), 
+                    (m._elem[1][0] * v._x) +
+                    (m._elem[1][1] * v._y) +
+                    (m._elem[1][2] * v._z),
+                    (m._elem[2][0] * v._x) +
+                    (m._elem[2][1] * v._y) +
+                    (m._elem[2][2] * v._z));
+    }
 
-        return Vec3(x, y, z);
+    Vec3 operator* (const Vec3 &v, const Mat3 &m) {
+        return m * v;
     }
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m) {

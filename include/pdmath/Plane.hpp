@@ -2,7 +2,7 @@
 #define PDMATH_PLANE_HPP
 
 #include "pdmath/Point3.hpp"
-#include "pdmath/Vector.hpp"
+#include "pdmath/Vector3.hpp"
 
 namespace pdm {
     class Line;

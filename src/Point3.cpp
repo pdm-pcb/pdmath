@@ -1,8 +1,9 @@
 #include "pdmath/Point3.hpp"
-#include "pdmath/Vector.hpp"
+
+#include "pdmath/Vector3.hpp"
 #include "pdmath/Line.hpp"
 #include "pdmath/Plane.hpp"
-#include "pdmath/Matrix.hpp"
+#include "pdmath/Matrix3.hpp"
 
 #include <iomanip>
 
@@ -19,8 +20,8 @@ namespace pdm {
 
     float Point3::distance_to_line(const Line &line) const {
         Vec3 s_minus_p(line._p - *this);
-        Vec3 perp = s_minus_p - ((s_minus_p.dot(line._v))/
-                                 (line._v.dot(line._v))) * line._v;
+        Vec3 perp = s_minus_p - (s_minus_p.dot(line._v) /
+                                 line._v.dot(line._v)) * line._v;
         return perp.length();
     }
 
@@ -38,6 +39,58 @@ namespace pdm {
         return (_x == 0.0f) &&
                (_y == 0.0f) &&
                (_z == 0.0f);
+    }
+
+    bool Point3::operator==(const Point3 &p) const {
+        float x_diff = (fabsf(this->_x) - fabsf(p._x));
+        float y_diff = (fabsf(this->_y) - fabsf(p._y));
+        float z_diff = (fabsf(this->_z) - fabsf(p._z));
+
+        return x_diff < Point3::_epsilon &&
+               y_diff < Point3::_epsilon &&
+               z_diff < Point3::_epsilon;
+    }
+
+    const Point3& Point3::operator+=(const Point3 &p) {
+        this->_x += p._x;
+        this->_y += p._y;
+        this->_z += p._z;
+        return *this;
+    }
+
+    const Point3& Point3::operator-=(const Point3 &p) {
+        this->_x -= p._x;
+        this->_y -= p._y;
+        this->_z -= p._z;
+        return *this;
+    }
+
+    const Point3& Point3::operator+=(const float scalar) {
+        this->_x += scalar;
+        this->_y += scalar;
+        this->_z += scalar;
+        return *this;
+    }
+
+    const Point3& Point3::operator-=(const float scalar) {
+        this->_x -= scalar;
+        this->_y -= scalar;
+        this->_z -= scalar;
+        return *this;
+    }
+
+    const Point3& Point3::operator*=(const float scalar) {
+        this->_x *= scalar;
+        this->_y *= scalar;
+        this->_z *= scalar;
+        return *this;
+    }
+
+    const Point3& Point3::operator/=(const float scalar) {
+        this->_x /= scalar;
+        this->_y /= scalar;
+        this->_z /= scalar;
+        return *this;
     }
 
     const Point3& Point3::operator*=(const Mat3 &m) {
@@ -58,6 +111,59 @@ namespace pdm {
         this->_z = z;
 
         return *this;
+    }
+
+    Point3 operator+(const Point3 &p, const Point3 &t) {
+        return Point3(p._x + t._x,
+                      p._y + t._y,
+                      p._z + t._z);
+    }
+
+    Point3 operator-(const Point3 &p, const Point3 &t) {
+        return Point3(p._x - t._x,
+                      p._y - t._y,
+                      p._z - t._z);
+    }
+
+    Point3 operator+(const Point3 &p, const float scalar){
+        return Point3(p._x + scalar,
+                      p._y + scalar,
+                      p._z + scalar);
+    }
+
+    Point3 operator-(const Point3 &p, const float scalar){
+        return Point3(p._x - scalar,
+                      p._y - scalar,
+                      p._z - scalar);
+    }
+
+    Point3 operator*(const Point3 &p, const float scalar){
+        return Point3(p._x * scalar,
+                      p._y * scalar,
+                      p._z * scalar);
+    }
+
+    Point3 operator/(const Point3 &p, const float scalar){
+
+        return Point3(p._x / scalar,
+                      p._y / scalar,
+                      p._z / scalar);
+    }
+
+    Point3 operator+(const float scalar, const Point3 &p) {
+        return (p + scalar);
+    }
+
+    Point3 operator-(const float scalar, const Point3 &p) {
+        return (p - scalar);
+    }
+    
+    Point3 operator*(const float scalar, const Point3 &p) {
+        return (p * scalar);
+    }
+
+    Point3 operator/(const float scalar, const Point3 &p) {
+        return (p / scalar);
     }
 
     std::ostream& operator<<(std::ostream &os, const Point3 &p) {

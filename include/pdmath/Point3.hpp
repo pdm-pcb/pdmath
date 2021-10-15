@@ -1,5 +1,5 @@
-#ifndef PDMATH_POINT_HPP
-#define PDMATH_POINT_HPP
+#ifndef PDMATH_POINT3_HPP
+#define PDMATH_POINT3_HPP
 
 #include <iostream>
 #include <cmath>
@@ -28,169 +28,32 @@ namespace pdm {
             float _y;
             float _z;
 
+            bool operator==(const Point3 &p) const;
+
+            const Point3& operator+=(const Point3 &p);
+            const Point3& operator-=(const Point3 &p);
+
+            const Point3& operator+=(const float scalar);
+            const Point3& operator-=(const float scalar);
+            const Point3& operator*=(const float scalar);
+            const Point3& operator/=(const float scalar);
+
             const Point3& operator*=(const Mat3 &m);
     };
 
+    Point3 operator+(const Point3 &p, const Point3 &t);
+    Point3 operator-(const Point3 &p, const Point3 &t);
+
+    Point3 operator+(const Point3 &p, const float scalar);
+    Point3 operator-(const Point3 &p, const float scalar);
+    Point3 operator*(const Point3 &p, const float scalar);
+    Point3 operator/(const Point3 &p, const float scalar);
+
+    Point3 operator+(const float scalar, const Point3 &p);
+    Point3 operator-(const float scalar, const Point3 &p);
+    Point3 operator*(const float scalar, const Point3 &p);
+    Point3 operator/(const float scalar, const Point3 &p);
     std::ostream& operator<<(std::ostream &os, const Point3 &p);
-
-    //==========================================================================
-    // templated operator overloads to serve the various interchangable needs of
-    // points and vectors
-
-    // equivalence, based on the coordinates
-    template<class A> bool operator==(const A &p, const A &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        if(&p == &t) {
-            return true;
-        }
-
-        float x_diff = (fabsf(p._x) - fabsf(t._x));
-        float y_diff = (fabsf(p._y) - fabsf(t._y));
-        float z_diff = (fabsf(p._z) - fabsf(t._z));
-
-        return x_diff < Point3::_epsilon &&
-               y_diff < Point3::_epsilon &&
-               z_diff < Point3::_epsilon;
-    }
-
-    // summing of like types with non-cost rhs
-    template<class A> A& operator+=(A &p, const A &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        p._x += t._x;
-        p._y += t._y;
-        p._z += t._z;
-        return p;
-    }
-    template<class A> A& operator-=(A &p, const A &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        p._x -= t._x;
-        p._y -= t._y;
-        p._z -= t._z;
-        return p;
-    }
-
-    // scalar operations with non-const rhs
-    template<class A> A& operator+=(A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        p._x += scalar;
-        p._y += scalar;
-        p._z += scalar;
-        return p;
-    }
-    template<class A> A& operator-=(A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        p._x -= scalar;
-        p._y -= scalar;
-        p._z -= scalar;
-        return p;
-    }
-    template<class A> A& operator*=(A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        p._x *= scalar;
-        p._y *= scalar;
-        p._z *= scalar;
-        return p;
-    }
-    template<class A> A& operator/=(A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        p._x /= scalar;
-        p._y /= scalar;
-        p._z /= scalar;
-        return p;
-    } 
-
-    // summing of like types while const on both sides
-    template<class A> A operator+(const A &p, const A &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x + t._x,
-                 p._y + t._y,
-                 p._z + t._z);
-
-    }
-    template<class A> A operator-(const A &p, const A &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x - t._x,
-                 p._y - t._y,
-                 p._z - t._z);
-    }
-
-    // summing of unlike types while const on both sides
-    template<class A, class B> A operator+(const A &p, const B &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        static_assert(std::is_base_of<Point3, B>::value);
-        return A(p._x + t._x,
-                 p._y + t._y,
-                 p._z + t._z);
-
-    }
-    template<class A, class B> A operator-(const A &p, const B &t) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        static_assert(std::is_base_of<Point3, B>::value);
-        return A(p._x - t._x,
-                 p._y - t._y,
-                 p._z - t._z);
-    }
-
-    // scalar operations with const rhs
-    template<class A> A operator+(const A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x + scalar,
-                 p._y + scalar,
-                 p._z + scalar);
-
-    }
-    template<class A> A operator-(const A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x - scalar,
-                 p._y - scalar,
-                 p._z - scalar);
-
-    }
-    template<class A> A operator*(const A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x * scalar,
-                 p._y * scalar,
-                 p._z * scalar);
-
-    }
-    template<class A> A operator/(const A &p, const float scalar) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x / scalar,
-                 p._y / scalar,
-                 p._z / scalar);
-
-    }
-    
-    // scalar operations with const lhs
-    template<class A> A operator+(const float scalar, const A &p) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x + scalar,
-                 p._y + scalar,
-                 p._z + scalar);
-
-    }
-    template<class A> A operator-(const float scalar, const A &p) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x - scalar,
-                 p._y - scalar,
-                 p._z - scalar);
-
-    }
-    template<class A> A operator*(const float scalar, const A &p) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x * scalar,
-                 p._y * scalar,
-                 p._z * scalar);
-
-    }
-    template<class A> A operator/(const float scalar, const A &p) {
-        static_assert(std::is_base_of<Point3, A>::value);
-        return A(p._x / scalar,
-                 p._y / scalar,
-                 p._z / scalar);
-
-    }
-
 } // namespace pdm
 
-#endif // PDMATH_POINT_HPP
+#endif // PDMATH_POINT3_HPP

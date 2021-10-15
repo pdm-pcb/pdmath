@@ -2,7 +2,7 @@
 
 #include "pdmath/Plane.hpp"
 #include "pdmath/Point3.hpp"
-#include "pdmath/Vector.hpp"
+#include "pdmath/Vector3.hpp"
 
 namespace pdm {
     Line::Line(const Point3 &a, const Point3 &b) :

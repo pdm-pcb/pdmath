@@ -1,5 +1,5 @@
 #include "pdmath/Point3.hpp"
-#include "pdmath/Vector.hpp"
+#include "pdmath/Vector3.hpp"
 #include "pdmath/Line.hpp"
 #include "pdmath/Plane.hpp"
 
