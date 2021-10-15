@@ -7,9 +7,9 @@
 
 namespace pdm {
     Mat3::Mat3(const Point &x, const Point &y, const Point &z) :
-        _elem{{x._x, x._y, x._z},
-              {y._x, y._y, y._z},
-              {z._x, z._y, z._z}}
+        _elem{{x._x, y._x, z._x},
+              {x._y, y._y, z._y},
+              {x._z, y._z, z._z}}
     { }
 
     Mat3::Mat3(const std::array<float, 3> &x,

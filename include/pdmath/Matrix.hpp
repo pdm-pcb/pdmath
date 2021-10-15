@@ -42,13 +42,6 @@ namespace pdm {
             const Mat3& operator*=(const float lambda);
             const Mat3& operator+=(const Mat3 &m);
             const Mat3& operator-=(const Mat3 &m);
-        
-        private:
-            float _determinant (const float mat[3][3], const size_t n) const;
-
-            void  _cofactor(const float mat[3][3],  float cofactors[3][3],
-                            const size_t excl_row,  const size_t excl_col,
-                            const size_t dimension) const;
     };
 
     Mat3 operator*(const Mat3 &m, const Mat3 &n);
