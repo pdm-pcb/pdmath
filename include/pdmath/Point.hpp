@@ -7,6 +7,7 @@
 namespace pdm {
     class Line;
     class Plane;
+    class Mat3;
 
     class Point {
         public:
@@ -26,6 +27,8 @@ namespace pdm {
             float _x;
             float _y;
             float _z;
+
+            const Point& operator*=(const Mat3 &m);
     };
 
     std::ostream& operator<<(std::ostream &os, const Point &p);
@@ -94,7 +97,7 @@ namespace pdm {
         p._y /= scalar;
         p._z /= scalar;
         return p;
-    }
+    } 
 
     // summing of like types while const on both sides
     template<class A> A operator+(const A &p, const A &t) {

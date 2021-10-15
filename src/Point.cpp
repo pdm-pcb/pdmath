@@ -2,6 +2,7 @@
 #include "pdmath/Vector.hpp"
 #include "pdmath/Line.hpp"
 #include "pdmath/Plane.hpp"
+#include "pdmath/Matrix.hpp"
 
 #include <iomanip>
 
@@ -37,6 +38,26 @@ namespace pdm {
         return (_x == 0.0f) &&
                (_y == 0.0f) &&
                (_z == 0.0f);
+    }
+
+    const Point& Point::operator*=(const Mat3 &m) {
+        float x = (m._elem[0][0] * this->_x) +
+                  (m._elem[0][1] * this->_y) +
+                  (m._elem[0][2] * this->_z);
+    
+        float y = (m._elem[1][0] * this->_x) +
+                  (m._elem[1][1] * this->_y) +
+                  (m._elem[1][2] * this->_z);
+
+        float z = (m._elem[2][0] * this->_x) +
+                  (m._elem[2][1] * this->_y) +
+                  (m._elem[2][2] * this->_z);
+        
+        this->_x = x;
+        this->_y = y;
+        this->_z = z;
+
+        return *this;
     }
 
     std::ostream& operator<<(std::ostream &os, const Point &p) {
