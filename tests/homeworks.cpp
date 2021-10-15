@@ -104,3 +104,20 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
     enemy_pos = player_gaze * 10 + player_pos;
     REQUIRE(enemy_pos == Vec3(-3.4322643, 0.0f, 3.9640989));   
 }
+
+TEST_CASE("Triangular game object", "[vectors][matrices]") {
+    Point p1(-1, 0, -1);
+    Point p2(0, 0, 2);
+    Point p3(1, 0, -1);
+
+    // Move forward by 7 followed by a rotation about the y axis of 1π/4
+    
+
+    // Move forward by 10 followed by a rotation about the y axis of 2π/4
+
+
+    // Move forward by 7 followed by a rotation about the y axis of -2π/4
+
+
+    // Move forward by 6 followed by a rotation about the y axis of -3π/4
+}
