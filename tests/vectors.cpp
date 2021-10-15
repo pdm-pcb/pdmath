@@ -1,4 +1,5 @@
 #include "pdmath/Vector3.hpp"
+#include "pdmath/Vector4.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"
@@ -21,6 +22,21 @@ TEST_CASE("Dot products are correct and symmetrical", "[vectors]") {
     v = Vec3(-3,  6, 9);
     REQUIRE(u.dot(v) == 15.0f);
     REQUIRE(v.dot(u) == 15.0f);
+
+    Vec4 u4(-1,  7,  7, 0);
+    Vec4 v4(-5, -4, -4, 0);
+    REQUIRE(u4.dot(v4) == -51.0f);
+    REQUIRE(v4.dot(u4) == -51.0f);
+
+    u4 = Vec4(10, -5, 7, 0);
+    v4 = Vec4(2,  -4, 6, 0);
+    REQUIRE(u4.dot(v4) == 82.0f);
+    REQUIRE(v4.dot(u4) == 82.0f);
+
+    u4 = Vec4(-4, -7, 5, 0);
+    v4 = Vec4(-3,  6, 9, 0);
+    REQUIRE(u4.dot(v4) == 15.0f);
+    REQUIRE(v4.dot(u4) == 15.0f);
 }
 
 TEST_CASE("Euclidean norm is correct", "[vectors]") {
