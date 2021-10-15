@@ -1,7 +1,7 @@
 #ifndef PDMATH_VECTOR_HPP
 #define PDMATH_VECTOR_HPP
 
-#include "pdmath/Point.hpp"
+#include "pdmath/Point3.hpp"
 
 namespace pdm {
     class Vec3 : public Point3 {

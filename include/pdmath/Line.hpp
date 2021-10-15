@@ -1,7 +1,7 @@
 #ifndef PDMATH_LINE_HPP
 #define PDMATH_LINE_HPP
 
-#include "pdmath/Point.hpp"
+#include "pdmath/Point3.hpp"
 #include "pdmath/Vector.hpp"
 
 namespace pdm {

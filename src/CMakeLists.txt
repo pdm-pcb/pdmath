@@ -1,6 +1,6 @@
 set(
     PDMATH_SRC
-    Point.cpp
+    Point3.cpp
     Vector.cpp
     Line.cpp
     Plane.cpp

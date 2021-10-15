@@ -1,7 +1,7 @@
 #include "pdmath/Line.hpp"
 
 #include "pdmath/Plane.hpp"
-#include "pdmath/Point.hpp"
+#include "pdmath/Point3.hpp"
 #include "pdmath/Vector.hpp"
 
 namespace pdm {
