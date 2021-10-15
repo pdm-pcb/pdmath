@@ -49,62 +49,121 @@ namespace pdm {
         return _elem[0][0] == m._elem[0][0] &&
                _elem[1][0] == m._elem[1][0] &&
                _elem[2][0] == m._elem[2][0] &&
+               _elem[3][0] == m._elem[3][0] &&
                _elem[0][1] == m._elem[0][1] &&
                _elem[1][1] == m._elem[1][1] &&
                _elem[2][1] == m._elem[2][1] &&
+               _elem[3][1] == m._elem[3][1] &&
                _elem[0][2] == m._elem[0][2] &&
                _elem[1][2] == m._elem[1][2] &&
-               _elem[2][2] == m._elem[2][2];
+               _elem[2][2] == m._elem[2][2] &&
+               _elem[3][2] == m._elem[3][2] &&
+               _elem[0][3] == m._elem[0][3] &&
+               _elem[1][3] == m._elem[1][3] &&
+               _elem[2][3] == m._elem[2][3] &&
+               _elem[3][3] == m._elem[3][3];
     }
 
     const Mat4& Mat4::operator*=(const Mat4 &m) {
         float x1 = (_elem[0][0] * m._elem[0][0]) +
                    (_elem[0][1] * m._elem[1][0]) +
-                   (_elem[0][2] * m._elem[2][0]);
+                   (_elem[0][2] * m._elem[2][0]) +
+                   (_elem[0][3] * m._elem[3][0]);
     
         float y1 = (_elem[0][0] * m._elem[0][1]) +
                    (_elem[0][1] * m._elem[1][1]) +
-                   (_elem[0][2] * m._elem[2][1]);
+                   (_elem[0][2] * m._elem[2][1]) +
+                   (_elem[0][3] * m._elem[3][1]);
 
         float z1 = (_elem[0][0] * m._elem[0][2]) +
                    (_elem[0][1] * m._elem[1][2]) +
-                   (_elem[0][2] * m._elem[2][2]);
+                   (_elem[0][2] * m._elem[2][2]) +
+                   (_elem[0][3] * m._elem[3][2]);
+
+        float w1 = (_elem[0][0] * m._elem[0][3]) +
+                   (_elem[0][1] * m._elem[1][3]) +
+                   (_elem[0][2] * m._elem[2][3]) +
+                   (_elem[0][3] * m._elem[3][3]);
 
         float x2 = (_elem[1][0] * m._elem[0][0]) +
                    (_elem[1][1] * m._elem[1][0]) +
-                   (_elem[1][2] * m._elem[2][0]);
-
+                   (_elem[1][2] * m._elem[2][0]) +
+                   (_elem[1][3] * m._elem[3][0]);
+    
         float y2 = (_elem[1][0] * m._elem[0][1]) +
                    (_elem[1][1] * m._elem[1][1]) +
-                   (_elem[1][2] * m._elem[2][1]);
+                   (_elem[1][2] * m._elem[2][1]) +
+                   (_elem[1][3] * m._elem[3][1]);
 
         float z2 = (_elem[1][0] * m._elem[0][2]) +
                    (_elem[1][1] * m._elem[1][2]) +
-                   (_elem[1][2] * m._elem[2][2]);
+                   (_elem[1][2] * m._elem[2][2]) +
+                   (_elem[1][3] * m._elem[3][2]);
+
+        float w2 = (_elem[1][0] * m._elem[0][3]) +
+                   (_elem[1][1] * m._elem[1][3]) +
+                   (_elem[1][2] * m._elem[2][3]) +
+                   (_elem[1][3] * m._elem[3][3]);
 
         float x3 = (_elem[2][0] * m._elem[0][0]) +
                    (_elem[2][1] * m._elem[1][0]) +
-                   (_elem[2][2] * m._elem[2][0]);
-
+                   (_elem[2][2] * m._elem[2][0]) +
+                   (_elem[2][3] * m._elem[3][0]);
+    
         float y3 = (_elem[2][0] * m._elem[0][1]) +
                    (_elem[2][1] * m._elem[1][1]) +
-                   (_elem[2][2] * m._elem[2][1]);
+                   (_elem[2][2] * m._elem[2][1]) +
+                   (_elem[2][3] * m._elem[3][1]);
 
         float z3 = (_elem[2][0] * m._elem[0][2]) +
                    (_elem[2][1] * m._elem[1][2]) +
-                   (_elem[2][2] * m._elem[2][2]);
+                   (_elem[2][2] * m._elem[2][2]) +
+                   (_elem[2][3] * m._elem[3][2]);
+
+        float w3 = (_elem[2][0] * m._elem[0][3]) +
+                   (_elem[2][1] * m._elem[1][3]) +
+                   (_elem[2][2] * m._elem[2][3]) +
+                   (_elem[2][3] * m._elem[3][3]);
+
+        float x4 = (_elem[3][0] * m._elem[0][0]) +
+                   (_elem[3][1] * m._elem[1][0]) +
+                   (_elem[3][2] * m._elem[2][0]) +
+                   (_elem[3][3] * m._elem[3][0]);
+    
+        float y4 = (_elem[3][0] * m._elem[0][1]) +
+                   (_elem[3][1] * m._elem[1][1]) +
+                   (_elem[3][2] * m._elem[2][1]) +
+                   (_elem[3][3] * m._elem[3][1]);
+
+        float z4 = (_elem[3][0] * m._elem[0][2]) +
+                   (_elem[3][1] * m._elem[1][2]) +
+                   (_elem[3][2] * m._elem[2][2]) +
+                   (_elem[3][3] * m._elem[3][2]);
+
+        float w4 = (_elem[3][0] * m._elem[0][3]) +
+                   (_elem[3][1] * m._elem[1][3]) +
+                   (_elem[3][2] * m._elem[2][3]) +
+                   (_elem[3][3] * m._elem[3][3]);
 
         _elem[0][0] = x1;
         _elem[1][0] = x2;
         _elem[2][0] = x3;
+        _elem[3][0] = x4;
 
         _elem[0][1] = y1;
         _elem[1][1] = y2;
         _elem[2][1] = y3;
+        _elem[3][1] = y4;
 
         _elem[0][2] = z1;
         _elem[1][2] = z2;
         _elem[2][2] = z3;
+        _elem[3][2] = z4;
+
+        _elem[0][3] = w1;
+        _elem[1][3] = w2;
+        _elem[2][3] = w3;
+        _elem[3][3] = w4;
 
         return *this;
     }
@@ -113,14 +172,22 @@ namespace pdm {
         this->_elem[0][0] *= lambda;
         this->_elem[1][0] *= lambda;
         this->_elem[2][0] *= lambda;
+        this->_elem[3][0] *= lambda;
 
         this->_elem[0][1] *= lambda;
         this->_elem[1][1] *= lambda;
         this->_elem[2][1] *= lambda;
+        this->_elem[3][1] *= lambda;
 
         this->_elem[0][2] *= lambda;
         this->_elem[1][2] *= lambda;
         this->_elem[2][2] *= lambda;
+        this->_elem[3][2] *= lambda;
+
+        this->_elem[0][3] *= lambda;
+        this->_elem[1][3] *= lambda;
+        this->_elem[2][3] *= lambda;
+        this->_elem[3][3] *= lambda;
 
         return *this;
     }
@@ -129,14 +196,22 @@ namespace pdm {
         this->_elem[0][0] += m._elem[0][0];
         this->_elem[1][0] += m._elem[1][0];
         this->_elem[2][0] += m._elem[2][0];
+        this->_elem[3][0] += m._elem[3][0];
 
         this->_elem[0][1] += m._elem[0][1];
         this->_elem[1][1] += m._elem[1][1];
         this->_elem[2][1] += m._elem[2][1];
+        this->_elem[3][1] += m._elem[3][1];
 
         this->_elem[0][2] += m._elem[0][2];
         this->_elem[1][2] += m._elem[1][2];
         this->_elem[2][2] += m._elem[2][2];
+        this->_elem[3][2] += m._elem[3][2];
+
+        this->_elem[0][3] += m._elem[0][3];
+        this->_elem[1][3] += m._elem[1][3];
+        this->_elem[2][3] += m._elem[2][3];
+        this->_elem[3][3] += m._elem[3][3];
 
         return *this;
     }
@@ -145,14 +220,22 @@ namespace pdm {
         this->_elem[0][0] -= m._elem[0][0];
         this->_elem[1][0] -= m._elem[1][0];
         this->_elem[2][0] -= m._elem[2][0];
+        this->_elem[3][0] -= m._elem[3][0];
 
         this->_elem[0][1] -= m._elem[0][1];
         this->_elem[1][1] -= m._elem[1][1];
         this->_elem[2][1] -= m._elem[2][1];
+        this->_elem[3][1] -= m._elem[3][1];
 
         this->_elem[0][2] -= m._elem[0][2];
         this->_elem[1][2] -= m._elem[1][2];
         this->_elem[2][2] -= m._elem[2][2];
+        this->_elem[3][2] -= m._elem[3][2];
+
+        this->_elem[0][3] -= m._elem[0][3];
+        this->_elem[1][3] -= m._elem[1][3];
+        this->_elem[2][3] -= m._elem[2][3];
+        this->_elem[3][3] -= m._elem[3][3];
 
         return *this;
     }

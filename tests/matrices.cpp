@@ -1,5 +1,7 @@
 #include "pdmath/Matrix3.hpp"
 #include "pdmath/Vector3.hpp"
+#include "pdmath/Matrix4.hpp"
+#include "pdmath/Vector4.hpp" 
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"
@@ -20,7 +22,7 @@ TEST_CASE("Matrices can multiply", "[matrices]") {
                    -5,   8,   3,
                    18,  -2,  12);
     
-    REQUIRE((m * n)  == solution);    
+    REQUIRE((m *  n)  == solution);    
     REQUIRE((m *= n) == solution);
 
     m = Mat3(-2,  4,  4,
@@ -35,8 +37,26 @@ TEST_CASE("Matrices can multiply", "[matrices]") {
                       8,  12, -29,
                      -4,  -7,  8);
     
-    REQUIRE((m * n)  == solution);    
+    REQUIRE((m *  n)  == solution);    
     REQUIRE((m *= n) == solution);
+
+    Mat4 a( 3, -5,  4,  4,
+           -2,  2,  3,  1,
+           -3, -4, -5,  0,
+           -3, -4, -5,  3);
+
+    Mat4 b(-1, -2, -3, -3,
+           -5,  2,  3,  0,
+            1,  0, -3,  3,
+            1,  0, -3,  2);
+
+    Mat4 ab_solution (30, -16, -48, 11,
+                      -4,   8,   0, 17,
+                      18,  -2,  12, -6,
+                      21,  -2,   3,  0);
+    
+    REQUIRE((a *  b) == ab_solution);    
+    REQUIRE((a *= b) == ab_solution);
 }
 
 TEST_CASE("Matrices can add", "[matrices]") {
@@ -54,6 +74,24 @@ TEST_CASE("Matrices can add", "[matrices]") {
     
     REQUIRE((m + n)  == solution);    
     REQUIRE((m += n) == solution);
+
+    Mat4 a(-4, -2, -2,  4,
+           -4,  2, -3, -3,
+            2, -3,  2,  1,
+            5,  3,  1,  0);
+
+    Mat4 b(-1, -1,  1,  1,
+            1,  3,  0, -3,
+           -3, -5,  2,  2,
+            3,  2,  2,  2);
+
+    Mat4 ab_solution(-5, -3, -1,  5,
+                     -3,  5, -3, -6,
+                     -1, -8,  4,  3,
+                      8,  5,  3,  2);
+    
+    REQUIRE((a +  b) == ab_solution);
+    REQUIRE((a += b) == ab_solution);
 }
 
 TEST_CASE("Matrices can subtract", "[matrices]") {
@@ -71,6 +109,24 @@ TEST_CASE("Matrices can subtract", "[matrices]") {
 
     REQUIRE((m - n)  == solution);
     REQUIRE((m -= n) == solution);
+
+    Mat4 a(-2, -4,  4,  4,
+            0,  0, -5, -3,
+           -4,  0, -5,  1,
+            5,  3,  1,  0);
+
+    Mat4 b(-1, -3,  4,  1,
+            4,  4, -2, -3,
+           -3,  3, -4,  2,
+            3,  2,  2,  2);
+
+    Mat4 ab_solution(-1, -1,  0,  3,
+                     -4, -4, -3,  0,
+                     -1, -3, -1, -1,
+                      2,  1, -1, -2);
+    
+    REQUIRE((a -  b) == ab_solution);
+    REQUIRE((a -= b) == ab_solution);
 }
 
 TEST_CASE("Matrix Vector multiplication works", "[matrices][vectors]") {
@@ -84,11 +140,23 @@ TEST_CASE("Matrix Vector multiplication works", "[matrices][vectors]") {
 
     Vec3 v(-3, -1, 4);
 
-    REQUIRE((m * n) == Mat3(-18,  3, -15,
-                             -1,  0,   7,
-                              4, 20,  32));
     REQUIRE((n * v) == Vec3(-7, 6, 11));
     REQUIRE((m * n * v) == Vec3(-9, 31, 96));
+
+    Mat4 a( 3,  2, 0, -1,
+            1, -1, 4, -4,
+           -4,  4, 4,  0,
+            2, -3, 5,  2);
+
+    Mat4 b(-4, -1, -5, 2,
+           -3,  3,  0, 3,
+            1,  1,  3, 0,
+            4, -2, -1, 3);
+
+    Vec4 w(-3, -1, 4, 1);
+
+    REQUIRE((a * w) == Vec4(-12, 10, 24, 19));
+    REQUIRE((a * b * w) == Vec4(14, 62, 88, -19));
 }
 
 TEST_CASE("Matrices can find their determinants", "[matrices]") {
