@@ -28,23 +28,14 @@ namespace pdm {
               {x3, y3, z3}}
     { }
 
-    Mat3 Mat3::inverse() {
-        Mat3 identity(1, 0, 0,
-                      0, 1, 0,
-                      0, 0, 1);
+    Mat3 Mat3::transpose() const {
+        return Mat3(_elem[0][0], _elem[1][0], _elem[2][0],
+                    _elem[0][1], _elem[1][1], _elem[2][1],
+                    _elem[0][2], _elem[1][2], _elem[2][2]);
+    }
 
-        for(size_t col = 0; col < 3; col++) {
-            this->_r1[col]     /= this->_r1[0];
-            identity._r1[col]  /= this->_r1[0];
-
-            this->_r2[col]     /= this->_r2[1];
-            identity._r2[col]  /= this->_r2[1];
-
-            this->_r3[col]     /= this->_r3[2];
-            identity._r3[col]  /= this->_r3[2];
-        }
-
-        return identity;
+    Mat3 Mat3::inverse() const {
+        return (1.0f/determinant()) * matrix_of_cofactors().transpose();
     }
 
     float Mat3::determinant() const {
@@ -55,9 +46,37 @@ namespace pdm {
                                           (_elem[1][2] * _elem[2][0]));
 
         float cofactor_c = _elem[0][2] * ((_elem[1][0] * _elem[2][1]) -
-                                           _elem[1][1] * _elem[2][0]);
+                                          (_elem[1][1] * _elem[2][0]));
 
         return cofactor_a - cofactor_b + cofactor_c;
+    }
+
+    Mat3 Mat3::matrix_of_minors() const {
+        return Mat3(
+        /* 0,0 */ (_elem[1][1] * _elem[2][2]) - (_elem[1][2] * _elem[2][1]),
+        /* 0,1 */ (_elem[1][0] * _elem[2][2]) - (_elem[1][2] * _elem[2][0]),
+        /* 0,2 */ (_elem[1][0] * _elem[2][1]) - (_elem[1][1] * _elem[2][0]),
+        /* 1,0 */ (_elem[0][1] * _elem[2][2]) - (_elem[0][2] * _elem[2][1]),
+        /* 1,1 */ (_elem[0][0] * _elem[2][2]) - (_elem[0][2] * _elem[2][0]),
+        /* 1,2 */ (_elem[0][0] * _elem[2][1]) - (_elem[0][1] * _elem[0][2]),
+        /* 2,0 */ (_elem[0][1] * _elem[1][2]) - (_elem[0][2] * _elem[1][1]),
+        /* 2,1 */ (_elem[0][0] * _elem[1][2]) - (_elem[0][2] * _elem[1][0]),
+        /* 2,2 */ (_elem[0][0] * _elem[1][1]) - (_elem[0][1] * _elem[1][0])
+        );
+    }
+
+    Mat3 Mat3::matrix_of_cofactors() const {
+        return Mat3(
+        /* 0,0 */ +((_elem[1][1] * _elem[2][2]) - (_elem[1][2] * _elem[2][1])),
+        /* 0,1 */ -((_elem[1][0] * _elem[2][2]) - (_elem[1][2] * _elem[2][0])),
+        /* 0,2 */ +((_elem[1][0] * _elem[2][1]) - (_elem[1][1] * _elem[2][0])),
+        /* 1,0 */ -((_elem[0][1] * _elem[2][2]) - (_elem[0][2] * _elem[2][1])),
+        /* 1,1 */ +((_elem[0][0] * _elem[2][2]) - (_elem[0][2] * _elem[2][0])),
+        /* 1,2 */ -((_elem[0][0] * _elem[2][1]) - (_elem[0][1] * _elem[0][2])),
+        /* 2,0 */ +((_elem[0][1] * _elem[1][2]) - (_elem[0][2] * _elem[1][1])),
+        /* 2,1 */ -((_elem[0][0] * _elem[1][2]) - (_elem[0][2] * _elem[1][0])),
+        /* 2,2 */ +((_elem[0][0] * _elem[1][1]) - (_elem[0][1] * _elem[1][0]))
+        );
     }
 
     bool Mat3::operator==(const Mat3 &m) const {

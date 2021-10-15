@@ -24,8 +24,11 @@ namespace pdm {
                  const float x2, const float y2, const float z2,
                  const float x3, const float y3, const float z3);
 
-            Mat3 inverse();
+            Mat3 transpose() const;
+            Mat3 inverse() const;
             float determinant() const;
+            Mat3 matrix_of_minors() const;
+            Mat3 matrix_of_cofactors() const;
 
             float _elem[3][3];
 
