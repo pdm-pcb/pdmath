@@ -4,11 +4,11 @@
 #include "pdmath/Point.hpp"
 
 namespace pdm {
-    class Vec3 : public Point {
+    class Vec3 : public Point3 {
         public:
             Vec3() = default;
             Vec3(const float x, const float y, const float z);
-            explicit Vec3(const Point &p);
+            explicit Vec3(const Point3 &p);
 
             void  normalize();
 
@@ -22,7 +22,7 @@ namespace pdm {
             bool  is_perpendicular(const Vec3 &v) const;
     };
 
-    class Vec4 : public Point {
+    class Vec4 : public Point3 {
         public:
             Vec4() = default;
     };

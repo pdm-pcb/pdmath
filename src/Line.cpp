@@ -5,10 +5,10 @@
 #include "pdmath/Vector.hpp"
 
 namespace pdm {
-    Line::Line(const Point &a, const Point &b) :
+    Line::Line(const Point3 &a, const Point3 &b) :
         _p{a}, _v{Vec3(b - a)}
     { }
-    Line::Line(const Point &p, const Vec3 &vector) :
+    Line::Line(const Point3 &p, const Vec3 &vector) :
         _p{p}, _v{vector}
     { }
 
@@ -20,7 +20,7 @@ namespace pdm {
         return Vec3(this->_p - plane._p).dot(plane._n) == 0.0f;
     }
 
-    Point Line::intersects_at(const Plane &plane) const {
+    Point3 Line::intersects_at(const Plane &plane) const {
         float lambda = (Vec3(plane._p - this->_p).dot(plane._n));
         lambda /= this->_v.dot(plane._n);
 

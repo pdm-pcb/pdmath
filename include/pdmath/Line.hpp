@@ -6,19 +6,19 @@
 
 namespace pdm {
     class Plane;
-    class Point;
+    class Point3;
 
     class Line {
         public:
             Line() = default;
-            Line(const Point &a, const Point &b);
-            Line(const Point &p, const Vec3 &vector);
+            Line(const Point3 &a, const Point3 &b);
+            Line(const Point3 &p, const Vec3 &vector);
 
             bool  parallel_to_plane(const Plane &plane) const;
             bool  within_plane (const Plane &plane) const;
-            Point intersects_at(const Plane &plane) const;
+            Point3 intersects_at(const Plane &plane) const;
 
-            Point _p;
+            Point3 _p;
             Vec3 _v;
     };
 } // namespace pdm

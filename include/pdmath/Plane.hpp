@@ -9,12 +9,12 @@ namespace pdm {
     class Plane {
         public:
             Plane() = default;
-            Plane(const Point &a, const Point &b, const Point &c);
-            Plane(const Point &p, const Vec3 &normal);
+            Plane(const Point3 &a, const Point3 &b, const Point3 &c);
+            Plane(const Point3 &p, const Vec3 &normal);
 
-            float direction_test(const Line &bisect, const Point &p) const;
+            float direction_test(const Line &bisect, const Point3 &p) const;
 
-            Point _p;
+            Point3 _p;
             Vec3 _n;
     };
 } // namespace pdm

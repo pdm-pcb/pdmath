@@ -6,7 +6,7 @@
 #include <iomanip>
 
 namespace pdm {
-    Mat3::Mat3(const Point &x, const Point &y, const Point &z) :
+    Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) :
         _elem{{x._x, y._x, z._x},
               {x._y, y._y, z._y},
               {x._z, y._z, z._z}}
@@ -240,7 +240,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m) {
-        os << std::fixed << std::setprecision(Point::_output_precision)
+        os << std::fixed << std::setprecision(Point3::_output_precision)
            << "[" << m._elem[0][0] << ", " << m._elem[0][1] << ", "
            << m._elem[0][2] << "]\n"
            << "[" << m._elem[1][0] << ", " << m._elem[1][1] << ", "

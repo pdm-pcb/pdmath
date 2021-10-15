@@ -2,11 +2,11 @@
 
 namespace pdm {
     Vec3::Vec3(const float x, const float y, const float z):
-        Point(x, y, z)
+        Point3(x, y, z)
     { }
 
-    Vec3::Vec3(const Point &p):
-        Point(p)
+    Vec3::Vec3(const Point3 &p):
+        Point3(p)
     { }
 
     float Vec3::dot(const Vec3 &v) const {

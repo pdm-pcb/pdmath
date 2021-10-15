@@ -59,8 +59,8 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
     // player.
     
     // establish the player and their 'gaze'
-    Point player_pos(1, 0, -5);
-    Vec3 player_gaze(Point(3, 0, -2) - player_pos);
+    Point3 player_pos(1, 0, -5);
+    Vec3 player_gaze(Point3(3, 0, -2) - player_pos);
 
     // normalize the vector, make it 10 units long, and translate it to the
     // player's location. this is the first enemy
@@ -106,12 +106,12 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
 }
 
 TEST_CASE("Triangular game object", "[vectors][matrices]") {
-    Point p1(-1, 0, -1);
-    Point p2(0, 0, 2);
-    Point p3(1, 0, -1);
+    Point3 p1(-1, 0, -1);
+    Point3 p2(0, 0, 2);
+    Point3 p3(1, 0, -1);
 
     // Move forward by 7 followed by a rotation about the y axis of 1π/4
-    
+
 
     // Move forward by 10 followed by a rotation about the y axis of 2π/4
 

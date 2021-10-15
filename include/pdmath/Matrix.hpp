@@ -6,7 +6,7 @@
 
 namespace pdm {
     class Vec3;
-    class Point;
+    class Point3;
 
     class Mat3 {
         public:
@@ -14,7 +14,7 @@ namespace pdm {
                 _elem{{0}, {0}, {0}}
             { }
 
-            Mat3(const Point &x, const Point &y, const Point &z);
+            Mat3(const Point3 &x, const Point3 &y, const Point3 &z);
             
             Mat3(const std::array<float, 3> &x,
                  const std::array<float, 3> &y,
