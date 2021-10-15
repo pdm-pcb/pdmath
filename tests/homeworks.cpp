@@ -26,13 +26,17 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
     float theta     = std::numbers::pi_v<float> / 5.0f;
     float cos_theta = std::cos(theta);
     float sin_theta = std::sin(theta);
-    Mat3 rotation(cos_theta, -(sin_theta), 0,
-                  sin_theta,   cos_theta,  0,
-                  0,           0,          1);
+    Mat3 rot_z(cos_theta,  0,  sin_theta,
+               0,          1,  0,
+               -sin_theta, 0,  cos_theta);
 
-    std::cout << "Rot:\n" << rotation << std::endl;
+    std::cout << "Rot:\n" << rot_z << std::endl;
 
-    Mat3 result = rotation * position;
+    Mat3 result = rot_z * position;
 
     std::cout << "New:\n" << result << std::endl;
+
+    Vec3 new_z = rot_z * z_vec;
+
+    std::cout << "ZVec:\n" << new_z << std::endl;
 }
