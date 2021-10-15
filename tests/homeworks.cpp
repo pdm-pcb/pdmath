@@ -32,4 +32,21 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
                 k * k_dot_v * (1 - cos_theta);
 
     REQUIRE(zrot == Vec3(-2.5723727, -3.2360680, 0.9543387));
+
+    // back to the original rotation, but tipping the nose down with the
+    // derived x-axis
+
+    theta     = std::numbers::pi_v<float> / 4.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+
+    k = x_vec;
+    k.normalize();
+    k_cross_v = k.cross(z_vec);
+    k_dot_v  = k.dot(z_vec);
+
+    Vec3 xrot = z_vec * cos_theta + k_cross_v * sin_theta +
+                k * k_dot_v * (1 - cos_theta);
+
+    REQUIRE(xrot == Vec3(1.2928932, -3.8284271, 1.2928932));
 }
