@@ -26,7 +26,45 @@ namespace pdm {
         _elem{{x1, y1, z1},
               {x2, y2, z2},
               {x3, y3, z3}}
-    { }
+    { }    Mat3 Mat3::populate_rotation(float theta_x, float theta_y,  float theta_z) {
+        Mat3 rot_x;
+        if(theta_x != 1) {
+            float cos_theta = std::cos(theta_x);
+            float sin_theta = std::sin(theta_x);
+            rot_x = Mat3(1.0f, 0.0f,       0.0f,
+                         0.0f, cos_theta, -sin_theta,
+                         0.0f, sin_theta,  cos_theta);
+        }
+        else {
+            rot_x = Identity3;
+        }
+
+        Mat3 rot_y;
+        if(theta_y != 1) {
+            float cos_theta = std::cos(theta_y);
+            float sin_theta = std::sin(theta_y);
+            rot_y = Mat3( cos_theta,  0.0f, sin_theta,
+                          0.0f,       1.0f,      0.0f,
+                         -sin_theta,  0.0f, cos_theta);
+        }
+        else {
+            rot_y = Identity3;
+        }
+
+        Mat3 rot_z;
+        if(theta_z != 1) {
+            float cos_theta = std::cos(theta_z);
+            float sin_theta = std::sin(theta_z);
+            rot_z = Mat3(cos_theta, -sin_theta, 0.0f,
+                         sin_theta,  cos_theta, 0.0f,
+                         0.0f,       0.0f,      1.0f);
+        }
+        else {
+            rot_z = Identity3;
+        }
+
+        return rot_x * rot_y * rot_z;
+    }
 
     Mat3 Mat3::transpose() const {
         return Mat3(_elem[0][0], _elem[1][0], _elem[2][0],

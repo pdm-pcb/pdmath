@@ -24,6 +24,9 @@ namespace pdm {
                  const float x2, const float y2, const float z2,
                  const float x3, const float y3, const float z3);
 
+            static Mat3 populate_rotation(float theta_x, float theta_y,
+                                          float theta_z);
+
             Mat3 transpose() const;
             Mat3 inverse() const;
             float determinant() const;

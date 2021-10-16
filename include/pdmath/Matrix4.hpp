@@ -32,17 +32,17 @@ namespace pdm {
 
             explicit Mat4(const Mat3 &m);
 
-            static Point4 transform(const Point4 &p, const Vec3 &translation,
+            static Point4 transform(const Point4 &point,
+                const Vec3 &translation,
                 const float theta_x, const float theta_y, const float theta_z,
-                const Vec3 &scale            = Vec3One,
-                const Vec3 &prev_translation = Vec3Zero,
-                const Mat3 &prev_rotation    = Identity3);
+                const Vec3 &scale,
+                Vec3 &prev_translation, Mat3 &prev_rotation);
 
-            static Point4 transform(const Point4 &p, const Vec3 &translation,
+            static Point4 transform(const Point4 &point,
+                const Vec3 &translation,
                 const float theta_x, const float theta_y, const float theta_z,
-                const Mat4 prev_transform,
-                const Vec3& scale = Vec3(1, 1, 1));
-
+                const Vec3 &scale, Mat4 &prev_transform);
+            
             Vec4 get_world_position() const;
 
             float get_x_scale() const;

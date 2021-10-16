@@ -61,49 +61,31 @@ namespace pdm {
     Point4 Mat4::transform(const Point4 &point, const Vec3 &translation,
             const float theta_x, const float theta_y, const float theta_z,
             const Vec3& scale,
-            const Vec3 &prev_translation, const Mat3 &prev_rotation) {
+            Vec3 &prev_translation, Mat3 &prev_rotation) {
         Vec3 _translation = prev_translation + (prev_rotation * translation);
 
-        Mat3 rot_x;
-        if(theta_x != 1) {
-            float cos_theta = std::cos(theta_x);
-            float sin_theta = std::sin(theta_x);
-            rot_x = Mat3(1.0f, 0.0f,       0.0f,
-                         0.0f, cos_theta, -sin_theta,
-                         0.0f, sin_theta,  cos_theta);
-        }
-        else {
-            rot_x = Identity3;
-        }
-
-        Mat3 rot_y;
-        if(theta_y != 1) {
-            float cos_theta = std::cos(theta_y);
-            float sin_theta = std::sin(theta_y);
-            rot_y = Mat3( cos_theta,  0.0f, sin_theta,
-                          0.0f,       1.0f,      0.0f,
-                         -sin_theta,  0.0f, cos_theta);
-        }
-        else {
-            rot_y = Identity3;
-        }
-
-        Mat3 rot_z;
-        if(theta_z != 1) {
-            float cos_theta = std::cos(theta_z);
-            float sin_theta = std::sin(theta_z);
-            rot_z = Mat3(cos_theta, -sin_theta, 0.0f,
-                         sin_theta,  cos_theta, 0.0f,
-                         0.0f,       0.0f,      1.0f);
-        }
-        else {
-            rot_z = Identity3;
-        }
-
-        Mat4 transform = static_cast<Mat4>(prev_rotation *
-                                           rot_x * rot_y * rot_z);
-        transform.set_translation(_translation);
+        Mat3 _rotation = prev_rotation * Mat3::populate_rotation(theta_x,
+                                                                 theta_y,
+                                                                 theta_z);
+        Mat4 transform(_rotation);
         transform.apply_scale(scale);
+        transform.set_translation(_translation);
+
+        prev_translation = _translation;
+        prev_rotation    = _rotation;
+
+        return transform * point;
+    }
+
+    Point4 Mat4::transform(const Point4 &point, const Vec3 &translation,
+                const float theta_x, const float theta_y, const float theta_z,
+                const Vec3 &scale, Mat4 &prev_transform) {
+        Mat4 transform(Mat3::populate_rotation(theta_x, theta_y, theta_z));
+        transform.apply_scale(scale);
+        transform *= prev_transform;
+        transform.set_translation(translation);
+
+        prev_transform = transform;
 
         return transform * point;
     }
