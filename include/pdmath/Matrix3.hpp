@@ -34,6 +34,8 @@ namespace pdm {
             Mat3 matrix_of_minors() const;
             Mat3 matrix_of_cofactors() const;
 
+            void get_euler_xyz(Vec3 &ans1, Vec3 &ans2) const;
+
             float _elem[3][3];
     
             bool operator==(const Mat3 &m) const;

@@ -187,8 +187,8 @@ TEST_CASE("Matrices know their minors, cofactors, and adjoints", "[matrices]") {
                                              0, 10,  0));
 
     REQUIRE(m.matrix_of_cofactors().transposed() == Mat3( 2,  2,  0,
-                                                        -2,  3, 10,
-                                                         2, -3,  0));
+                                                         -2,  3, 10,
+                                                          2, -3,  0));
 }
 
 TEST_CASE("Matrices can find their inverses", "[matrices]") {
@@ -197,6 +197,21 @@ TEST_CASE("Matrices can find their inverses", "[matrices]") {
            0, 1,  1);
 
     REQUIRE(m.inverted() == Mat3( 0.2f,  0.2f, 0.0f,
-                                -0.2f,  0.3f, 1.0f,
-                                 0.2f, -0.3f, 0.0f));
+                                 -0.2f,  0.3f, 1.0f,
+                                  0.2f, -0.3f, 0.0f));
+}
+
+TEST_CASE("Extracting Euler angles from matrices", "[matrices]") {
+    Mat3 r(0.09473f, -0.0442f, -0.9945f,
+           0.30563f, -0.9495f, 0.07129f,
+           -0.9474f, -0.3107f, -0.0764f);
+
+    Vec3 ans1;
+    Vec3 ans2;
+
+    r.get_euler_xyz(ans1, ans2);
+
+    std::cout << ans1 << "\n"
+              << ans2 << "\n"
+              << std::endl;
 }

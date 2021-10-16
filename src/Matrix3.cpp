@@ -4,6 +4,7 @@
 #include "pdmath/Point3.hpp"
 
 #include <iomanip>
+#include <cmath>
 
 namespace pdm {
     Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) :
@@ -119,6 +120,75 @@ namespace pdm {
         /* 2,1 */ -((_elem[0][0] * _elem[1][2]) - (_elem[0][2] * _elem[1][0])),
         /* 2,2 */ +((_elem[0][0] * _elem[1][1]) - (_elem[0][1] * _elem[1][0]))
         );
+    }
+
+    // {
+    //     if ( r02 < +1)
+    //     {
+    //         if ( r02 > −1)
+    //         {
+    //             thetaY = asin ( r02 ) ;
+    //             thetaX = atan2(−r12 , r22 ) ;
+    //             thetaZ = atan2(−r01 , r00 ) ;
+    //         }
+    //         else // r02 = −1
+    //         {
+    //             // Not a unique solution : thetaZ − thetaX = atan2 ( r10 , r11 )
+    //             thetaY = −PI /2;
+    //             thetaX = −atan2 ( r10 , r11 ) ;
+    //             thetaZ = 0;
+    //         }
+    //     }
+    //     else // r02 = +1
+    //     {
+    //         // Not a unique solution : thetaZ + thetaX = atan2 ( r10 , r11 )
+    //         thetaY = +PI /2;
+    //         thetaX = atan2 ( r10 , r11 ) ;
+    //         thetaZ = 0;
+    //     }
+    // }
+
+    void Mat3::get_euler_xyz(Vec3 &ans1, Vec3 &ans2) const {
+        float theta_y1 = std::asin(_elem[0][2]);
+        float theta_y2;
+
+        if(theta_y1 >= 0.0f) {
+            theta_y2 = std::numbers::pi_v<float> - theta_y1;
+        }
+        else {
+            theta_y2 = -std::numbers::pi_v<float> - theta_y1;
+        }
+
+        float cos_theta_y1 = std::cos(theta_y1);
+        float cos_theta_y2 = std::cos(theta_y2);
+
+        float cos_z1 =  _elem[0][0]/cos_theta_y1;
+        float sin_z1 = -_elem[0][1]/cos_theta_y1;
+
+        float cos_z2 =  _elem[0][0]/cos_theta_y2;
+        float sin_z2 = -_elem[0][1]/cos_theta_y2;
+
+        float sin_x1 = -_elem[2][1]/cos_theta_y1;
+        float cos_x1 =  _elem[2][2]/cos_theta_y1;
+
+        float sin_x2 = -_elem[2][1]/cos_theta_y2;
+        float cos_x2 =  _elem[2][2]/cos_theta_y2;
+
+        float theta_z1 = atan2f(sin_z1, cos_z1);
+        float theta_z2 = atan2f(sin_z2, cos_z2);
+
+        float theta_x1 = atan2f(sin_x1, cos_x1);
+        float theta_x2 = atan2f(sin_x2, cos_x2);
+
+        ans1._x = theta_x1;
+        ans1._y = theta_y1;
+        ans1._z = theta_z1;
+
+        ans2._x = theta_x2;
+        ans2._y = theta_y2;
+        ans2._z = theta_z2;
+    
+        return;
     }
 
     bool Mat3::operator==(const Mat3 &m) const {
