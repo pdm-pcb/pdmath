@@ -238,9 +238,70 @@ namespace pdm {
     }
 
     Mat4 operator*(const Mat4 &m, const Mat4 &n) {
-        Mat4 result = m;
-        result *= n;
-        return result;
+        return Mat4(m._elem[0][0] * n._elem[0][0] +
+                    m._elem[0][1] * n._elem[1][0] +
+                    m._elem[0][2] * n._elem[2][0] +
+                    m._elem[0][3] * n._elem[3][0],
+                    m._elem[0][0] * n._elem[0][1] +
+                    m._elem[0][1] * n._elem[1][1] +
+                    m._elem[0][2] * n._elem[2][1] +
+                    m._elem[0][3] * n._elem[3][1],
+                    m._elem[0][0] * n._elem[0][2] +
+                    m._elem[0][1] * n._elem[1][2] +
+                    m._elem[0][2] * n._elem[2][2] +
+                    m._elem[0][3] * n._elem[3][2],
+                    m._elem[0][0] * n._elem[0][3] +
+                    m._elem[0][1] * n._elem[1][3] +
+                    m._elem[0][2] * n._elem[2][3] +
+                    m._elem[0][3] * n._elem[3][3],
+                    m._elem[1][0] * n._elem[0][0] +
+                    m._elem[1][1] * n._elem[1][0] +
+                    m._elem[1][2] * n._elem[2][0] +
+                    m._elem[1][3] * n._elem[3][0],
+                    m._elem[1][0] * n._elem[0][1] +
+                    m._elem[1][1] * n._elem[1][1] +
+                    m._elem[1][2] * n._elem[2][1] +
+                    m._elem[1][3] * n._elem[3][1],
+                    m._elem[1][0] * n._elem[0][2] +
+                    m._elem[1][1] * n._elem[1][2] +
+                    m._elem[1][2] * n._elem[2][2] +
+                    m._elem[1][3] * n._elem[3][2],
+                    m._elem[1][0] * n._elem[0][3] +
+                    m._elem[1][1] * n._elem[1][3] +
+                    m._elem[1][2] * n._elem[2][3] +
+                    m._elem[1][3] * n._elem[3][3],
+                    m._elem[2][0] * n._elem[0][0] +
+                    m._elem[2][1] * n._elem[1][0] +
+                    m._elem[2][2] * n._elem[2][0] +
+                    m._elem[2][3] * n._elem[3][0],
+                    m._elem[2][0] * n._elem[0][1] +
+                    m._elem[2][1] * n._elem[1][1] +
+                    m._elem[2][2] * n._elem[2][1] +
+                    m._elem[2][3] * n._elem[3][1],
+                    m._elem[2][0] * n._elem[0][2] +
+                    m._elem[2][1] * n._elem[1][2] +
+                    m._elem[2][2] * n._elem[2][2] +
+                    m._elem[2][3] * n._elem[3][2],
+                    m._elem[2][0] * n._elem[0][3] +
+                    m._elem[2][1] * n._elem[1][3] +
+                    m._elem[2][2] * n._elem[2][3] +
+                    m._elem[2][3] * n._elem[3][3],
+                    m._elem[3][0] * n._elem[0][0] +
+                    m._elem[3][1] * n._elem[1][0] +
+                    m._elem[3][2] * n._elem[2][0] +
+                    m._elem[3][3] * n._elem[3][0],
+                    m._elem[3][0] * n._elem[0][1] +
+                    m._elem[3][1] * n._elem[1][1] +
+                    m._elem[3][2] * n._elem[2][1] +
+                    m._elem[3][3] * n._elem[3][1],
+                    m._elem[3][0] * n._elem[0][2] +
+                    m._elem[3][1] * n._elem[1][2] +
+                    m._elem[3][2] * n._elem[2][2] +
+                    m._elem[3][3] * n._elem[3][2],
+                    m._elem[3][0] * n._elem[0][3] +
+                    m._elem[3][1] * n._elem[1][3] +
+                    m._elem[3][2] * n._elem[2][3] +
+                    m._elem[3][3] * n._elem[3][3]);
     }
 
     Mat4 operator*(const Mat4 &m, const float scalar) {
