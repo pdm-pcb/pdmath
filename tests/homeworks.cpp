@@ -53,7 +53,7 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
     Vec3 xrot = z_vec * cos_theta + k_cross_v * sin_theta +
                 k * k_dot_v * (1 - cos_theta);
 
-    REQUIRE(xrot == Vec3(1.2928932, -3.8284271, 1.2928932));
+    REQUIRE(xrot == Vec3(1.292893f, -3.828427f, 1.292893f));
 }
 
 TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
@@ -71,7 +71,7 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
     // player's location. this is the first enemy
     player_gaze = player_gaze.normalize();
     Vec3 enemy_pos = player_gaze * 10 + player_pos;
-    REQUIRE(enemy_pos == Vec3(6.5470018, 0.0f, 3.3205032));
+    REQUIRE(enemy_pos == Vec3(6.547001f, 0.0f, 3.320503f));
 
     // rotation terms: the full circle is 2pi, so we need 2pi/6 radians per
     // enemy, or just pi/3
@@ -87,27 +87,27 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
     // rotate the player gaze, then scale, then point it where it needs to be
     player_gaze *= y_rot;
     enemy_pos = player_gaze * 10 + player_pos;
-    REQUIRE(enemy_pos == Vec3(10.9792681, 0.0f, -5.6435938));
+    REQUIRE(enemy_pos == Vec3(10.979268f, 0.0f, -5.643593f));
 
     // again for enemy 3
     player_gaze *= y_rot;
     enemy_pos = player_gaze * 10 + player_pos;
-    REQUIRE(enemy_pos == Vec3(5.4322653, 0.0f, -13.9640970));
+    REQUIRE(enemy_pos == Vec3(5.432265f, 0.0f, -13.964097f));
 
     // enemy 4
     player_gaze *= y_rot;
     enemy_pos = player_gaze * 10 + player_pos;
-    REQUIRE(enemy_pos == Vec3(-4.5470037, 0.0f, -13.3205032));
+    REQUIRE(enemy_pos == Vec3(-4.547003f, 0.0f, -13.320503f));
 
     // enemy 5
     player_gaze *= y_rot;
     enemy_pos = player_gaze * 10 + player_pos;
-    REQUIRE(enemy_pos == Vec3(-8.9792690, 0.0f, -4.3564048));
+    REQUIRE(enemy_pos == Vec3(-8.979269f, 0.0f, -4.356404f));
 
     // last but not least, enemy 6
     player_gaze *= y_rot;
     enemy_pos = player_gaze * 10 + player_pos;
-    REQUIRE(enemy_pos == Vec3(-3.4322643, 0.0f, 3.9640989));   
+    REQUIRE(enemy_pos == Vec3(-3.432264f, 0.0f, 3.964098f));   
 }
 
 TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
@@ -132,9 +132,9 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     Point4 new_p2 = transform * p2;
     Point4 new_p3 = transform * p3;
 
-    REQUIRE(new_p1 == Point4(-1.4142135f, 0.0f, 7.0f, 1.0f));
-    REQUIRE(new_p2 == Point4(1.4142135f, 0.0f, 8.4142132f, 1.0f));
-    REQUIRE(new_p3 == Point4(0.0f, 0.0f, 5.5857863f, 1.0f));
+    REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
+    REQUIRE(new_p2 == Point4(1.414213f, 0.0f, 8.414213f, 1.0f));
+    REQUIRE(new_p3 == Point4(0.0f, 0.0f, 5.585786f, 1.0f));
 
     // Move forward by 10 followed by a rotation about the y axis of 2π/4
     Vec4 prev_trans = translation;
@@ -160,9 +160,9 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     new_p2 = transform * p2;
     new_p3 = transform * p3;
 
-    REQUIRE(new_p1 == Vec4(7.0710678f, 0.0f, 15.4852810f, 1.0f));
-    REQUIRE(new_p2 == Vec4(8.4852810f, 0.0f, 12.6568546f, 1.0f));
-    REQUIRE(new_p3 == Vec4(5.6568542f, 0.0f, 14.0710678f, 1.0f));
+    REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
+    REQUIRE(new_p2 == Vec4(8.485281f, 0.0f, 12.656854f, 1.0f));
+    REQUIRE(new_p3 == Vec4(5.656854f, 0.0f, 14.071067f, 1.0f));
 
     // Move forward by 7 followed by a rotation about the y axis of -2π/4
     prev_trans = translation;
@@ -187,9 +187,9 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     new_p2 = transform * p2;
     new_p3 = transform * p3;
 
-    REQUIRE(new_p1 == Vec4(10.6066017f, 0.0f, 9.1213198f, 1.0f));
-    REQUIRE(new_p2 == Vec4(13.4350281f, 0.0f, 10.5355330f, 1.0f));
-    REQUIRE(new_p3 == Vec4(12.0208149f, 0.0f, 7.7071061f, 1.0f));
+    REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
+    REQUIRE(new_p2 == Vec4(13.435028f, 0.0f, 10.535533f, 1.0f));
+    REQUIRE(new_p3 == Vec4(12.020814f, 0.0f, 7.707106f, 1.0f));
 
     // Move forward by 6 followed by a rotation about the y axis of -3π/4
     prev_trans = translation;
@@ -214,9 +214,9 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     new_p2 = transform * p2;
     new_p3 = transform * p3;
 
-    REQUIRE(new_p1 == Vec4(17.2634544f, 0.0f, 12.3639603f, 1.0f));
-    REQUIRE(new_p2 == Vec4(14.2634544f, 0.0f, 13.3639603f, 1.0f));
-    REQUIRE(new_p3 == Vec4(17.2634544f, 0.0f, 14.3639603f, 1.0f));
+    REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));
+    REQUIRE(new_p2 == Vec4(14.263454f, 0.0f, 13.36396f, 1.0f));
+    REQUIRE(new_p3 == Vec4(17.263454f, 0.0f, 14.36396f, 1.0f));
 }
 
 TEST_CASE("TRS Deductions", "[matrices]") {
@@ -232,14 +232,11 @@ TEST_CASE("TRS Deductions", "[matrices]") {
     REQUIRE(w.get_y_scale() == Catch::Approx(3.5f).margin(1.0e-3f));
     REQUIRE(w.get_z_scale() == Catch::Approx(1.5f).margin(1.0e-3f));
 
-    REQUIRE(w.get_x_unit_vector() ==
-        Vec3(0.8944272f, 0.0f, -0.4472136f));
-    REQUIRE(w.get_y_unit_vector() ==
-        Vec3(-0.2491167f, 0.8304844f, -0.4982335f));
-    REQUIRE(w.get_z_unit_vector() ==
-        Vec3(0.3713217f, 0.5573159f, 0.7426434f));
+    REQUIRE(w.get_x_unit_vector() == Vec3(0.894427f, 0.0f, -0.4472136f));
+    REQUIRE(w.get_y_unit_vector() == Vec3(-0.249117f, 0.830484f, -0.498233f));
+    REQUIRE(w.get_z_unit_vector() == Vec3(0.371321f, 0.557315f, 0.742643f));
 
-    // still further precision limitations
+    // further precision limitations
     REQUIRE(w.determinant() == Catch::Approx(21.0f).margin(1.0e-2f));
 
     Vec4 new_obj(-5, 0, -5, 1);
@@ -252,8 +249,8 @@ TEST_CASE("TRS Deductions", "[matrices]") {
                      0, 0,  0,  1);
 
     REQUIRE((w.inverse() * new_obj_mat) ==
-        Mat4( 0.2235886f, 0.0,        -0.5589715f,  0.4471771f,
-             -0.0711688f, 0.2372564f,  0.3558438f,  1.1624501f,
-              0.2475400f, 0.3715323f, -1.2377002f, -2.8464885f,
-              0.0f,       0.0f,        0.0f,        1.0f));
+        Mat4( 0.223588f, 0.0,       -0.558971f,  0.447177f,
+             -0.071168f, 0.237256f,  0.355843f,  1.162450f,
+              0.247540f, 0.371532f, -1.237700f, -2.846488f,
+              0.0f,      0.0f,       0.0f,       1.0f));
 }
