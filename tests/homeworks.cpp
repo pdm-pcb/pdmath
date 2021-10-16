@@ -219,6 +219,102 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     REQUIRE(new_p3 == Vec4(17.263454f, 0.0f, 14.36396f, 1.0f));
 }
 
+TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
+    Point4 p1(-1, 0, -1, 1);
+    Point4 p2( 0, 0,  2, 1);
+    Point4 p3( 1, 0, -1, 1);
+
+    // Move forward by 7 followed by a rotation about the y axis of 1π/4
+    Vec4 translation(0, 0, 7, 1);
+    float theta = std::numbers::pi_v<float> / 4.0f;
+    float cos_theta = std::cos(theta);
+    float sin_theta = std::sin(theta);
+    Mat4 y_rot(cos_theta,  0.0f, sin_theta, 0.0f,
+               0.0f,       1.0f,      0.0f, 0.0f,
+               -sin_theta, 0.0f, cos_theta, 0.0f,
+               0.0f,       0.0f,      0.0f, 1.0f);
+
+    Mat4 transform = y_rot;
+    transform.set_translate(translation);
+
+    Point4 new_p1 = transform * p1;
+    Point4 new_p2 = transform * p2;
+    Point4 new_p3 = transform * p3;
+
+    REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
+    REQUIRE(new_p2 == Point4(1.414213f, 0.0f, 8.414213f, 1.0f));
+    REQUIRE(new_p3 == Point4(0.0f, 0.0f, 5.585786f, 1.0f));
+
+    // Move forward by 10 followed by a rotation about the y axis of 2π/4
+    Mat4 prev_transform = transform;
+    translation = Vec4(0, 0, 10, 0);
+
+    theta = std::numbers::pi_v<float> / 2.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+    y_rot = Mat4(cos_theta,  0.0f, sin_theta, 0.0f,
+                 0.0f,       1.0f,      0.0f, 0.0f,
+                 -sin_theta, 0.0f, cos_theta, 0.0f,
+                 0.0f,       0.0f,      0.0f, 1.0f);
+
+    transform = y_rot;
+    transform.set_translate(translation);
+
+    new_p1 = transform * prev_transform * p1;
+    new_p2 = transform * prev_transform * p2;
+    new_p3 = transform * prev_transform * p3;
+
+    REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
+    REQUIRE(new_p2 == Vec4(8.485281f, 0.0f, 12.656854f, 1.0f));
+    REQUIRE(new_p3 == Vec4(5.656854f, 0.0f, 14.071067f, 1.0f));
+
+    // Move forward by 7 followed by a rotation about the y axis of -2π/4
+    prev_transform = transform;
+    translation = Vec4(0, 0, 7, 0);
+
+    theta = std::numbers::pi_v<float> / -2.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+    y_rot = Mat4(cos_theta,  0.0f, sin_theta, 0.0f,
+                 0.0f,       1.0f,      0.0f, 0.0f,
+                 -sin_theta, 0.0f, cos_theta, 0.0f,
+                 0.0f,       0.0f,      0.0f, 1.0f);
+
+    transform = y_rot;
+    transform.set_translate(translation);
+
+    new_p1 = transform * transform * p1;
+    new_p2 = transform * transform * p2;
+    new_p3 = transform * transform * p3;
+
+    REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
+    REQUIRE(new_p2 == Vec4(13.435028f, 0.0f, 10.535533f, 1.0f));
+    REQUIRE(new_p3 == Vec4(12.020814f, 0.0f, 7.707106f, 1.0f));
+
+    // Move forward by 6 followed by a rotation about the y axis of -3π/4
+    prev_transform = transform;
+    translation = Vec4(0, 0, 6, 0);
+
+    theta = (-3 * std::numbers::pi_v<float>) / 4.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+    y_rot = Mat4(cos_theta,  0.0f, sin_theta, 0.0f,
+                 0.0f,       1.0f,      0.0f, 0.0f,
+                 -sin_theta, 0.0f, cos_theta, 0.0f,
+                 0.0f,       0.0f,      0.0f, 1.0f);
+
+    transform = y_rot;
+    transform.set_translate(translation);
+
+    new_p1 = transform * prev_transform * p1;
+    new_p2 = transform * prev_transform * p2;
+    new_p3 = transform * prev_transform * p3;
+
+    REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));
+    REQUIRE(new_p2 == Vec4(14.263454f, 0.0f, 13.36396f, 1.0f));
+    REQUIRE(new_p3 == Vec4(17.263454f, 0.0f, 14.36396f, 1.0f));
+}
+
 TEST_CASE("TRS Deductions", "[matrices]") {
     Mat4 w( 3.578f, -0.872f, 0.557f, -4.0f,
             0.0f,    2.907f, 0.836f, -1.0f,
