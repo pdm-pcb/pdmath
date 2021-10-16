@@ -202,8 +202,8 @@ TEST_CASE("Matrices can find their inverses", "[matrices]") {
 }
 
 TEST_CASE("Extracting Euler angles from matrices", "[matrices]") {
-    Mat3 r(0.09473f, -0.0442f, -0.9945f,
-           0.30563f, -0.9495f, 0.07129f,
+    Mat3 r( 0.09473f, -0.0442f, -0.9945f,
+            0.30563f, -0.9495f, 0.07129f,
            -0.9474f, -0.3107f, -0.0764f);
 
     Vec3 ans1;
@@ -211,7 +211,25 @@ TEST_CASE("Extracting Euler angles from matrices", "[matrices]") {
 
     r.get_euler_xyz(ans1, ans2);
 
-    std::cout << ans1 << "\n"
-              << ans2 << "\n"
-              << std::endl;
+    REQUIRE(ans1 == Vec3(-2.39078f, -1.465867f, 0.436564f));
+    REQUIRE(ans2 == Vec3(0.750813f, -1.675726f, -2.705029f));
+
+    r = Mat3(-0.0696f,  0.7956f, -0.6018f,
+             -0.4681f, -0.5588f, -0.6846f,
+             -0.8809f,  0.2341f,  0.41133f);
+
+    r.get_euler_xyz(ans1, ans2);
+
+    REQUIRE(ans1 == Vec3(1.029765f, -0.645753f, -1.658055f));
+    REQUIRE(ans2 == Vec3(-2.111828f, -2.49584f, 1.483537f));
+
+    // Well... these don't work for now.
+    // r = Mat3( 0.67016f,  0.6509f, 0.35668f,
+    //          -0.6467f,   0.2763f, 0.71092f,
+    //           0.36419f, -0.7071f, 0.60611f);
+
+    // r.get_euler_zxy(ans1, ans2);
+
+    // REQUIRE(ans1 == Vec3(-3.0892f, -0.1047f, 0.4538f));
+    // REQUIRE(ans2 == Vec3(0.0524f, 3.0369f, 2.6878f));
 }

@@ -35,6 +35,7 @@ namespace pdm {
             Mat3 matrix_of_cofactors() const;
 
             void get_euler_xyz(Vec3 &ans1, Vec3 &ans2) const;
+            void get_euler_zxy(Vec3 &ans1, Vec3 &ans2) const;
 
             float _elem[3][3];
     

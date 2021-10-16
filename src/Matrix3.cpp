@@ -5,6 +5,7 @@
 
 #include <iomanip>
 #include <cmath>
+#include <numbers>
 
 namespace pdm {
     Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) :
@@ -122,32 +123,13 @@ namespace pdm {
         );
     }
 
-    // {
-    //     if ( r02 < +1)
-    //     {
-    //         if ( r02 > −1)
-    //         {
-    //             thetaY = asin ( r02 ) ;
-    //             thetaX = atan2(−r12 , r22 ) ;
-    //             thetaZ = atan2(−r01 , r00 ) ;
-    //         }
-    //         else // r02 = −1
-    //         {
-    //             // Not a unique solution : thetaZ − thetaX = atan2 ( r10 , r11 )
-    //             thetaY = −PI /2;
-    //             thetaX = −atan2 ( r10 , r11 ) ;
-    //             thetaZ = 0;
-    //         }
-    //     }
-    //     else // r02 = +1
-    //     {
-    //         // Not a unique solution : thetaZ + thetaX = atan2 ( r10 , r11 )
-    //         thetaY = +PI /2;
-    //         thetaX = atan2 ( r10 , r11 ) ;
-    //         thetaZ = 0;
-    //     }
-    // }
+    /*--------------------------------------------------------------------------
+        Symbol expansion for an XYZ rotation matrix:
 
+             cycz           −cysz           sy
+         czsxsy + cxsz    cxcz − sxsysz   −cysx
+        −cxczsy + sxsz    czsx + cxsysz    cxcy
+    --------------------------------------------------------------------------*/
     void Mat3::get_euler_xyz(Vec3 &ans1, Vec3 &ans2) const {
         float theta_y1 = std::asin(_elem[0][2]);
         float theta_y2;
@@ -168,10 +150,10 @@ namespace pdm {
         float cos_z2 =  _elem[0][0]/cos_theta_y2;
         float sin_z2 = -_elem[0][1]/cos_theta_y2;
 
-        float sin_x1 = -_elem[2][1]/cos_theta_y1;
+        float sin_x1 = -_elem[1][2]/cos_theta_y1;
         float cos_x1 =  _elem[2][2]/cos_theta_y1;
 
-        float sin_x2 = -_elem[2][1]/cos_theta_y2;
+        float sin_x2 = -_elem[1][2]/cos_theta_y2;
         float cos_x2 =  _elem[2][2]/cos_theta_y2;
 
         float theta_z1 = atan2f(sin_z1, cos_z1);
@@ -179,6 +161,61 @@ namespace pdm {
 
         float theta_x1 = atan2f(sin_x1, cos_x1);
         float theta_x2 = atan2f(sin_x2, cos_x2);
+
+        ans1._x = theta_x1;
+        ans1._y = theta_y1;
+        ans1._z = theta_z1;
+
+        ans2._x = theta_x2;
+        ans2._y = theta_y2;
+        ans2._z = theta_z2;
+    
+        return;
+    }
+
+
+    /*--------------------------------------------------------------------------
+        Symbol expansion for an ZXY rotation matrix:
+
+        cycz − sxsysz   −cxsz    czsy + cysxsz
+        czsxsy + cysz    cxcz   −cyczsx + sysz
+             −cxsy        sx         cxcy
+
+        Or:
+
+         CyCz    ...    ...
+         Sz      CxCz   -SxCz
+        -SyCz    ...    ...
+    --------------------------------------------------------------------------*/
+    void Mat3::get_euler_zxy(Vec3 &ans1, Vec3 &ans2) const {
+        float theta_z1 = std::asin(_elem[1][0]);
+        float theta_z2;
+
+        if(theta_z1 >= 0.0f) {
+            theta_z2 = std::numbers::pi_v<float> - theta_z1;
+        }
+        else {
+            theta_z2 = -std::numbers::pi_v<float> - theta_z1;
+        }
+
+        float cos_theta_z1 = std::cos(theta_z1);
+        float cos_theta_z2 = std::cos(theta_z2);
+
+        float sin_x1 = -_elem[1][2]/cos_theta_z1;
+        float sin_x2 = -_elem[1][2]/cos_theta_z2;
+        float cos_x1 =  _elem[1][1]/cos_theta_z1;
+        float cos_x2 =  _elem[1][1]/cos_theta_z2;
+
+        float sin_y1 = -_elem[2][0]/cos_theta_z1;
+        float sin_y2 = -_elem[2][0]/cos_theta_z2;
+        float cos_y1 =  _elem[0][0]/cos_theta_z1;
+        float cos_y2 =  _elem[0][0]/cos_theta_z2;
+
+        float theta_x1 = atan2f(sin_x1, cos_x1);
+        float theta_x2 = atan2f(sin_x2, cos_x2);
+
+        float theta_y1 = atan2f(sin_y1, cos_y1);
+        float theta_y2 = atan2f(sin_y2, cos_y2);
 
         ans1._x = theta_x1;
         ans1._y = theta_y1;
