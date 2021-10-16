@@ -10,11 +10,10 @@ namespace pdm {
             Vec3(const float x, const float y, const float z);
             explicit Vec3(const Point3 &p);
 
-            void  normalize();
-
             float length() const;
             float dot(const Vec3 &v) const;
 
+            Vec3  normalize();
             Vec3  cross(const Vec3 &v) const;
             Vec3  project_onto(const Vec3 &v) const;
             Vec3  projection_perp(const Vec3 &v) const;

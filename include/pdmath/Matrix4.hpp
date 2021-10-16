@@ -7,6 +7,7 @@
 namespace pdm {
     class Point4;
     class Vec4;
+    class Vec3;
 
     class Mat4 {
         public:
@@ -27,8 +28,21 @@ namespace pdm {
                  const float x3, const float y3, const float z3, const float w3,
                  const float x4, const float y4, const float z4, const float w4);
 
-            Mat4 transpose() const;
+            Vec4 get_world_position() const;
 
+            float get_x_scale() const;
+            float get_y_scale() const;
+            float get_z_scale() const;
+            inline float determinant() const { return get_x_scale() *
+                                                      get_y_scale() *
+                                                      get_z_scale();}
+
+            Vec3 get_x_unit_vector() const;
+            Vec3 get_y_unit_vector() const;
+            Vec3 get_z_unit_vector() const;
+
+            Mat4 inverse() const;
+            Mat4 transpose() const;
             const Mat4& set_translate(const Vec4& t);
 
             float _elem[4][4];

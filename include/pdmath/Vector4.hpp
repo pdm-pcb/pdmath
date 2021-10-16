@@ -14,9 +14,10 @@ namespace pdm {
             Vec4(const Vec3 &v, const float w);
             explicit Vec4(const Point4 &p);
 
-            void  normalize();
             float length() const;
             float dot(const Vec4 &v) const;
+
+            Vec4 normalize();
 
             const Vec4& operator+=(const Vec4 &v);
             const Vec4& operator-=(const Vec4 &v);

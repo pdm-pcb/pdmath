@@ -27,7 +27,7 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
 
     // gather some terms before diving in
     Vec3 k = y_vec;
-    k.normalize();
+    k = k.normalize();
     Vec3 k_cross_v = k.cross(z_vec);
     float k_dot_v  = k.dot(z_vec);
 
@@ -45,7 +45,7 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
 
     // gather some terms before diving in
     k = x_vec;
-    k.normalize();
+    k = k.normalize();
     k_cross_v = k.cross(z_vec);
     k_dot_v  = k.dot(z_vec);
 
@@ -69,7 +69,7 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
 
     // normalize the vector, make it 10 units long, and translate it to the
     // player's location. this is the first enemy
-    player_gaze.normalize();
+    player_gaze = player_gaze.normalize();
     Vec3 enemy_pos = player_gaze * 10 + player_pos;
     REQUIRE(enemy_pos == Vec3(6.5470018, 0.0f, 3.3205032));
 
@@ -110,7 +110,7 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
     REQUIRE(enemy_pos == Vec3(-3.4322643, 0.0f, 3.9640989));   
 }
 
-TEST_CASE("Triangular game object", "[vectors][matrices]") {
+TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     Point4 p1(-1, 0, -1, 1);
     Point4 p2( 0, 0,  2, 1);
     Point4 p3( 1, 0, -1, 1);
@@ -217,4 +217,43 @@ TEST_CASE("Triangular game object", "[vectors][matrices]") {
     REQUIRE(new_p1 == Vec4(17.2634544f, 0.0f, 12.3639603f, 1.0f));
     REQUIRE(new_p2 == Vec4(14.2634544f, 0.0f, 13.3639603f, 1.0f));
     REQUIRE(new_p3 == Vec4(17.2634544f, 0.0f, 14.3639603f, 1.0f));
+}
+
+TEST_CASE("TRS Deductions", "[matrices]") {
+    Mat4 w( 3.578f, -0.872f, 0.557f, -4.0f,
+            0.0f,    2.907f, 0.836f, -1.0f,
+           -1.789f, -1.744f, 1.114f,  1.0f,
+            0.0f,    0.0f,   0.0f,    1.0f);
+
+    REQUIRE(w.get_world_position() == Vec4(-4, -1, 1, 1));
+
+    // limitations of working with three decimal places above
+    REQUIRE(w.get_x_scale() == Catch::Approx(4.0f).margin(1.0e-3f));
+    REQUIRE(w.get_y_scale() == Catch::Approx(3.5f).margin(1.0e-3f));
+    REQUIRE(w.get_z_scale() == Catch::Approx(1.5f).margin(1.0e-3f));
+
+    REQUIRE(w.get_x_unit_vector() ==
+        Vec3(0.8944272f, 0.0f, -0.4472136f));
+    REQUIRE(w.get_y_unit_vector() ==
+        Vec3(-0.2491167f, 0.8304844f, -0.4982335f));
+    REQUIRE(w.get_z_unit_vector() ==
+        Vec3(0.3713217f, 0.5573159f, 0.7426434f));
+
+    // still further precision limitations
+    REQUIRE(w.determinant() == Catch::Approx(21.0f).margin(1.0e-2f));
+
+    Vec4 new_obj(-5, 0, -5, 1);
+    REQUIRE((w.inverse() * new_obj) ==
+        Vec4(0.4471771f, 1.1624501f, -2.8464885f, 1.0f));
+
+    Mat4 new_obj_mat(1, 0, -3, -5,
+                     0, 1,  0,  0,
+                     0, 0, -1, -5,
+                     0, 0,  0,  1);
+
+    REQUIRE((w.inverse() * new_obj_mat) ==
+        Mat4( 0.2235886f, 0.0,        -0.5589715f,  0.4471771f,
+             -0.0711688f, 0.2372564f,  0.3558438f,  1.1624501f,
+              0.2475400f, 0.3715323f, -1.2377002f, -2.8464885f,
+              0.0f,       0.0f,        0.0f,        1.0f));
 }

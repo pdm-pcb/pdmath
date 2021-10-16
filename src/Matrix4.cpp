@@ -2,6 +2,7 @@
 
 #include "pdmath/Vector4.hpp"
 #include "pdmath/Point4.hpp"
+#include "pdmath/Vector3.hpp"
 
 #include <iomanip>
 
@@ -34,13 +35,93 @@ namespace pdm {
               {x4, y4, z4, w4}}
     { }
 
+    Vec4 Mat4::get_world_position() const {
+        return Vec4(this->_elem[0][3],
+                    this->_elem[1][3],
+                    this->_elem[2][3],
+                    this->_elem[3][3]);
+    }
+
+    float Mat4::get_x_scale() const {
+        return Vec3 (this->_elem[0][0],
+                     this->_elem[1][0],
+                     this->_elem[2][0]).length();
+    }
+
+    float Mat4::get_y_scale() const {
+        return Vec3 (this->_elem[0][1],
+                     this->_elem[1][1],
+                     this->_elem[2][1]).length();
+    }
+
+    float Mat4::get_z_scale() const {
+        return Vec3 (this->_elem[0][2],
+                     this->_elem[1][2],
+                     this->_elem[2][2]).length();
+    }
+
+    Vec3 Mat4::get_x_unit_vector() const {
+        return Vec3(this->_elem[0][0],
+                    this->_elem[1][0],
+                    this->_elem[2][0]).normalize();
+    }
+
+    Vec3 Mat4::get_y_unit_vector() const {
+        return Vec3(this->_elem[0][1],
+                    this->_elem[1][1],
+                    this->_elem[2][1]).normalize();
+
+    }
+
+    Vec3 Mat4::get_z_unit_vector() const {
+        return Vec3(this->_elem[0][2],
+                    this->_elem[1][2],
+                    this->_elem[2][2]).normalize();
+
+    }
+
+    Mat4 Mat4::inverse() const {
+        float x_scale = get_x_scale();
+        float y_scale = get_y_scale();
+        float z_scale = get_z_scale();
+    
+        Vec3 x_rot(this->_elem[0][0] / x_scale,
+                   this->_elem[1][0] / x_scale,
+                   this->_elem[2][0] / x_scale);
+    
+        Vec3 y_rot(this->_elem[0][1] / y_scale,
+                   this->_elem[1][1] / y_scale,
+                   this->_elem[2][1] / y_scale);
+    
+        Vec3 z_rot(this->_elem[0][2] / z_scale,
+                   this->_elem[1][2] / z_scale,
+                   this->_elem[2][2] / z_scale);
+        
+        Mat4 t(1.0f, 0.0f, 0.0f, -_elem[0][3],
+               0.0f, 1.0f, 0.0f, -_elem[1][3],
+               0.0f, 0.0f, 1.0f, -_elem[2][3],
+               0.0f, 0.0f, 0.0f, 1.0f);
+
+        Mat4 r(x_rot._x, x_rot._y, x_rot._z, 0.0f,
+               y_rot._x, y_rot._y, y_rot._z, 0.0f,
+               z_rot._x, z_rot._y, z_rot._z, 0.0f,
+               0.0f,     0.0f,     0.0f,     1.0f);
+        
+        Mat4 s(1/x_scale, 0.0f,      0.0f,      0.0f,
+               0.0f,      1/y_scale, 0.0f,      0.0f,
+               0.0f,      0.0f,      1/z_scale, 0.0f,
+               0.0f,      0.0f,      0.0f,      1.0f );
+
+        return s * r * t;
+    }
+
     Mat4 Mat4::transpose() const {
         return Mat4(_elem[0][0], _elem[1][0], _elem[2][0], _elem[3][0],
                     _elem[0][1], _elem[1][1], _elem[2][1], _elem[3][1],
                     _elem[0][2], _elem[1][2], _elem[2][2], _elem[3][2],
                     _elem[0][3], _elem[1][3], _elem[2][3], _elem[3][3]);
     }
-
+    
     const Mat4& Mat4::set_translate(const Vec4& t) {
         _elem[0][3] = t._x;
         _elem[1][3] = t._y;
@@ -54,23 +135,18 @@ namespace pdm {
         if(this == &m) {
             return true;
         }
+
+        Vec4 x(_elem[0][0], _elem[1][0], _elem[2][0], _elem[3][0]);
+        Vec4 y(_elem[0][1], _elem[1][1], _elem[2][1], _elem[3][1]);
+        Vec4 z(_elem[0][2], _elem[1][2], _elem[2][2], _elem[3][2]);
+        Vec4 t(_elem[0][3], _elem[1][3], _elem[2][3], _elem[3][3]);
+
+        Vec4 m_x(m._elem[0][0], m._elem[1][0], m._elem[2][0], m._elem[3][0]);
+        Vec4 m_y(m._elem[0][1], m._elem[1][1], m._elem[2][1], m._elem[3][1]);
+        Vec4 m_z(m._elem[0][2], m._elem[1][2], m._elem[2][2], m._elem[3][2]);
+        Vec4 m_t(m._elem[0][3], m._elem[1][3], m._elem[2][3], m._elem[3][3]);
     
-        return _elem[0][0] == m._elem[0][0] &&
-               _elem[1][0] == m._elem[1][0] &&
-               _elem[2][0] == m._elem[2][0] &&
-               _elem[3][0] == m._elem[3][0] &&
-               _elem[0][1] == m._elem[0][1] &&
-               _elem[1][1] == m._elem[1][1] &&
-               _elem[2][1] == m._elem[2][1] &&
-               _elem[3][1] == m._elem[3][1] &&
-               _elem[0][2] == m._elem[0][2] &&
-               _elem[1][2] == m._elem[1][2] &&
-               _elem[2][2] == m._elem[2][2] &&
-               _elem[3][2] == m._elem[3][2] &&
-               _elem[0][3] == m._elem[0][3] &&
-               _elem[1][3] == m._elem[1][3] &&
-               _elem[2][3] == m._elem[2][3] &&
-               _elem[3][3] == m._elem[3][3];
+        return x == m_x && y == m_y && z == m_z && t == m_t;
     }
 
     const Mat4& Mat4::operator*=(const Mat4 &m) {
@@ -254,6 +330,7 @@ namespace pdm {
                     m._elem[0][1] * n._elem[1][3] +
                     m._elem[0][2] * n._elem[2][3] +
                     m._elem[0][3] * n._elem[3][3],
+
                     m._elem[1][0] * n._elem[0][0] +
                     m._elem[1][1] * n._elem[1][0] +
                     m._elem[1][2] * n._elem[2][0] +
@@ -270,6 +347,7 @@ namespace pdm {
                     m._elem[1][1] * n._elem[1][3] +
                     m._elem[1][2] * n._elem[2][3] +
                     m._elem[1][3] * n._elem[3][3],
+
                     m._elem[2][0] * n._elem[0][0] +
                     m._elem[2][1] * n._elem[1][0] +
                     m._elem[2][2] * n._elem[2][0] +
@@ -286,6 +364,7 @@ namespace pdm {
                     m._elem[2][1] * n._elem[1][3] +
                     m._elem[2][2] * n._elem[2][3] +
                     m._elem[2][3] * n._elem[3][3],
+
                     m._elem[3][0] * n._elem[0][0] +
                     m._elem[3][1] * n._elem[1][0] +
                     m._elem[3][2] * n._elem[2][0] +

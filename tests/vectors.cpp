@@ -54,18 +54,18 @@ TEST_CASE("Euclidean norm is correct", "[vectors]") {
 TEST_CASE("Normalized vectors have length 1", "[vectors]") {
     Vec3 v(-5, -5, 3);
     REQUIRE(v.length() == Catch::Approx(7.68115f).margin(Vec3::_epsilon));
-    v.normalize();
-    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
+    Vec3 w = v.normalize();
+    REQUIRE(w.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
 
     v = Vec3(2, -2, 1);
     REQUIRE(v.length() == Catch::Approx(3.0f).margin(Vec3::_epsilon));
-    v.normalize();
-    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
+    w = v.normalize();
+    REQUIRE(w.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
 
     v = Vec3(1, -2, 5);
     REQUIRE(v.length() == Catch::Approx(5.47723f).margin(Vec3::_epsilon));
-    v.normalize();
-    REQUIRE(v.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
+    w = v.normalize();
+    REQUIRE(w.length() == Catch::Approx(1.0f).margin(Vec3::_epsilon));
 
 }
 

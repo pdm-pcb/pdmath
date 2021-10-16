@@ -11,11 +11,11 @@ namespace pdm {
         Point3(p)
     { }
 
-    void Vec3::normalize() {
+    Vec3 Vec3::normalize() {
         float _length = length();
-        _x /= _length;
-        _y /= _length;
-        _z /= _length;
+        return Vec3(_x / _length,
+                    _y / _length,
+                    _z / _length);
     }
 
     float Vec3::dot(const Vec3 &v) const {

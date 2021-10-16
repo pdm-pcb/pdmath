@@ -81,16 +81,16 @@ namespace pdm {
         if(this == &m) {
             return true;
         }
+
+        Vec3 x(_elem[0][0], _elem[1][0], _elem[2][0]);
+        Vec3 y(_elem[0][1], _elem[1][1], _elem[2][1]);
+        Vec3 z(_elem[0][2], _elem[1][2], _elem[2][2]);
+
+        Vec3 m_x(m._elem[0][0], m._elem[1][0], m._elem[2][0]);
+        Vec3 m_y(m._elem[0][1], m._elem[1][1], m._elem[2][1]);
+        Vec3 m_z(m._elem[0][2], m._elem[1][2], m._elem[2][2]);
     
-        return _elem[0][0] == m._elem[0][0] &&
-               _elem[1][0] == m._elem[1][0] &&
-               _elem[2][0] == m._elem[2][0] &&
-               _elem[0][1] == m._elem[0][1] &&
-               _elem[1][1] == m._elem[1][1] &&
-               _elem[2][1] == m._elem[2][1] &&
-               _elem[0][2] == m._elem[0][2] &&
-               _elem[1][2] == m._elem[1][2] &&
-               _elem[2][2] == m._elem[2][2];
+        return x == m_x && y == m_y && z == m_z;
     }
 
     const Mat3& Mat3::operator*=(const Mat3 &m) {

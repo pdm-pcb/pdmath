@@ -27,12 +27,12 @@ namespace pdm {
         return sqrtf(_x*_x + _y*_y + _z*_z + _w*_w);
     }
 
-    void Vec4::normalize() {
+    Vec4 Vec4::normalize() {
         float _length = length();
-        _x /= _length;
-        _y /= _length;
-        _z /= _length;
-        _w /= _length;
+        return Vec4(_x / _length,
+                    _y / _length,
+                    _z / _length,
+                    _w / _length);
     }
 
     const Vec4& Vec4::operator+=(const Vec4 &v) {
