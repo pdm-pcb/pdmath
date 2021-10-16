@@ -32,6 +32,8 @@ namespace pdm {
 
             explicit Mat4(const Mat3 &m);
 
+            static const Mat4 identity;
+
             static Point4 transform(const Point4 &point,
                 const Vec3 &translation,
                 const float theta_x, const float theta_y, const float theta_z,
@@ -56,8 +58,8 @@ namespace pdm {
             Vec3 get_y_unit_vector() const;
             Vec3 get_z_unit_vector() const;
 
-            Mat4 inverse() const;
-            Mat4 transpose() const;
+            Mat4 inverted() const;
+            Mat4 transposed() const;
             const Mat4& set_translation(const Vec4& v);
             const Mat4& set_translation(const Vec3& v);
             const Mat4& apply_scale(const Vec4& v);
@@ -83,11 +85,6 @@ namespace pdm {
     Vec4   operator*(const Mat4 &m,   const Vec4 &v);
 
     std::ostream& operator<<(std::ostream &os, const Mat4 &m);
-
-    static const Mat4 Identity4(1, 0, 0, 0,
-                                0, 1, 0, 0,
-                                0, 0, 1, 0,
-                                0, 0, 0, 1);
 } // namespace pdm
 
 #endif // PDMATH_MATRIX3_HPP

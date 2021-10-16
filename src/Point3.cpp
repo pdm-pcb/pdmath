@@ -46,9 +46,9 @@ namespace pdm {
         float y_diff = (fabsf(this->_y) - fabsf(p._y));
         float z_diff = (fabsf(this->_z) - fabsf(p._z));
 
-        return x_diff < Point3::_epsilon &&
-               y_diff < Point3::_epsilon &&
-               z_diff < Point3::_epsilon;
+        return x_diff < Point3::epsilon &&
+               y_diff < Point3::epsilon &&
+               z_diff < Point3::epsilon;
     }
 
     const Point3& Point3::operator+=(const Point3 &p) {
@@ -167,7 +167,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Point3 &p) {
-        os << std::fixed << std::setprecision(Point3::_output_precision) << "("
+        os << std::fixed << std::setprecision(Point3::precision) << "("
            << p._x << ", "
            << p._y << ", "
            << p._z << ")";

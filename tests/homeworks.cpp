@@ -27,7 +27,7 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
 
     // gather some terms before diving in
     Vec3 k = y_vec;
-    k = k.normalize();
+    k = k.normalized();
     Vec3 k_cross_v = k.cross(z_vec);
     float k_dot_v  = k.dot(z_vec);
 
@@ -45,7 +45,7 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
 
     // gather some terms before diving in
     k = x_vec;
-    k = k.normalize();
+    k = k.normalized();
     k_cross_v = k.cross(z_vec);
     k_dot_v  = k.dot(z_vec);
 
@@ -69,7 +69,7 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
 
     // normalize the vector, make it 10 units long, and translate it to the
     // player's location. this is the first enemy
-    player_gaze = player_gaze.normalize();
+    player_gaze = player_gaze.normalized();
     Vec3 enemy_pos = player_gaze * 10 + player_pos;
     REQUIRE(enemy_pos == Vec3(6.547001f, 0.0f, 3.320503f));
 
@@ -121,11 +121,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     Vec3 prev_translation;
     Mat3 prev_rotation;
 
-    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                                     prev_translation, prev_rotation);
-    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                                     prev_translation, prev_rotation);
-    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                                     prev_translation, prev_rotation);
 
     REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
@@ -136,11 +136,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     translation = Vec3(0, 0, 10);
     theta = std::numbers::pi_v<float> / 2.0f;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
 
     REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
@@ -152,11 +152,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     theta = std::numbers::pi_v<float> / -2.0f;
 
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
 
     REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
@@ -167,11 +167,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     translation = Vec3(0, 0, 6);
     theta = (-3 * std::numbers::pi_v<float>) / 4.0f;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
 
     REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));
@@ -185,18 +185,18 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     Point4 p3( 1, 0, -1, 1);
 
     // Move forward by 7 followed by a rotation about the y axis of 1π/4
-    Mat4 prev_transform1 = Identity4;
-    Mat4 prev_transform2 = Identity4;
-    Mat4 prev_transform3 = Identity4;
+    Mat4 prev_transform1 = Mat4::identity;
+    Mat4 prev_transform2 = Mat4::identity;
+    Mat4 prev_transform3 = Mat4::identity;
     
     Vec3 translation(0, 0, 7);
     float theta = std::numbers::pi_v<float> / 4.0f;
 
-    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                                     prev_transform1);
-    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                                     prev_transform2);
-    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                                     prev_transform3);
 
     REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
@@ -207,11 +207,11 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     translation = Vec3(0, 0, 10);
     theta = std::numbers::pi_v<float> / 2.0f;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                              prev_transform1);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                              prev_transform2);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_transform3);
 
     REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
@@ -222,11 +222,11 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     translation = Vec3(0, 0, 7);
     theta = std::numbers::pi_v<float> / -2.0f;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                              prev_transform1);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                              prev_transform2);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_transform3);
 
     REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
@@ -237,11 +237,11 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     translation = Vec3(0, 0, 6);
     theta = (-3 * std::numbers::pi_v<float>) / 4.0f;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                              prev_transform1);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                              prev_transform2);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_transform3);
 
     REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));
@@ -270,7 +270,7 @@ TEST_CASE("TRS Deductions", "[matrices]") {
     REQUIRE(w.determinant() == Catch::Approx(21.0f).margin(1.0e-2f));
 
     Vec4 new_obj(-5, 0, -5, 1);
-    REQUIRE((w.inverse() * new_obj) ==
+    REQUIRE((w.inverted() * new_obj) ==
         Vec4(0.4471771f, 1.1624501f, -2.8464885f, 1.0f));
 
     Mat4 new_obj_mat(1, 0, -3, -5,
@@ -278,7 +278,7 @@ TEST_CASE("TRS Deductions", "[matrices]") {
                      0, 0, -1, -5,
                      0, 0,  0,  1);
 
-    REQUIRE((w.inverse() * new_obj_mat) ==
+    REQUIRE((w.inverted() * new_obj_mat) ==
         Mat4( 0.223588f, 0.0,       -0.558971f,  0.447177f,
              -0.071168f, 0.237256f,  0.355843f,  1.162450f,
               0.247540f, 0.371532f, -1.237700f, -2.846488f,

@@ -11,11 +11,20 @@ namespace pdm {
         Point3(p)
     { }
 
-    Vec3 Vec3::normalize() {
+    const Vec3 Vec3::zero(0.0f, 0.0f, 0.0f);
+    const Vec3 Vec3::one(1.0f, 1.0f, 1.0f);
+
+    Vec3 Vec3::normalized() const {
         float _length = length();
-        return Vec3(_x / _length,
-                    _y / _length,
-                    _z / _length);
+
+        if(fabsf(_length - 1.0f) < Point3::epsilon) {
+            return Vec3(*this);
+        }
+        else {
+            return Vec3(_x / _length,
+                        _y / _length,
+                        _z / _length);
+        }
     }
 
     float Vec3::dot(const Vec3 &v) const {

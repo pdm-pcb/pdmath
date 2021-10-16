@@ -6,6 +6,7 @@ set(
     Point4.cpp
     Vector4.cpp
     Matrix4.cpp
+    Quaternion.cpp
     Line.cpp
     Plane.cpp
 )

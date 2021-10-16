@@ -24,11 +24,12 @@ namespace pdm {
                  const float x2, const float y2, const float z2,
                  const float x3, const float y3, const float z3);
 
+            static const Mat3 identity;
+
             static Mat3 populate_rotation(float theta_x, float theta_y,
                                           float theta_z);
-
-            Mat3 transpose() const;
-            Mat3 inverse() const;
+            Mat3 transposed() const;
+            Mat3 inverted() const;
             float determinant() const;
             Mat3 matrix_of_minors() const;
             Mat3 matrix_of_cofactors() const;
@@ -53,10 +54,6 @@ namespace pdm {
     Vec3   operator*(const Mat3 &m,   const Vec3 &v);
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m);
-
-    static const Mat3 Identity3(1, 0, 0,
-                                0, 1, 0,
-                                0, 0, 1);
 } // namespace pdm
 
 #endif // PDMATH_MATRIX3_HPP

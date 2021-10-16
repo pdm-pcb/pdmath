@@ -24,6 +24,7 @@ add_executable(
     vectors.cpp
     lines_and_planes.cpp
     matrices.cpp
+    quaternions.cpp
     homeworks.cpp
 )
 

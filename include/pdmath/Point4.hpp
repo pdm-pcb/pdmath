@@ -16,8 +16,8 @@ namespace pdm {
 
             bool is_zero() const;
 
-            static constexpr uint8_t _output_precision = 7;
-            static constexpr float   _epsilon = 1.0e-6f;
+            static constexpr uint8_t precision = 7;
+            static constexpr float   epsilon = 1.0e-6f;
 
             float _x;
             float _y;

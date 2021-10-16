@@ -186,7 +186,7 @@ TEST_CASE("Matrices know their minors, cofactors, and adjoints", "[matrices]") {
                                              2,  3, -3,
                                              0, 10,  0));
 
-    REQUIRE(m.matrix_of_cofactors().transpose() == Mat3( 2,  2,  0,
+    REQUIRE(m.matrix_of_cofactors().transposed() == Mat3( 2,  2,  0,
                                                         -2,  3, 10,
                                                          2, -3,  0));
 }
@@ -196,7 +196,7 @@ TEST_CASE("Matrices can find their inverses", "[matrices]") {
            2, 0, -2,
            0, 1,  1);
 
-    REQUIRE(m.inverse() == Mat3( 0.2f,  0.2f, 0.0f,
+    REQUIRE(m.inverted() == Mat3( 0.2f,  0.2f, 0.0f,
                                 -0.2f,  0.3f, 1.0f,
                                  0.2f, -0.3f, 0.0f));
 }

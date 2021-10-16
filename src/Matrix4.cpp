@@ -58,6 +58,11 @@ namespace pdm {
         _elem[3][3] = 1.0f;
     }
 
+    const Mat4 Mat4::identity(1.0f, 0.0f, 0.0f, 0.0f,
+                              0.0f, 1.0f, 0.0f, 0.0f,
+                              0.0f, 0.0f, 1.0f, 0.0f,
+                              0.0f, 0.0f, 0.0f, 1.0f);
+
     Point4 Mat4::transform(const Point4 &point, const Vec3 &translation,
             const float theta_x, const float theta_y, const float theta_z,
             const Vec3& scale,
@@ -118,24 +123,24 @@ namespace pdm {
     Vec3 Mat4::get_x_unit_vector() const {
         return Vec3(this->_elem[0][0],
                     this->_elem[1][0],
-                    this->_elem[2][0]).normalize();
+                    this->_elem[2][0]).normalized();
     }
 
     Vec3 Mat4::get_y_unit_vector() const {
         return Vec3(this->_elem[0][1],
                     this->_elem[1][1],
-                    this->_elem[2][1]).normalize();
+                    this->_elem[2][1]).normalized();
 
     }
 
     Vec3 Mat4::get_z_unit_vector() const {
         return Vec3(this->_elem[0][2],
                     this->_elem[1][2],
-                    this->_elem[2][2]).normalize();
+                    this->_elem[2][2]).normalized();
 
     }
 
-    Mat4 Mat4::inverse() const {
+    Mat4 Mat4::inverted() const {
         float x_scale = get_x_scale();
         float y_scale = get_y_scale();
         float z_scale = get_z_scale();
@@ -170,7 +175,7 @@ namespace pdm {
         return s * r * t;
     }
 
-    Mat4 Mat4::transpose() const {
+    Mat4 Mat4::transposed() const {
         return Mat4(_elem[0][0], _elem[1][0], _elem[2][0], _elem[3][0],
                     _elem[0][1], _elem[1][1], _elem[2][1], _elem[3][1],
                     _elem[0][2], _elem[1][2], _elem[2][2], _elem[3][2],
@@ -588,7 +593,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Mat4 &m) {
-        os << std::fixed << std::setprecision(Point4::_output_precision)
+        os << std::fixed << std::setprecision(Point4::precision)
            << "[" << m._elem[0][0] << ", " << m._elem[0][1] << ", "
            << m._elem[0][2] << ", " << m._elem[0][3] << "]\n"
            << "[" << m._elem[1][0] << ", " << m._elem[1][1] << ", "

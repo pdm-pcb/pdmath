@@ -26,7 +26,13 @@ namespace pdm {
         _elem{{x1, y1, z1},
               {x2, y2, z2},
               {x3, y3, z3}}
-    { }    Mat3 Mat3::populate_rotation(float theta_x, float theta_y,  float theta_z) {
+    { }
+    
+    const Mat3 Mat3::identity(1.0f, 0.0f, 0.0f,
+                              0.0f, 1.0f, 0.0f,
+                              0.0f, 0.0f, 1.0f);
+
+    Mat3 Mat3::populate_rotation(float theta_x, float theta_y,  float theta_z) {
         Mat3 rot_x;
         if(theta_x != 1) {
             float cos_theta = std::cos(theta_x);
@@ -36,7 +42,7 @@ namespace pdm {
                          0.0f, sin_theta,  cos_theta);
         }
         else {
-            rot_x = Identity3;
+            rot_x = identity;
         }
 
         Mat3 rot_y;
@@ -48,7 +54,7 @@ namespace pdm {
                          -sin_theta,  0.0f, cos_theta);
         }
         else {
-            rot_y = Identity3;
+            rot_y = identity;
         }
 
         Mat3 rot_z;
@@ -60,20 +66,20 @@ namespace pdm {
                          0.0f,       0.0f,      1.0f);
         }
         else {
-            rot_z = Identity3;
+            rot_z = identity;
         }
 
         return rot_x * rot_y * rot_z;
     }
 
-    Mat3 Mat3::transpose() const {
+    Mat3 Mat3::transposed() const {
         return Mat3(_elem[0][0], _elem[1][0], _elem[2][0],
                     _elem[0][1], _elem[1][1], _elem[2][1],
                     _elem[0][2], _elem[1][2], _elem[2][2]);
     }
 
-    Mat3 Mat3::inverse() const {
-        return (1.0f/determinant()) * matrix_of_cofactors().transpose();
+    Mat3 Mat3::inverted() const {
+        return (1.0f/determinant()) * matrix_of_cofactors().transposed();
     }
 
     float Mat3::determinant() const {
@@ -332,7 +338,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m) {
-        os << std::fixed << std::setprecision(Point3::_output_precision)
+        os << std::fixed << std::setprecision(Point3::precision)
            << "[" << m._elem[0][0] << ", " << m._elem[0][1] << ", "
            << m._elem[0][2] << "]\n"
            << "[" << m._elem[1][0] << ", " << m._elem[1][1] << ", "

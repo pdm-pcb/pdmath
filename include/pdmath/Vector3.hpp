@@ -10,10 +10,13 @@ namespace pdm {
             Vec3(const float x, const float y, const float z);
             explicit Vec3(const Point3 &p);
 
+            static const Vec3 zero;
+            static const Vec3 one;
+
             float length() const;
             float dot(const Vec3 &v) const;
 
-            Vec3  normalize();
+            Vec3  normalized() const;
             Vec3  cross(const Vec3 &v) const;
             Vec3  project_onto(const Vec3 &v) const;
             Vec3  projection_perp(const Vec3 &v) const;
@@ -51,9 +54,6 @@ namespace pdm {
     Vec3 operator-(const float scalar, const Vec3 &v);
     Vec3 operator*(const float scalar, const Vec3 &v);
     Vec3 operator/(const float scalar, const Vec3 &v);
-
-    static const Vec3 Vec3Zero(0, 0, 0);
-    static const Vec3 Vec3One(1, 1, 1);
 } // namespace pdm
 
 #endif // PDMATH_VECTOR3_HPP

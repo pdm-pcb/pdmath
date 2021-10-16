@@ -28,10 +28,10 @@ namespace pdm {
         float z_diff = (fabsf(this->_z) - fabsf(p._z));
         float w_diff = (fabsf(this->_w) - fabsf(p._w));
 
-        return x_diff < Point4::_epsilon &&
-               y_diff < Point4::_epsilon &&
-               z_diff < Point4::_epsilon &&
-               w_diff < Point4::_epsilon;
+        return x_diff < Point4::epsilon &&
+               y_diff < Point4::epsilon &&
+               z_diff < Point4::epsilon &&
+               w_diff < Point4::epsilon;
     }
 
     const Point4& Point4::operator+=(const Point4 &p) {
@@ -171,7 +171,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Point4 &p) {
-        os << std::fixed << std::setprecision(Point4::_output_precision) << "("
+        os << std::fixed << std::setprecision(Point4::precision) << "("
            << p._x << ", "
            << p._y << ", "
            << p._z << ", "

@@ -16,6 +16,9 @@ namespace pdm {
         Point4(p)
     { }
 
+    const Vec4 Vec4::zero(0.0f, 0.0f, 0.0f, 0.0f);
+    const Vec4 Vec4::one(1.0f, 1.0f, 1.0f, 1.0f);
+
     float Vec4::dot(const Vec4 &v) const {
         return this->_x * v._x +
                this->_y * v._y +
@@ -27,12 +30,18 @@ namespace pdm {
         return sqrtf(_x*_x + _y*_y + _z*_z + _w*_w);
     }
 
-    Vec4 Vec4::normalize() {
+    Vec4 Vec4::normalized() {
         float _length = length();
-        return Vec4(_x / _length,
-                    _y / _length,
-                    _z / _length,
-                    _w / _length);
+
+        if(fabsf(_length - 1.0f) < Point4::epsilon) {
+            return Vec4(*this);
+        }
+        else {
+            return Vec4(_x / _length,
+                        _y / _length,
+                        _z / _length,
+                        _w / _length);
+        }
     }
 
     const Vec4& Vec4::operator+=(const Vec4 &v) {
