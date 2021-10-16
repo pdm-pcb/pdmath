@@ -22,7 +22,7 @@ TEST_CASE("Matrices can multiply", "[matrices]") {
                    -5,   8,   3,
                    18,  -2,  12);
     
-    REQUIRE((m *  n)  == solution);    
+    REQUIRE((m *  n) == solution);    
     REQUIRE((m *= n) == solution);
 
     m = Mat3(-2,  4,  4,
@@ -37,7 +37,7 @@ TEST_CASE("Matrices can multiply", "[matrices]") {
                       8,  12, -29,
                      -4,  -7,  8);
     
-    REQUIRE((m *  n)  == solution);    
+    REQUIRE((m *  n) == solution);    
     REQUIRE((m *= n) == solution);
 
     Mat4 a( 3, -5,  4,  4,
@@ -72,7 +72,7 @@ TEST_CASE("Matrices can add", "[matrices]") {
                   -3,  5, -6,
                   -1, -8,  4);
     
-    REQUIRE((m + n)  == solution);
+    REQUIRE((m +  n) == solution);
     REQUIRE((m += n) == solution);
 
     Mat4 a(-4, -2, -2,  4,
@@ -107,7 +107,7 @@ TEST_CASE("Matrices can subtract", "[matrices]") {
                   -4, -4, -3,
                   -1, -3, -1);
 
-    REQUIRE((m - n)  == solution);
+    REQUIRE((m -  n) == solution);
     REQUIRE((m -= n) == solution);
 
     Mat4 a(-2, -4,  4,  4,

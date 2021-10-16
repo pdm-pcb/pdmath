@@ -31,10 +31,6 @@ namespace pdm {
             Mat3 matrix_of_cofactors() const;
 
             float _elem[3][3];
-
-            float *_r1 = _elem[0];
-            float *_r2 = _elem[1];
-            float *_r3 = _elem[2];
     
             bool operator==(const Mat3 &m) const;
 

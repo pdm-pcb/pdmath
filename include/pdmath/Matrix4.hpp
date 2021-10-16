@@ -32,11 +32,6 @@ namespace pdm {
             const Mat4& set_translate(const Vec4& t);
 
             float _elem[4][4];
-
-            float *_r1 = _elem[0];
-            float *_r2 = _elem[1];
-            float *_r3 = _elem[2];
-            float *_r4 = _elem[3];
     
             bool operator==(const Mat4 &m) const;
 

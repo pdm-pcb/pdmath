@@ -153,8 +153,6 @@ TEST_CASE("Triangular game object", "[vectors][matrices]") {
 
     y_rot = prev_rot * y_rot;
 
-    std::cout << y_rot << std::endl;
-
     transform = y_rot;
     transform.set_translate(translation);
 
