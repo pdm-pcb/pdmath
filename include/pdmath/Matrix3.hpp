@@ -50,6 +50,10 @@ namespace pdm {
     Vec3   operator*(const Mat3 &m,   const Vec3 &v);
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m);
+
+    static const Mat3 Identity3(1, 0, 0,
+                                0, 1, 0,
+                                0, 0, 1);
 } // namespace pdm
 
 #endif // PDMATH_MATRIX3_HPP

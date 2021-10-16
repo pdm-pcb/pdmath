@@ -3,6 +3,7 @@
 #include "pdmath/Vector4.hpp"
 #include "pdmath/Point4.hpp"
 #include "pdmath/Vector3.hpp"
+#include "pdmath/Matrix3.hpp"
 
 #include <iomanip>
 
@@ -34,6 +35,78 @@ namespace pdm {
               {x3, y3, z3, w3},
               {x4, y4, z4, w4}}
     { }
+
+    Mat4::Mat4(const Mat3 &m) {
+        _elem[0][0] = m._elem[0][0];
+        _elem[0][1] = m._elem[0][1];
+        _elem[0][2] = m._elem[0][2];
+        _elem[0][3] = 0.0f;
+
+        _elem[1][0] = m._elem[1][0];
+        _elem[1][1] = m._elem[1][1];
+        _elem[1][2] = m._elem[1][2];
+        _elem[1][3] = 0.0f;
+
+        _elem[2][0] = m._elem[2][0];
+        _elem[2][1] = m._elem[2][1];
+        _elem[2][2] = m._elem[2][2];
+        _elem[2][3] = 0.0f;
+
+        _elem[3][0] = 0.0f;
+        _elem[3][1] = 0.0f;
+        _elem[3][2] = 0.0f;
+        _elem[3][3] = 1.0f;
+    }
+
+    Point4 Mat4::transform(const Point4 &point, const Vec3 &translation,
+            const float theta_x, const float theta_y, const float theta_z,
+            const Vec3 &prev_translation, const Mat3 &prev_rotation,
+            const Vec3& scale) {
+        Vec3 _translation = prev_translation + (prev_rotation * translation);
+
+        Mat3 rot_x;
+        if(theta_x != 1) {
+            float cos_theta = std::cos(theta_x);
+            float sin_theta = std::sin(theta_x);
+            rot_x = Mat3(1.0f, 0.0f,       0.0f,
+                         0.0f, cos_theta, -sin_theta,
+                         0.0f, sin_theta,  cos_theta);
+        }
+        else {
+            rot_x = Identity3;
+        }
+
+        Mat3 rot_y;
+        if(theta_y != 1) {
+            float cos_theta = std::cos(theta_y);
+            float sin_theta = std::sin(theta_y);
+            rot_y = Mat3( cos_theta,  0.0f, sin_theta,
+                          0.0f,       1.0f,      0.0f,
+                         -sin_theta,  0.0f, cos_theta);
+        }
+        else {
+            rot_y = Identity3;
+        }
+
+        Mat3 rot_z;
+        if(theta_z != 1) {
+            float cos_theta = std::cos(theta_z);
+            float sin_theta = std::sin(theta_z);
+            rot_z = Mat3(cos_theta, -sin_theta, 0.0f,
+                         sin_theta,  cos_theta, 0.0f,
+                         0.0f,       0.0f,      1.0f);
+        }
+        else {
+            rot_z = Identity3;
+        }
+
+        Mat4 transform = static_cast<Mat4>(prev_rotation *
+                                           rot_x * rot_y * rot_z);
+        transform.set_translation(_translation);
+        transform.apply_scale(scale);
+
+        return transform * point;
+    }
 
     Vec4 Mat4::get_world_position() const {
         return Vec4(this->_elem[0][3],
@@ -122,11 +195,52 @@ namespace pdm {
                     _elem[0][3], _elem[1][3], _elem[2][3], _elem[3][3]);
     }
     
-    const Mat4& Mat4::set_translate(const Vec4& t) {
-        _elem[0][3] = t._x;
-        _elem[1][3] = t._y;
-        _elem[2][3] = t._z;
-        _elem[3][3] = t._w;
+    const Mat4& Mat4::set_translation(const Vec4& v) {
+        _elem[0][3] = v._x;
+        _elem[1][3] = v._y;
+        _elem[2][3] = v._z;
+        _elem[3][3] = v._w;
+
+        return *this;
+    }
+    
+    const Mat4& Mat4::set_translation(const Vec3& v) {
+        _elem[0][3] = v._x;
+        _elem[1][3] = v._y;
+        _elem[2][3] = v._z;
+        _elem[3][3] = 1.0f;
+
+        return *this;
+    }
+
+    const Mat4& Mat4::apply_scale(const Vec4 &v) {
+        _elem[0][0] *= v._x;
+        _elem[1][0] *= v._x;
+        _elem[2][0] *= v._x;
+        
+        _elem[0][1] *= v._y;
+        _elem[1][1] *= v._y;
+        _elem[2][1] *= v._y;
+        
+        _elem[0][2] *= v._z;
+        _elem[1][2] *= v._z;
+        _elem[2][2] *= v._z;
+
+        return *this;   
+    }
+
+    const Mat4& Mat4::apply_scale(const Vec3 &v) {
+        _elem[0][0] *= v._x;
+        _elem[1][0] *= v._x;
+        _elem[2][0] *= v._x;
+        
+        _elem[0][1] *= v._y;
+        _elem[1][1] *= v._y;
+        _elem[2][1] *= v._y;
+        
+        _elem[0][2] *= v._z;
+        _elem[1][2] *= v._z;
+        _elem[2][2] *= v._z;
 
         return *this;
     }

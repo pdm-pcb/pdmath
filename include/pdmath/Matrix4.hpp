@@ -1,13 +1,15 @@
 #ifndef PDMATH_MATRIX4_HPP
 #define PDMATH_MATRIX4_HPP
 
+#include <pdmath/Vector3.hpp>
+
 #include <array>
 #include <iostream>
 
 namespace pdm {
     class Point4;
     class Vec4;
-    class Vec3;
+    class Mat3;
 
     class Mat4 {
         public:
@@ -28,6 +30,13 @@ namespace pdm {
                  const float x3, const float y3, const float z3, const float w3,
                  const float x4, const float y4, const float z4, const float w4);
 
+            explicit Mat4(const Mat3 &m);
+
+            static Point4 transform(const Point4 &p, const Vec3 &translation,
+                const float theta_x, const float theta_y, const float theta_z,
+                const Vec3 &prev_translation, const Mat3 &prev_rotation,
+                const Vec3& scale = Vec3(1, 1, 1));
+
             Vec4 get_world_position() const;
 
             float get_x_scale() const;
@@ -43,7 +52,10 @@ namespace pdm {
 
             Mat4 inverse() const;
             Mat4 transpose() const;
-            const Mat4& set_translate(const Vec4& t);
+            const Mat4& set_translation(const Vec4& v);
+            const Mat4& set_translation(const Vec3& v);
+            const Mat4& apply_scale(const Vec4& v);
+            const Mat4& apply_scale(const Vec3& v);
 
             float _elem[4][4];
     
@@ -65,6 +77,11 @@ namespace pdm {
     Vec4   operator*(const Mat4 &m,   const Vec4 &v);
 
     std::ostream& operator<<(std::ostream &os, const Mat4 &m);
+
+    static const Mat4 Identity4(1, 0, 0, 0,
+                                0, 1, 0, 0,
+                                0, 0, 1, 0,
+                                0, 0, 0, 1);
 } // namespace pdm
 
 #endif // PDMATH_MATRIX3_HPP
