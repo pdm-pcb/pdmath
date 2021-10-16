@@ -11,7 +11,7 @@ namespace pdm {
     class Mat4 {
         public:
             Mat4() :
-                _elem{{0}, {0}, {0}}
+                _elem{{0}, {0}, {0}, {0}}
             { }
 
             Mat4(const Point4 &x, const Point4 &y,
@@ -29,6 +29,8 @@ namespace pdm {
 
             Mat4 transpose() const;
 
+            const Mat4& set_translate(const Vec4& t);
+
             float _elem[4][4];
 
             float *_r1 = _elem[0];
@@ -39,21 +41,19 @@ namespace pdm {
             bool operator==(const Mat4 &m) const;
 
             const Mat4& operator*=(const Mat4 &m);
-            const Mat4& operator*=(const float lambda);
+            const Mat4& operator*=(const float scalar);
             const Mat4& operator+=(const Mat4 &m);
             const Mat4& operator-=(const Mat4 &m);
     };
 
     Mat4 operator*(const Mat4 &m, const Mat4 &n);
-    Mat4 operator*(const Mat4 &m, const float lambda);
-    Mat4 operator*(const float lambda, const Mat4 &m);
+    Mat4 operator*(const Mat4 &m, const float scalar);
+    Mat4 operator*(const float scalar, const Mat4 &m);
     Mat4 operator+(const Mat4 &m, const Mat4 &n);
     Mat4 operator-(const Mat4 &m, const Mat4 &n);
 
     Point4 operator*(const Mat4 &m,   const Point4 &p);
-    Point4 operator*(const Point4 &p, const Mat4 &m);
     Vec4   operator*(const Mat4 &m,   const Vec4 &v);
-    Vec4   operator*(const Vec4 &v,   const Mat4 &m);
 
     std::ostream& operator<<(std::ostream &os, const Mat4 &m);
 } // namespace pdm

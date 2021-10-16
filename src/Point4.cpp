@@ -2,14 +2,17 @@
 
 #include "pdmath/Vector4.hpp"
 #include "pdmath/Matrix4.hpp"
-#include "pdmath/Line.hpp"
-#include "pdmath/Plane.hpp"
+#include "pdmath/Point3.hpp"
 
 #include <iomanip>
 
 namespace pdm {
     Point4::Point4(const float x, const float y, const float z, const float w) :
         _x{x}, _y{y}, _z{z}, _w{w}
+    { }
+
+    Point4::Point4(const Point3 &p, const float w) :
+        _x{p._x}, _y{p._y}, _z{p._z}, _w{w}
     { }
 
     bool Point4::is_zero() const {
@@ -80,21 +83,30 @@ namespace pdm {
     }
 
     const Point4& Point4::operator*=(const Mat4 &m) {
-        float x = (m._elem[0][0] * this->_x) +
-                  (m._elem[0][1] * this->_y) +
-                  (m._elem[0][2] * this->_z);
-    
-        float y = (m._elem[1][0] * this->_x) +
-                  (m._elem[1][1] * this->_y) +
-                  (m._elem[1][2] * this->_z);
+        float x = this->_x * m._r1[0] +
+                  this->_y * m._r1[1] +
+                  this->_z * m._r1[2] +
+                  this->_w * m._r1[3];
 
-        float z = (m._elem[2][0] * this->_x) +
-                  (m._elem[2][1] * this->_y) +
-                  (m._elem[2][2] * this->_z);
+        float y = this->_x * m._r2[0] +
+                  this->_y * m._r2[1] +
+                  this->_z * m._r2[2] +
+                  this->_w * m._r2[3];
+
+        float z = this->_x * m._r3[0] +
+                  this->_y * m._r3[1] +
+                  this->_z * m._r3[2] +
+                  this->_w * m._r3[3];
+
+        float w = this->_x * m._r4[0] +
+                  this->_y * m._r4[1] +
+                  this->_z * m._r4[2] +
+                  this->_w * m._r4[3];
         
         this->_x = x;
         this->_y = y;
         this->_z = z;
+        this->_w = w;
 
         return *this;
     }

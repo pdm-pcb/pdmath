@@ -1,5 +1,10 @@
-#include "pdmath/Matrix3.hpp"
+#include "pdmath/Point3.hpp"
 #include "pdmath/Vector3.hpp"
+#include "pdmath/Matrix3.hpp"
+
+#include "pdmath/Point4.hpp"
+#include "pdmath/Vector4.hpp"
+#include "pdmath/Matrix4.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"
@@ -106,18 +111,112 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
 }
 
 TEST_CASE("Triangular game object", "[vectors][matrices]") {
-    Point3 p1(-1, 0, -1);
-    Point3 p2(0, 0, 2);
-    Point3 p3(1, 0, -1);
+    Point4 p1(-1, 0, -1, 1);
+    Point4 p2( 0, 0,  2, 1);
+    Point4 p3( 1, 0, -1, 1);
 
     // Move forward by 7 followed by a rotation about the y axis of 1π/4
+    Vec4 translation(0, 0, 7, 1);
+    float theta = std::numbers::pi_v<float> / 4.0f;
+    float cos_theta = std::cos(theta);
+    float sin_theta = std::sin(theta);
+    Mat4 y_rot(cos_theta,  0.0f, sin_theta, 0.0f,
+               0.0f,       1.0f,      0.0f, 0.0f,
+               -sin_theta, 0.0f, cos_theta, 0.0f,
+               0.0f,       0.0f,      0.0f, 1.0f);
 
+    Mat4 transform = y_rot;
+    transform.set_translate(translation);
+
+    Point4 new_p1 = transform * p1;
+    Point4 new_p2 = transform * p2;
+    Point4 new_p3 = transform * p3;
+
+    REQUIRE(new_p1 == Point4(-1.4142135f, 0.0f, 7.0f, 1.0f));
+    REQUIRE(new_p2 == Point4(1.4142135f, 0.0f, 8.4142132f, 1.0f));
+    REQUIRE(new_p3 == Point4(0.0f, 0.0f, 5.5857863f, 1.0f));
 
     // Move forward by 10 followed by a rotation about the y axis of 2π/4
+    Vec4 prev_trans = translation;
+    Mat4 prev_rot   = y_rot;
 
+    translation = Vec4(0, 0, 10, 0);
+    translation = prev_trans + (prev_rot * translation);
+
+    theta = std::numbers::pi_v<float> / 2.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+    y_rot = Mat4(cos_theta,  0.0f, sin_theta, 0.0f,
+                 0.0f,       1.0f,      0.0f, 0.0f,
+                 -sin_theta, 0.0f, cos_theta, 0.0f,
+                 0.0f,       0.0f,      0.0f, 1.0f);
+
+    y_rot = prev_rot * y_rot;
+
+    std::cout << y_rot << std::endl;
+
+    transform = y_rot;
+    transform.set_translate(translation);
+
+    new_p1 = transform * p1;
+    new_p2 = transform * p2;
+    new_p3 = transform * p3;
+
+    REQUIRE(new_p1 == Vec4(7.0710678f, 0.0f, 15.4852810f, 1.0f));
+    REQUIRE(new_p2 == Vec4(8.4852810f, 0.0f, 12.6568546f, 1.0f));
+    REQUIRE(new_p3 == Vec4(5.6568542f, 0.0f, 14.0710678f, 1.0f));
 
     // Move forward by 7 followed by a rotation about the y axis of -2π/4
+    prev_trans = translation;
+    prev_rot   = y_rot;
 
+    translation = Vec4(0, 0, 7, 0);
+    translation = prev_trans + (prev_rot * translation);
+
+    theta = std::numbers::pi_v<float> / -2.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+    y_rot = Mat4(cos_theta,  0.0f, sin_theta, 0.0f,
+                 0.0f,       1.0f,      0.0f, 0.0f,
+                 -sin_theta, 0.0f, cos_theta, 0.0f,
+                 0.0f,       0.0f,      0.0f, 1.0f);
+
+    y_rot = prev_rot * y_rot;
+    transform = y_rot;
+    transform.set_translate(translation);
+
+    new_p1 = transform * p1;
+    new_p2 = transform * p2;
+    new_p3 = transform * p3;
+
+    REQUIRE(new_p1 == Vec4(10.6066017f, 0.0f, 9.1213198f, 1.0f));
+    REQUIRE(new_p2 == Vec4(13.4350281f, 0.0f, 10.5355330f, 1.0f));
+    REQUIRE(new_p3 == Vec4(12.0208149f, 0.0f, 7.7071061f, 1.0f));
 
     // Move forward by 6 followed by a rotation about the y axis of -3π/4
+    prev_trans = translation;
+    prev_rot   = y_rot;
+
+    translation = Vec4(0, 0, 6, 0);
+    translation = prev_trans + (prev_rot * translation);
+
+    theta = (-3 * std::numbers::pi_v<float>) / 4.0f;
+    cos_theta = std::cos(theta);
+    sin_theta = std::sin(theta);
+    y_rot = Mat4(cos_theta,  0.0f, sin_theta, 0.0f,
+                 0.0f,       1.0f,      0.0f, 0.0f,
+                 -sin_theta, 0.0f, cos_theta, 0.0f,
+                 0.0f,       0.0f,      0.0f, 1.0f);
+
+    y_rot = prev_rot * y_rot;
+    transform = y_rot;
+    transform.set_translate(translation);
+
+    new_p1 = transform * p1;
+    new_p2 = transform * p2;
+    new_p3 = transform * p3;
+
+    REQUIRE(new_p1 == Vec4(17.2634544f, 0.0f, 12.3639603f, 1.0f));
+    REQUIRE(new_p2 == Vec4(14.2634544f, 0.0f, 13.3639603f, 1.0f));
+    REQUIRE(new_p3 == Vec4(17.2634544f, 0.0f, 14.3639603f, 1.0f));
 }

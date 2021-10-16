@@ -5,14 +5,14 @@
 #include <cmath>
 
 namespace pdm {
-    class Line;
-    class Plane;
+    class Point3;
     class Mat4;
 
     class Point4 {
         public:
             Point4() = default;
             Point4(const float x, const float y, const float z, const float w);
+            Point4(const Point3 &p, const float w);
 
             bool is_zero() const;
 

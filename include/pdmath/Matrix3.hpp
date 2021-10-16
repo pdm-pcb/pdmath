@@ -51,9 +51,7 @@ namespace pdm {
     Mat3 operator-(const Mat3 &m, const Mat3 &n);
 
     Point3 operator*(const Mat3 &m,   const Point3 &p);
-    Point3 operator*(const Point3 &p, const Mat3 &m);
     Vec3   operator*(const Mat3 &m,   const Vec3 &v);
-    Vec3   operator*(const Vec3 &v,   const Mat3 &m);
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m);
 } // namespace pdm

@@ -72,7 +72,7 @@ TEST_CASE("Matrices can add", "[matrices]") {
                   -3,  5, -6,
                   -1, -8,  4);
     
-    REQUIRE((m + n)  == solution);    
+    REQUIRE((m + n)  == solution);
     REQUIRE((m += n) == solution);
 
     Mat4 a(-4, -2, -2,  4,
@@ -140,7 +140,7 @@ TEST_CASE("Matrix Vector multiplication works", "[matrices][vectors]") {
 
     Vec3 v(-3, -1, 4);
 
-    REQUIRE((n * v) == Vec3(-7, 6, 11));
+    REQUIRE((m * v) == Vec3(-11, 14, 24));
     REQUIRE((m * n * v) == Vec3(-9, 31, 96));
 
     Mat4 a( 3,  2, 0, -1,
@@ -155,8 +155,8 @@ TEST_CASE("Matrix Vector multiplication works", "[matrices][vectors]") {
 
     Vec4 w(-3, -1, 4, 1);
 
-    REQUIRE((a * w) == Vec4(-12, 10, 24, 19));
-    REQUIRE((a * b * w) == Vec4(14, 62, 88, -19));
+    REQUIRE((a * w)     == Vec4(-12, 10, 24,  19));
+    REQUIRE((a * b * w) == Vec4( 14, 62, 88, -19));
 }
 
 TEST_CASE("Matrices can find their determinants", "[matrices]") {

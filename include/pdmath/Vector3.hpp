@@ -35,8 +35,8 @@ namespace pdm {
             const Vec3& operator*=(const Mat3 &m);
     };
 
-    Vec3 operator+(const Vec3 &v, const Vec3 &t);
-    Vec3 operator-(const Vec3 &v, const Vec3 &t);
+    Vec3 operator+(const Vec3 &v, const Vec3 &w);
+    Vec3 operator-(const Vec3 &v, const Vec3 &w);
 
     Vec3 operator+(const Vec3 &v, const Point3 &p);
     Vec3 operator-(const Vec3 &v, const Point3 &p);
@@ -52,8 +52,6 @@ namespace pdm {
     Vec3 operator-(const float scalar, const Vec3 &v);
     Vec3 operator*(const float scalar, const Vec3 &v);
     Vec3 operator/(const float scalar, const Vec3 &v);
-
-    Vec3 operator* (const Vec3 &p, const Mat3 &m);
 } // namespace pdm
 
 #endif // PDMATH_VECTOR3_HPP
