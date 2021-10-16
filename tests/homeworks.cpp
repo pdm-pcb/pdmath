@@ -130,12 +130,9 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     y_rot *= prev_rot; // redundant for this transformation; just here for
                        // symmetry
 
-    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1,
-                                    prev_trans, prev_rot);
-    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1,
-                                    prev_trans, prev_rot);
-    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1,
-                                    prev_trans, prev_rot);
+    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1);
+    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1);
+    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1);
 
     REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
     REQUIRE(new_p2 == Point4(1.414213f, 0.0f, 8.414213f, 1.0f));
@@ -156,11 +153,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
                 
     y_rot *= prev_rot;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
 
     REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
@@ -182,11 +179,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
                 
     y_rot *= prev_rot;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
 
     REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
@@ -208,11 +205,11 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
 
     y_rot *= prev_rot;
 
-    new_p1 = Mat4::transform(p1, translation, 1, theta, 1,
+    new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
-    new_p2 = Mat4::transform(p2, translation, 1, theta, 1,
+    new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
-    new_p3 = Mat4::transform(p3, translation, 1, theta, 1,
+    new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3One,
                              prev_trans, prev_rot);
 
     REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));

@@ -60,8 +60,8 @@ namespace pdm {
 
     Point4 Mat4::transform(const Point4 &point, const Vec3 &translation,
             const float theta_x, const float theta_y, const float theta_z,
-            const Vec3 &prev_translation, const Mat3 &prev_rotation,
-            const Vec3& scale) {
+            const Vec3& scale,
+            const Vec3 &prev_translation, const Mat3 &prev_rotation) {
         Vec3 _translation = prev_translation + (prev_rotation * translation);
 
         Mat3 rot_x;

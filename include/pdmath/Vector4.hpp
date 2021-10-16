@@ -47,6 +47,9 @@ namespace pdm {
     Vec4 operator-(const float scalar, const Vec4 &v);
     Vec4 operator*(const float scalar, const Vec4 &v);
     Vec4 operator/(const float scalar, const Vec4 &v);
+
+    static const Vec4 Vec4Zero(0, 0, 0, 0);
+    static const Vec4 Vec4One(1, 1, 1, 1);
 } // namespace pdm
 
 #endif // PDMATH_VECTOR3_HPP

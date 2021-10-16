@@ -2,6 +2,7 @@
 #define PDMATH_MATRIX4_HPP
 
 #include <pdmath/Vector3.hpp>
+#include <pdmath/Matrix3.hpp>
 
 #include <array>
 #include <iostream>
@@ -9,7 +10,6 @@
 namespace pdm {
     class Point4;
     class Vec4;
-    class Mat3;
 
     class Mat4 {
         public:
@@ -34,7 +34,13 @@ namespace pdm {
 
             static Point4 transform(const Point4 &p, const Vec3 &translation,
                 const float theta_x, const float theta_y, const float theta_z,
-                const Vec3 &prev_translation, const Mat3 &prev_rotation,
+                const Vec3 &scale            = Vec3One,
+                const Vec3 &prev_translation = Vec3Zero,
+                const Mat3 &prev_rotation    = Identity3);
+
+            static Point4 transform(const Point4 &p, const Vec3 &translation,
+                const float theta_x, const float theta_y, const float theta_z,
+                const Mat4 prev_transform,
                 const Vec3& scale = Vec3(1, 1, 1));
 
             Vec4 get_world_position() const;
