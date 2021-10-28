@@ -61,9 +61,6 @@ TEST_CASE("Quaternions rotate vectors properly", "[vectors][quaternions]") {
     Quat qp_qinv(qp_ * q.inverted());
     Quat result(0.0f, -3.8955910f, -5.8259802f, -4.4589624f);
 
-    std::cout << qp_qinv << std::endl;
-    std::cout << result << std::endl;
-
     REQUIRE(qp_qinv == result);
 
     p     = Vec3(2.0f, 4.0f, -7.0f);

@@ -157,22 +157,37 @@ namespace pdm {
                    this->_elem[1][2] / z_scale,
                    this->_elem[2][2] / z_scale);
         
-        Mat4 t(1.0f, 0.0f, 0.0f, -_elem[0][3],
+        Mat4 t(1.0f, 0.0f, 0.0f, _elem[0][3],
+               0.0f, 1.0f, 0.0f, _elem[1][3],
+               0.0f, 0.0f, 1.0f, _elem[2][3],
+               0.0f, 0.0f, 0.0f, 1.0f);
+
+        Mat4 r(x_rot._x, y_rot._x, z_rot._x, 0.0f,
+               x_rot._y, y_rot._y, z_rot._y, 0.0f,
+               x_rot._z, y_rot._z, z_rot._z, 0.0f,
+               0.0f,     0.0f,     0.0f,     1.0f);
+        
+        Mat4 s(x_scale, 0.0f,      0.0f,      0.0f,
+               0.0f,      y_scale, 0.0f,      0.0f,
+               0.0f,      0.0f,      z_scale, 0.0f,
+               0.0f,      0.0f,      0.0f,      1.0f );
+        
+        Mat4 t_inv(1.0f, 0.0f, 0.0f, -_elem[0][3],
                0.0f, 1.0f, 0.0f, -_elem[1][3],
                0.0f, 0.0f, 1.0f, -_elem[2][3],
                0.0f, 0.0f, 0.0f, 1.0f);
 
-        Mat4 r(x_rot._x, x_rot._y, x_rot._z, 0.0f,
+        Mat4 r_inv(x_rot._x, x_rot._y, x_rot._z, 0.0f,
                y_rot._x, y_rot._y, y_rot._z, 0.0f,
                z_rot._x, z_rot._y, z_rot._z, 0.0f,
                0.0f,     0.0f,     0.0f,     1.0f);
         
-        Mat4 s(1/x_scale, 0.0f,      0.0f,      0.0f,
+        Mat4 s_inv(1/x_scale, 0.0f,      0.0f,      0.0f,
                0.0f,      1/y_scale, 0.0f,      0.0f,
                0.0f,      0.0f,      1/z_scale, 0.0f,
                0.0f,      0.0f,      0.0f,      1.0f );
 
-        return s * r * t;
+        return s_inv * r_inv * t_inv;
     }
 
     Mat4 Mat4::transposed() const {

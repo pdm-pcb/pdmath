@@ -9,6 +9,7 @@ set(
     Quaternion.cpp
     Line.cpp
     Plane.cpp
+    Camera.cpp
 )
 
 add_library(
