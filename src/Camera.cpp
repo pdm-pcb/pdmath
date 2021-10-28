@@ -80,7 +80,12 @@ namespace pdm {
     }
 
     Point4 Camera::persp_ndc(const Point4 &point) const {
-        return _persp_ndc * _world_to_view * point;
+        Point4 new_point(_persp_ndc * _world_to_view * point);
+        new_point._x /= new_point._w;
+        new_point._y /= new_point._w;
+        new_point._z /= new_point._w;
+        new_point._w /= new_point._w;
+        return new_point;
     }
 
     Point4 Camera::persp_screen(const Point4 &point) const {

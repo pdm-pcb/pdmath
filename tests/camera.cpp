@@ -185,11 +185,11 @@ TEST_CASE("Perspective camera can transform points properly", "[cameras]") {
             Point4(8.663158f, -11.038665f, -195.693893f, 1.0f));
 
     REQUIRE(persp.persp_ndc(p1) ==
-            Point4(0.0426061, -0.3812569, 0.990009, 1.0f));
+            Point4(0.023319f, -0.374814f, 0.990016f, 1.0f));
     REQUIRE(persp.persp_ndc(p2) ==
-            Point4(-0.0971699, -0.33095, 0.9899733, 1.0f));
+            Point4(-0.116042f, -0.32117f, 0.989967f, 1.0f));
     REQUIRE(persp.persp_ndc(p3) ==
-            Point4(0.0773758, -0.1414754, 0.9900209, 1.0f));
+            Point4(0.060117f, -0.13618f, 0.990028f, 1.0f));
 
     REQUIRE(persp.persp_screen(p1) ==
             Point4(458.681274f, 295.005493f, 0.800052f, 1.0f));
