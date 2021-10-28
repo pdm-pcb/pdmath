@@ -2,7 +2,7 @@
 
 namespace pdm {
     Camera::Camera(const Vec3 &pos, const Vec3 &target, const Vec3 &up) :
-        _position{pos}, _target{target}, _up{up}, _z_depth{0.0f}
+        _position{pos}, _target{target}, _up{up}
     {
         set_gaze(_position, _target, _up);
     }
@@ -32,7 +32,7 @@ namespace pdm {
                  0, 0, -(2/(far - near)),  -((far + near)/(far - near)),
                  0, 0, 0, 1);
 
-        _ortho_screen =
+        _screen =
             Mat4(x_res/2.0f, 0.0f,        0.0f,         x_res/2.0f,
                  0.0f,       -y_res/2.0f, 0.0f,         y_res/2.0f,
                  0.0f,       0.0f,        z_depth/2.0f, z_depth/2.0f,
@@ -48,7 +48,6 @@ namespace pdm {
 
         _view_to_world = view_to_world();
         _world_to_view = world_to_view();
-        _z_depth = z_depth;
 
         _persp_ndc =
             Mat4((distance / aspect), 0, 0, 0,
@@ -57,7 +56,7 @@ namespace pdm {
                         ((-2 * far * near)/(far - near)),
                  0, 0, -1, 0);
 
-        _persp_screen =
+        _screen =
             Mat4(x_res/2.0f, 0.0f,        0.0f,         x_res/2.0f,
                  0.0f,       -y_res/2.0f, 0.0f,         y_res/2.0f,
                  0.0f,       0.0f,        z_depth/2.0f, z_depth/2.0f,
@@ -76,20 +75,17 @@ namespace pdm {
     }
 
     Point4 Camera::ortho_screen(const Point4 &point) const {
-        return _ortho_screen * _ortho_ndc * _world_to_view * point;
+        return _screen * _ortho_ndc * _world_to_view * point;
     }
 
     Point4 Camera::persp_ndc(const Point4 &point) const {
-        Point4 new_point(_persp_ndc * _world_to_view * point);
-        new_point._x /= new_point._w;
-        new_point._y /= new_point._w;
-        new_point._z /= new_point._w;
-        new_point._w /= new_point._w;
-        return new_point;
+        Point4 result(_persp_ndc * _world_to_view * point);
+        result /= result._w;
+        return result;
     }
 
     Point4 Camera::persp_screen(const Point4 &point) const {
-        return _persp_screen * _persp_ndc * _world_to_view * point;
+        return _screen * persp_ndc(point);
     }
 
     Mat4 Camera::view_to_world() const {

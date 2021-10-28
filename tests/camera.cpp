@@ -52,7 +52,7 @@ TEST_CASE("Orthographic camera can set it's screen projection matrix",
                       0.0f,    0.0f,   0.5f, 0.5f,
                       0.0f,    0.0f,   0.0f, 1.0f);
 
-    REQUIRE(ortho._ortho_screen == ortho_screen);
+    REQUIRE(ortho._screen == ortho_screen);
 }
 
 TEST_CASE("Orthographic camera can transform points properly", "[cameras]") {
@@ -88,26 +88,26 @@ TEST_CASE("Orthographic camera can pick points in space", "[cameras]") {
     Point4 screen_near(505, 558, 0, 1);
     Point4 screen_far (505, 558, 1, 1);
 
-    REQUIRE((ortho._ortho_screen.inverted() * screen_near) == 
+    REQUIRE((ortho._screen.inverted() * screen_near) == 
             Point4(-0.210937f, -0.55f, -1.0f, 1.0f));
-    REQUIRE((ortho._ortho_screen.inverted() * screen_near) == 
+    REQUIRE((ortho._screen.inverted() * screen_near) == 
             Point4(-0.210937f, -0.55f, 1.0f, 1.0f));
 
-    REQUIRE((ortho._ortho_ndc.inverted() * ortho._ortho_screen.inverted() *
+    REQUIRE((ortho._ortho_ndc.inverted() * ortho._screen.inverted() *
              screen_near) == 
             Point4(-147.65625f, -216.700012f, -1.0f, 1.0f));
-    REQUIRE((ortho._ortho_ndc.inverted() * ortho._ortho_screen.inverted() *
+    REQUIRE((ortho._ortho_ndc.inverted() * ortho._screen.inverted() *
              screen_far) == 
             Point4(-147.65625f, -216.7000122f, -7000.0f, 1.0f));
 
     REQUIRE((ortho._view_to_world *
              ortho._ortho_ndc.inverted() *
-             ortho._ortho_screen.inverted() *
+             ortho._screen.inverted() *
              screen_near) == 
             Point4(-136.788696f, -178.200805f, 130.535583f, 1.0f));
     REQUIRE((ortho._view_to_world *
              ortho._ortho_ndc.inverted() *
-             ortho._ortho_screen.inverted() *
+             ortho._screen.inverted() *
              screen_far) == 
             Point4(-5850.113281f, 3824.128418f, -439.796264f, 1.0f));
 }
@@ -167,7 +167,7 @@ TEST_CASE("Perspective camera can set it's screen projection matrix",
                       0.0f,    0.0f,   0.5f, 0.5f,
                       0.0f,    0.0f,   0.0f, 1.0f);
 
-    REQUIRE(persp._persp_screen == persp_screen);
+    REQUIRE(persp._screen == persp_screen);
 }
 
 TEST_CASE("Perspective camera can transform points properly", "[cameras]") {

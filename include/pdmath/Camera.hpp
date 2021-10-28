@@ -31,12 +31,10 @@ namespace pdm {
 
             Mat4 _view_to_world;
             Mat4 _world_to_view;
+            Mat4 _screen;
 
             Mat4 _ortho_ndc;
-            Mat4 _ortho_screen;
-
             Mat4 _persp_ndc;
-            Mat4 _persp_screen;
     
             Camera()  = default;
             Camera(const Vec3 &pos, const Vec3 &target, const Vec3 &up);
@@ -47,8 +45,6 @@ namespace pdm {
             Vec3 _target;
             Vec3 _gaze;
             Vec3 _up;
-
-            float _z_depth;
 
             Mat4   view_to_world() const;
             Mat4   world_to_view() const;
