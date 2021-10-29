@@ -65,8 +65,9 @@ namespace pdm {
         _persp_ndc =
             Mat4((distance / aspect), 0, 0, 0,
                  0, distance, 0, 0,
-                 0, 0, -((far + near)/(far - near)),
-                        ((-2 * far * near)/(far - near)),
+                 0, 0,
+                 -((far + near)/(far - near)),
+                 ((-2 * far * near)/(far - near)),
                  0, 0, -1, 0);
 
         _screen =

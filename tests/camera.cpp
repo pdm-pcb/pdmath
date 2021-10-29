@@ -58,7 +58,7 @@ TEST_CASE("Orthographic camera can transform points properly", "[cameras]") {
     Point4 p3(-4510.0f, 3305.0f, -332.0f, 1.0f);
 
     REQUIRE(ortho.view(p1) ==
-            Point4(-198.317367f, 71.132431f, -5600.567871f, 1.0f));
+            Point4(-198.317306f, 71.132675f, -5600.567382f, 1.0f));
     REQUIRE(ortho.view(p2) ==
             Point4(-143.697403f, 147.85704f, -5600.668945f, 1.0f));
     REQUIRE(ortho.view(p3) ==
@@ -72,11 +72,11 @@ TEST_CASE("Orthographic camera can transform points properly", "[cameras]") {
             Point4(-0.174006f, 0.320036f, 0.600061f, 1.0f));
 
     REQUIRE(ortho.ortho_screen(p1) ==
-            Point4(458.681274f, 295.005493f, 0.800052f, 1.0f));
+            Point4(458.681304f, 295.005981f, 0.800052f, 1.0f));
     REQUIRE(ortho.ortho_screen(p2) ==
-            Point4(508.619537f, 224.901779f, 0.800067f, 1.0f));
+            Point4(508.619537f, 224.902267f, 0.800067f, 1.0f));
     REQUIRE(ortho.ortho_screen(p3) ==
-            Point4(528.635925f, 244.786895f, 0.80003f, 1.0f));
+            Point4(528.635986f, 244.787368f, 0.800030f, 1.0f));
 }
 
 TEST_CASE("Orthographic camera can pick points in space", "[cameras]") {
@@ -99,12 +99,12 @@ TEST_CASE("Orthographic camera can pick points in space", "[cameras]") {
              ortho._ortho_ndc.inverted() *
              ortho._screen.inverted() *
              screen_near) == 
-            Point4(-136.788696f, -178.200805f, 130.535583f, 1.0f));
+            Point4(-136.788665f, -178.200897f, 130.535522f, 1.0f));
     REQUIRE((ortho._view_to_world *
              ortho._ortho_ndc.inverted() *
              ortho._screen.inverted() *
              screen_far) == 
-            Point4(-5850.113281f, 3824.128418f, -439.796264f, 1.0f));
+            Point4(-5850.112793f, 3824.128418f, -439.796386f, 1.0f));
 }
 
 //
@@ -128,7 +128,7 @@ TEST_CASE("Perspective camera gives correct View-to-World matrix",
 
 TEST_CASE("Perspective camera gives correct World-to-View matrix",
           "[cameras][matrices]") {
-    Mat4 wtv(0.921135f,  0.0f,      0.389241f, -6.694538f,
+    Mat4 wtv(0.921136f, -0.0f,      0.389241f, -6.694539f,
             -0.307815f,  0.612063f, 0.728442f,  0.273628f,
             -0.238240f, -0.790808f, 0.563794f, -1.052748f,
              0.0f,       0.0f,      0.0f,       1.0f);
@@ -165,11 +165,11 @@ TEST_CASE("Perspective camera can transform points properly", "[cameras]") {
     Point4 p3(64.0f, 147.0f, -112.0f, 1.0f);
 
     REQUIRE(persp.view(p1) ==
-            Point4(3.356437f, -30.346321f, -195.463134f, 1.0f));
+            Point4(3.356436f, -30.346324f, -195.46315f, 1.0f));
     REQUIRE(persp.view(p2) ==
-            Point4(-16.623245f, -25.879653f, -194.53511f, 1.0f));
+            Point4(-16.623247f, -25.879653f, -194.535141f, 1.0f));
     REQUIRE(persp.view(p3) ==
-            Point4(8.663158f, -11.038665f, -195.693893f, 1.0f));
+            Point4(8.66316f, -11.038673f, -195.693908f, 1.0f));
 
     REQUIRE(persp.persp_ndc(p1) ==
             Point4(0.023319f, -0.374814f, 0.990016f, 1.0f));
@@ -179,7 +179,7 @@ TEST_CASE("Perspective camera can transform points properly", "[cameras]") {
             Point4(0.060117f, -0.13618f, 0.990028f, 1.0f));
 
     REQUIRE(persp.persp_screen(p1) ==
-            Point4(654.924255f, 494.933349f, 0.995008f, 1.0f));
+            Point4(654.924255f, 494.93338f, 0.995008f, 1.0f));
     REQUIRE(persp.persp_screen(p2) ==
             Point4(577.8112f, 479.142f, 0.994987f, 1.0f));
     REQUIRE(persp.persp_screen(p3) ==
@@ -190,92 +190,24 @@ TEST_CASE("Perspective camera can pick points in space", "[cameras]") {
     Point4 screen_near(383, 5, 0, 1);
     Point4 screen_far (383, 5, 1, 1);
 
-    std::cout << "Screen\n"          << persp._screen               << "\n"
-              << "Inverted Screen\n" << persp._screen.inverted()    << "\n\n"
-              << "NDC\n"             << persp._persp_ndc            << "\n"
-              << "Inverted NDC\n"    << persp._persp_ndc.inverted() << "\n\n"
-              << "View\n"            << persp._world_to_view        << "\n"
-              << "Inverted View\n"   << persp._view_to_world        << "\n"
-              << std::endl;
-
     Point4 ndc_near = persp._screen.inverted() * screen_near;
     Point4 ndc_far  = persp._screen.inverted() * screen_far;
 
     Point4 persp_near = persp._persp_ndc.inverted() * ndc_near;
     Point4 persp_far  = persp._persp_ndc.inverted() * ndc_far;
     
-    Point4 cam_near = persp_near / persp_near._w;
-    Point4 cam_far  = persp_far  / persp_far._w;
+    Point4 cam_near = persp._view_to_world * persp_near;
+    Point4 cam_far  = persp._view_to_world * persp_far;
 
-    Point4 world_near = persp._view_to_world * cam_near;
-    Point4 world_far  = persp._view_to_world * cam_far;
+    Point4 world_near = cam_near / cam_near._w;
+    Point4 world_far  = cam_far  / cam_far._w;
 
-    std::cout << "NDC\n"
-              << "I near " << ndc_near << "\n"
-              << "A near " << Point4(-0.401563f, 0.9861111f, -1.0f, 1.0f) << "\n"
-              << "I far  " << ndc_far << "\n"
-              << "A far  " << Point4(-0.401563f, 0.9861111f, 1.0f, 1.0f) << "\n"
-              << std::endl;
-
-    std::cout << "Perspective Homogeneous\n"
-              << "I near " << persp_near << "\n"
-              << "A near " << Point4(-0.295702f, 0.4084606f, -1.0f, 1.0f) << "\n"
-              << "I far  " << persp_far << "\n"
-              << "A far  " << Point4(-0.295702f, 0.4084606f, -1.0f, 0.000125f) << "\n"
-              << std::endl;
-
-    std::cout << "Camera\n"
-              << "I near " << cam_near << "\n"
-              << "A near " << Point4(5.831667f, 0.041653f, 2.624629, 1.0f) << "\n"
-              << "I far  " << cam_far << "\n"
-              << "A far  " << Point4(-0.167583, 1.0415277, -0.374996, 0.000125) << "\n"
-              << std::endl;
-
-    std::cout << "World\n"
-              << "I near " << world_near << "\n"
-              << "A near " << Point4(5.831667f, 0.041653f, 2.624629, 1.0f) << "\n"
-              << "I far  " << world_far << "\n"
-              << "A far  " << Point4(-1340.662f, 8332.2217f, -2999.972f, 1.0f) << "\n"
-              << std::endl;
+    REQUIRE(ndc_near   == Point4(-0.401563f, 0.9861111f, -1.0f,      1.0f));
+    REQUIRE(ndc_far    == Point4(-0.401563f, 0.9861111f,  1.0f,      1.0f));
+    REQUIRE(persp_near == Point4(-0.295702f, 0.4084606f, -1.0f,      1.0f));
+    REQUIRE(persp_far  == Point4(-0.295702f, 0.4084606f, -1.0f,      0.000125f));
+    REQUIRE(cam_near   == Point4( 5.840127f, 0.040812f,   2.618646f, 1.0f));
+    REQUIRE(cam_far    == Point4(-0.159122f, 1.040687f,  -0.380978f, 0.000125f));
+    REQUIRE(world_near == Point4( 5.840127f, 0.040812f,   2.618646f, 1.0f));
+    REQUIRE(world_far  == Point4(-1273.375f, 8328.088867f, -3048.777832f, 1.0f));
 }
-
-// TEST_CASE("Homework 5") {
-//     Camera camera(Vec3(8, -5, -1), Vec3(-47, 439, -223), Vec3(0, 1, 0));
-//     camera.set_ortho(-800, 800, 422, -422, 1, 5000, 2048, 1080, 1);
-
-//     std::cout << "View-to-World:\n" << camera._view_to_world << "\n\n"
-//               << "World-to-View:\n" << camera._world_to_view << "\n\n"
-//               << "Orthographic:\n"  << camera._ortho_ndc     << "\n\n"
-//               << "Viewport:\n"      << camera._screen        << "\n\n"
-//               << std::endl;
-
-//     Point4 p1(-1080, 3569, -1581, 1);
-//     Point4 p2(-1010, 3605, -1527, 1);
-//     Point4 p3(-993, 3594, -1552, 1);
-
-//     std::cout << "p1 wtv:    " << camera.view(p1)         << "\n"
-//               << "p1 ortho:  " << camera.ortho_ndc(p1)    << "\n"
-//               << "p1 screen: " << camera.ortho_screen(p1) << "\n\n"
-
-//               << "p2 wtv:    " << camera.view(p2)         << "\n"
-//               << "p2 ortho:  " << camera.ortho_ndc(p2)    << "\n"
-//               << "p2 screen: " << camera.ortho_screen(p2) << "\n\n"
-
-//               << "p3 wtv:    " << camera.view(p3)         << "\n"
-//               << "p3 ortho:  " << camera.ortho_ndc(p3)    << "\n"
-//               << "p3 screen: " << camera.ortho_screen(p3) << "\n"
-//               << std::endl;
-
-//     Point4 screen_near(1269, 596, 0, 1);
-//     Point4 screen_far (1269, 596, 1, 1);
-
-//     std::cout << "ndc near: " << ortho._screen.inverted() * screen_near << "\n"
-//               << "ndc far:  " << ortho._screen.inverted() * screen_far << "\n\n"
-              
-//               << "camera near: " << ortho._ortho_ndc.inverted() * ortho._screen.inverted() * screen_near << "\n"
-//               << "camera far:  " << ortho._ortho_ndc.inverted() * ortho._screen.inverted() * screen_far << "\n\n"
-              
-//               << "world near: " << ortho._view_to_world * ortho._ortho_ndc.inverted() * ortho._screen.inverted() * screen_near << "\n"
-//               << "world far:  " << ortho._view_to_world * ortho._ortho_ndc.inverted() * ortho._screen.inverted() * screen_far << "\n\n"
-//               << std::endl;
-// }
