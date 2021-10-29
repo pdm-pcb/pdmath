@@ -11,7 +11,7 @@ namespace pdm {
     class Mat3 {
         public:
             Mat3() :
-                _elem{{0}, {0}, {0}}
+                _m{{0}, {0}, {0}}
             { }
 
             Mat3(const Point3 &x, const Point3 &y, const Point3 &z);
@@ -37,7 +37,7 @@ namespace pdm {
             void get_euler_xyz(Vec3 &ans1, Vec3 &ans2) const;
             void get_euler_zxy(Vec3 &ans1, Vec3 &ans2) const;
 
-            float _elem[3][3];
+            float _m[3][3];
     
             bool operator==(const Mat3 &m) const;
 

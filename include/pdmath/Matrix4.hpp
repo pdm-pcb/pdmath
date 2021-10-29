@@ -14,7 +14,7 @@ namespace pdm {
     class Mat4 {
         public:
             Mat4() :
-                _elem{{0}, {0}, {0}, {0}}
+                _m{{0}, {0}, {0}, {0}}
             { }
 
             Mat4(const Point4 &x, const Point4 &y,
@@ -66,7 +66,7 @@ namespace pdm {
             const Mat4& apply_scale(const Vec4& v);
             const Mat4& apply_scale(const Vec3& v);
 
-            float _elem[4][4];
+            float _m[4][4];
     
             bool operator==(const Mat4 &m) const;
 

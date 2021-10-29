@@ -94,17 +94,17 @@ namespace pdm {
     }
 
     const Point3& Point3::operator*=(const Mat3 &m) {
-        float x = this->_x * m._elem[0][0] +
-                  this->_y * m._elem[0][1] +
-                  this->_z * m._elem[0][2];
+        float x = this->_x * m._m[0][0] +
+                  this->_y * m._m[0][1] +
+                  this->_z * m._m[0][2];
 
-        float y = this->_x * m._elem[1][0] +
-                  this->_y * m._elem[1][1] +
-                  this->_z * m._elem[1][2];
+        float y = this->_x * m._m[1][0] +
+                  this->_y * m._m[1][1] +
+                  this->_z * m._m[1][2];
 
-        float z = this->_x * m._elem[2][0] +
-                  this->_y * m._elem[2][1] +
-                  this->_z * m._elem[2][2];
+        float z = this->_x * m._m[2][0] +
+                  this->_y * m._m[2][1] +
+                  this->_z * m._m[2][2];
         
         this->_x = x;
         this->_y = y;
