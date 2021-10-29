@@ -185,3 +185,31 @@ TEST_CASE("Perspective camera can transform points properly", "[cameras]") {
     REQUIRE(persp.persp_screen(p3) ==
             Point4(678.474853f, 409.025024f, 0.995014f, 1.0f));
 }
+
+TEST_CASE("Perspective camera can pick points in space", "[cameras]") {
+    Point4 screen_near(383, 5, 0, 1);
+    Point4 screen_far (383, 5, 1, 1);
+
+    REQUIRE((persp._screen.inverted() * screen_near) == 
+            Point4(-0.401563f, 0.9861111f, -1.0f, 1.0f));
+    REQUIRE((persp._screen.inverted() * screen_near) == 
+            Point4(-0.401563f, 0.9861111f, 1.0f, 1.0f));
+
+    REQUIRE((persp._persp_ndc.inverted() * persp._screen.inverted() *
+             screen_near) == 
+            Point4(-0.295702f, 0.4084606f, -1.0f, 1.0f));
+    REQUIRE((persp._persp_ndc.inverted() * persp._screen.inverted() *
+             screen_far) == 
+            Point4(-0.295702f, 0.4084606f, -1.0f, 0.000125f));
+
+    REQUIRE((persp._view_to_world *
+             persp._persp_ndc.inverted() *
+             persp._screen.inverted() *
+             screen_near) == 
+            Point4(-136.788696f, -178.200805f, 130.535583f, 1.0f));
+    REQUIRE((persp._view_to_world *
+             persp._persp_ndc.inverted() *
+             persp._screen.inverted() *
+             screen_far) == 
+            Point4(-5850.113281f, 3824.128418f, -439.796264f, 1.0f));
+}
