@@ -9,7 +9,7 @@ namespace pdm {
     class Camera {
         public:
 
-            void set_gaze(const Vec3 &pos, const Vec3 &target, const Vec3 &up);
+            void set_view(const Vec3 &pos, const Vec3 &target, const Vec3 &up);
 
             void set_ortho(const float left,  const float right,
                            const float top,   const float bottom,
@@ -45,9 +45,6 @@ namespace pdm {
             Vec3 _target;
             Vec3 _gaze;
             Vec3 _up;
-
-            Mat4   view_to_world() const;
-            Mat4   world_to_view() const;
     };
 }
 
