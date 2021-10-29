@@ -16,9 +16,19 @@ namespace pdm {
         _gaze._x *= -1;
         _gaze._y *= -1;
         _gaze._z *= -1;
+        
+        // std::cout << "\n\n-----------------------------------------\n";
+        // std::cout << "gaze: " << (_target - _position) << std::endl;
+        // std::cout << "gaze normalized: " << _gaze << std::endl;
 
-        Vec3 v_side = _up.cross(_gaze).normalized();
-        Vec3 v_up   = _gaze.cross(v_side).normalized();
+        Vec3 v_side = _up.cross(_gaze);
+        // std::cout << "v_side: " << v_side << std::endl;
+        v_side = v_side.normalized();
+        // std::cout << "v_side n: " << v_side << std::endl;
+        Vec3 v_up   = _gaze.cross(v_side);
+        // std::cout << "v_up: " << v_up << std::endl;
+        v_up = v_up.normalized();
+        // std::cout << "v_up n: " << v_up << std::endl;
 
         _view_to_world = Mat4(v_side._x, v_up._x, _gaze._x, _position._x,
                               v_side._y, v_up._y, _gaze._y, _position._y,

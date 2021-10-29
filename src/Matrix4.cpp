@@ -140,7 +140,7 @@ namespace pdm {
 
     }
 
-    Mat4 Mat4::inverted() const {
+    Mat4 Mat4::inverted_trs() const {
         float x_scale = get_x_scale();
         float y_scale = get_y_scale();
         float z_scale = get_z_scale();
@@ -188,6 +188,51 @@ namespace pdm {
                0.0f,      0.0f,      0.0f,      1.0f );
 
         return s_inv * r_inv * t_inv;
+    }
+
+    Mat4 Mat4::inverted() const {
+        float A2323 = _elem[2][2] * _elem[3][3] - _elem[2][3] * _elem[3][2];
+        float A1323 = _elem[2][1] * _elem[3][3] - _elem[2][3] * _elem[3][1];
+        float A1223 = _elem[2][1] * _elem[3][2] - _elem[2][2] * _elem[3][1];
+        float A0323 = _elem[2][0] * _elem[3][3] - _elem[2][3] * _elem[3][0];
+        float A0223 = _elem[2][0] * _elem[3][2] - _elem[2][2] * _elem[3][0];
+        float A0123 = _elem[2][0] * _elem[3][1] - _elem[2][1] * _elem[3][0];
+        float A2313 = _elem[1][2] * _elem[3][3] - _elem[1][3] * _elem[3][2];
+        float A1313 = _elem[1][1] * _elem[3][3] - _elem[1][3] * _elem[3][1];
+        float A1213 = _elem[1][1] * _elem[3][2] - _elem[1][2] * _elem[3][1];
+        float A2312 = _elem[1][2] * _elem[2][3] - _elem[1][3] * _elem[2][2];
+        float A1312 = _elem[1][1] * _elem[2][3] - _elem[1][3] * _elem[2][1];
+        float A1212 = _elem[1][1] * _elem[2][2] - _elem[1][2] * _elem[2][1];
+        float A0313 = _elem[1][0] * _elem[3][3] - _elem[1][3] * _elem[3][0];
+        float A0213 = _elem[1][0] * _elem[3][2] - _elem[1][2] * _elem[3][0];
+        float A0312 = _elem[1][0] * _elem[2][3] - _elem[1][3] * _elem[2][0];
+        float A0212 = _elem[1][0] * _elem[2][2] - _elem[1][2] * _elem[2][0];
+        float A0113 = _elem[1][0] * _elem[3][1] - _elem[1][1] * _elem[3][0];
+        float A0112 = _elem[1][0] * _elem[2][1] - _elem[1][1] * _elem[2][0];
+
+        float det = _elem[0][0] * ( _elem[1][1] * A2323 - _elem[1][2] * A1323 + _elem[1][3] * A1223 )
+                  - _elem[0][1] * ( _elem[1][0] * A2323 - _elem[1][2] * A0323 + _elem[1][3] * A0223 )
+                  + _elem[0][2] * ( _elem[1][0] * A1323 - _elem[1][1] * A0323 + _elem[1][3] * A0123 )
+                  - _elem[0][3] * ( _elem[1][0] * A1223 - _elem[1][1] * A0223 + _elem[1][2] * A0123 );
+        det = 1 / det;
+
+        return Mat4(
+        det *   ( _elem[1][1] * A2323 - _elem[1][2] * A1323 + _elem[1][3] * A1223 ),
+        det * - ( _elem[0][1] * A2323 - _elem[0][2] * A1323 + _elem[0][3] * A1223 ),
+        det *   ( _elem[0][1] * A2313 - _elem[0][2] * A1313 + _elem[0][3] * A1213 ),
+        det * - ( _elem[0][1] * A2312 - _elem[0][2] * A1312 + _elem[0][3] * A1212 ),
+        det * - ( _elem[1][0] * A2323 - _elem[1][2] * A0323 + _elem[1][3] * A0223 ),
+        det *   ( _elem[0][0] * A2323 - _elem[0][2] * A0323 + _elem[0][3] * A0223 ),
+        det * - ( _elem[0][0] * A2313 - _elem[0][2] * A0313 + _elem[0][3] * A0213 ),
+        det *   ( _elem[0][0] * A2312 - _elem[0][2] * A0312 + _elem[0][3] * A0212 ),
+        det *   ( _elem[1][0] * A1323 - _elem[1][1] * A0323 + _elem[1][3] * A0123 ),
+        det * - ( _elem[0][0] * A1323 - _elem[0][1] * A0323 + _elem[0][3] * A0123 ),
+        det *   ( _elem[0][0] * A1313 - _elem[0][1] * A0313 + _elem[0][3] * A0113 ),
+        det * - ( _elem[0][0] * A1312 - _elem[0][1] * A0312 + _elem[0][3] * A0112 ),
+        det * - ( _elem[1][0] * A1223 - _elem[1][1] * A0223 + _elem[1][2] * A0123 ),
+        det *   ( _elem[0][0] * A1223 - _elem[0][1] * A0223 + _elem[0][2] * A0123 ),
+        det * - ( _elem[0][0] * A1213 - _elem[0][1] * A0213 + _elem[0][2] * A0113 ),
+        det *   ( _elem[0][0] * A1212 - _elem[0][1] * A0212 + _elem[0][2] * A0112 ));
     }
 
     Mat4 Mat4::transposed() const {

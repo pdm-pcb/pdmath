@@ -58,6 +58,7 @@ namespace pdm {
             Vec3 get_y_unit_vector() const;
             Vec3 get_z_unit_vector() const;
 
+            Mat4 inverted_trs() const;
             Mat4 inverted() const;
             Mat4 transposed() const;
             const Mat4& set_translation(const Vec4& v);
