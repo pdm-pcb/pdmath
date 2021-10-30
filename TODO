@@ -1,0 +1,3 @@
+2021-10-29:
+    - Camera::direction_to_point() returns negative results unexpectedly
+    - Dot product in tests/camera.cpp:275+ are off by one whole number each

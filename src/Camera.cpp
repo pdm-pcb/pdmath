@@ -98,4 +98,18 @@ namespace pdm {
     Point4 Camera::persp_screen(const Point4 &point) const {
         return _screen * persp_ndc(point);
     }
+
+    Vec4 Camera::face_normal(const Point4 &a, const Point4 &b,
+                             const Point4 &c) const {
+        Point3 _a(a._x, a._y, a._z);
+        Point3 _b(b._x, b._y, b._z);
+        Point3 _c(c._x, c._y, c._z);
+
+        return Vec4(
+        ((static_cast<Vec3>(_b) - _a).cross(static_cast<Vec3>(_c) - _a)), 1.0f);
+    }
+
+    Vec4 Camera::direction_to_point(const Point4 &p) const {
+        return p - Vec4(_position, 0.0f) *= -1;
+    }
 }

@@ -3,6 +3,7 @@
 
 #include "pdmath/Point4.hpp"
 #include "pdmath/Vector3.hpp"
+#include "pdmath/Vector4.hpp"
 #include "pdmath/Matrix4.hpp"
 
 namespace pdm {
@@ -28,6 +29,11 @@ namespace pdm {
 
             Point4 persp_ndc(const Point4 &point) const;
             Point4 persp_screen(const Point4 &point) const;
+
+            Vec4 face_normal(const Point4 &a, const Point4 &b,
+                             const Point4 &c) const;
+
+            Vec4 direction_to_point(const Point4 &p) const;
 
             Mat4 _view_to_world;
             Mat4 _world_to_view;

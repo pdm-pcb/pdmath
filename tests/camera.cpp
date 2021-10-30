@@ -211,3 +211,69 @@ TEST_CASE("Perspective camera can pick points in space", "[cameras]") {
     REQUIRE(world_near == Point4( 5.840127f, 0.040812f,   2.618646f, 1.0f));
     REQUIRE(world_far  == Point4(-1273.375f, 8328.088867f, -3048.777832f, 1.0f));
 }
+
+TEST_CASE("World space face culling", "[cameras]") {
+    Point4 p1(0, 1, 0, 1);
+    Point4 p2(0, 0, 2, 1);
+    Point4 p3(-1, 0, -1, 1);
+    Point4 p4(1, 0, -1, 1);
+
+    Mat4 tgo_w( 0.706124f, 0.120803f, 0.697708f,  2.0f,
+               -0.6819f,   0.381532f, 0.624061f, -4.0f,
+               -0.19081f, -0.91643f,  0.351784f,  4.0f,
+                0.0f,      0.0f,      0.0f,      1.0f);
+
+    Camera tgo_cam(Vec3(-5, -4, -2), Vec3(2, -4, 4), Vec3(0, 1, 0));
+    tgo_cam.set_persp(1.0f, 1000.0f, 1280.0f, 720.0f,
+                      std::numbers::pi_v<float> / 3.0f, 1.0f);
+
+    Mat4 vtw(-0.650791f, 0.0f, -0.759256f, -5.0f,
+              0.0f,      1.0f,  0.0f,      -4.0f,
+              0.759256f, 0.0f, -0.650791f, -2.0f,
+              0.0f,      0.0f,  0.0f,       1.0f);
+
+    Mat4 wtv(-0.650791f, 0.0f,  0.759256f, -1.735443f,
+              0.0f,      1.0f,  0.0f,       4.0f,
+             -0.759256f, 0.0f, -0.650791f, -5.097865f,
+              0.0f,      0.0f,  0.0f,       1.0f);
+
+    Mat4 proj(0.974278f, 0.0f,       0.0f,       0.0f,
+              0.0f,      1.73205f,   0.0f,       0.0f,
+              0.0f,      0.0f,      -1.002002f, -2.002002f,
+              0.0f,      0.0f,      -1.0f,       0.0f);
+
+    REQUIRE(tgo_cam._view_to_world == vtw);
+    REQUIRE(tgo_cam._world_to_view == wtv);
+    REQUIRE(tgo_cam._persp_ndc     == proj);
+
+    Point4 p1_prime(2.120803f, -3.61847f, 3.083572f, 1.0f);
+    Point4 p2_prime(3.395416f, -2.75188f, 4.703567f, 1.0f);
+    Point4 p3_prime(0.596169f, -3.94217f, 3.839025f, 1.0f);
+    Point4 p4_prime(2.008416f, -5.30596f, 3.457407f, 1.0f);
+
+    REQUIRE(tgo_cam.persp_ndc(p1) == p1_prime);
+    REQUIRE(tgo_cam.persp_ndc(p2) == p2_prime);
+    REQUIRE(tgo_cam.persp_ndc(p3) == p3_prime);
+    REQUIRE(tgo_cam.persp_ndc(p4) == p4_prime);
+
+    Vec4 r_normal = tgo_cam.face_normal(p1_prime, p2_prime, p4_prime);
+    Vec4 g_normal = tgo_cam.face_normal(p1_prime, p4_prime, p3_prime);
+    Vec4 b_normal = tgo_cam.face_normal(p1_prime, p3_prime, p2_prime);
+    Vec4 w_normal = tgo_cam.face_normal(p2_prime, p3_prime, p4_prime);
+
+    REQUIRE(r_normal == Vec4( 3.057687f, -0.658561f, -2.053503f,   1.0f));
+    REQUIRE(g_normal == Vec4(-1.153809f, -0.485058f, -2.536425f,  1.0f));
+    REQUIRE(b_normal == Vec4(-1.17906f,   3.432811f, -0.90865f,  1.0f));
+    REQUIRE(w_normal == Vec4(-0.72482f,  -2.28919f,   5.498568f, 1.0f));
+
+    Vec4 camera_to_p1 = tgo_cam.direction_to_point(p1_prime);
+    Vec4 camera_to_p2 = tgo_cam.direction_to_point(p2_prime);
+
+    REQUIRE(camera_to_p1 == Vec4(7.120802f, 0.38153f, 5.083571f, 1.0f));
+    REQUIRE(camera_to_p2 == Vec4(8.39542f, 1.248122f, 6.703567f, 1.0f));
+
+    REQUIRE(camera_to_p1.dot(r_normal) == Catch::Approx( 12.0828f));
+    REQUIRE(camera_to_p1.dot(g_normal) == Catch::Approx(-20.2952f));
+    REQUIRE(camera_to_p1.dot(b_normal) == Catch::Approx(-10.7053f));
+    REQUIRE(camera_to_p2.dot(w_normal) == Catch::Approx( 28.9177f));
+}
