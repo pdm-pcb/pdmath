@@ -8,9 +8,9 @@
 namespace pdm {
     class Quat {
         public:
-            Quat() = default;
-            Quat(float theta, Vec3 axis);
-            Quat(float theta, float x, float y, float z);
+            Quat() noexcept = default;
+            Quat(float theta, Vec3 axis) noexcept;
+            Quat(float theta, float x, float y, float z) noexcept;
 
             Quat inverted();
             Quat normalized();

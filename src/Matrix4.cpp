@@ -9,7 +9,7 @@
 
 namespace pdm {
     Mat4::Mat4(const Point4 &x, const Point4 &y,
-               const Point4 &z, const Point4 &w) :
+               const Point4 &z, const Point4 &w) noexcept:
         _m{{x._x, y._x, z._x, w._x},
               {x._y, y._y, z._y, w._y},
               {x._z, y._z, z._z, w._z},
@@ -19,7 +19,7 @@ namespace pdm {
     Mat4::Mat4(const std::array<float, 4> &x,
                const std::array<float, 4> &y,
                const std::array<float, 4> &z,
-               const std::array<float, 4> &w) :
+               const std::array<float, 4> &w) noexcept:
         _m{{x[0], y[0], z[0], w[0]},
               {x[1], y[1], z[0], w[0]},
               {x[2], y[2], z[2], w[2]},
@@ -29,14 +29,15 @@ namespace pdm {
     Mat4::Mat4(const float x1, const float y1, const float z1, const float w1,
                const float x2, const float y2, const float z2, const float w2,
                const float x3, const float y3, const float z3, const float w3,
-               const float x4, const float y4, const float z4, const float w4) :
+               const float x4, const float y4, const float z4, const float w4)
+               noexcept :
         _m{{x1, y1, z1, w1},
               {x2, y2, z2, w2},
               {x3, y3, z3, w3},
               {x4, y4, z4, w4}}
     { }
 
-    Mat4::Mat4(const Mat3 &m) {
+    Mat4::Mat4(const Mat3 &m) noexcept {
         _m[0][0] = m._m[0][0];
         _m[0][1] = m._m[0][1];
         _m[0][2] = m._m[0][2];

@@ -10,19 +10,19 @@ namespace pdm {
 
     class Mat3 {
         public:
-            Mat3() :
+            Mat3() noexcept:
                 _m{{0}, {0}, {0}}
             { }
 
-            Mat3(const Point3 &x, const Point3 &y, const Point3 &z);
+            Mat3(const Point3 &x, const Point3 &y, const Point3 &z) noexcept;
             
             Mat3(const std::array<float, 3> &x,
                  const std::array<float, 3> &y,
-                 const std::array<float, 3> &z);
+                 const std::array<float, 3> &z) noexcept;
             
             Mat3(const float x1, const float y1, const float z1,
                  const float x2, const float y2, const float z2,
-                 const float x3, const float y3, const float z3);
+                 const float x3, const float y3, const float z3) noexcept;
 
             static const Mat3 identity;
 
@@ -42,14 +42,14 @@ namespace pdm {
             bool operator==(const Mat3 &m) const;
 
             const Mat3& operator*=(const Mat3 &m);
-            const Mat3& operator*=(const float lambda);
+            const Mat3& operator*=(const float scalar);
             const Mat3& operator+=(const Mat3 &m);
             const Mat3& operator-=(const Mat3 &m);
     };
 
     Mat3 operator*(const Mat3 &m, const Mat3 &n);
-    Mat3 operator*(const Mat3 &m, const float lambda);
-    Mat3 operator*(const float lambda, const Mat3 &m);
+    Mat3 operator*(const Mat3 &m, const float scalar);
+    Mat3 operator*(const float scalar, const Mat3 &m);
     Mat3 operator+(const Mat3 &m, const Mat3 &n);
     Mat3 operator-(const Mat3 &m, const Mat3 &n);
 

@@ -8,7 +8,7 @@
 #include <numbers>
 
 namespace pdm {
-    Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) :
+    Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) noexcept:
         _m{{x._x, y._x, z._x},
               {x._y, y._y, z._y},
               {x._z, y._z, z._z}}
@@ -16,7 +16,7 @@ namespace pdm {
 
     Mat3::Mat3(const std::array<float, 3> &x,
                const std::array<float, 3> &y,
-               const std::array<float, 3> &z) :
+               const std::array<float, 3> &z) noexcept:
         _m{{x[0], y[0], z[0]},
               {x[1], y[1], z[0]},
               {x[2], y[2], z[2]}}
@@ -24,7 +24,7 @@ namespace pdm {
     
     Mat3::Mat3(const float x1, const float y1, const float z1,
                const float x2, const float y2, const float z2,
-               const float x3, const float y3, const float z3) :
+               const float x3, const float y3, const float z3) noexcept:
         _m{{x1, y1, z1},
               {x2, y2, z2},
               {x3, y3, z3}}
@@ -132,7 +132,7 @@ namespace pdm {
     --------------------------------------------------------------------------*/
     void Mat3::get_euler_xyz(Vec3 &ans1, Vec3 &ans2) const {
         float theta_y1 = std::asin(_m[0][2]);
-        float theta_y2;
+        float theta_y2 = 0.0f;
 
         if(theta_y1 >= 0.0f) {
             theta_y2 = std::numbers::pi_v<float> - theta_y1;
@@ -169,8 +169,6 @@ namespace pdm {
         ans2._x = theta_x2;
         ans2._y = theta_y2;
         ans2._z = theta_z2;
-    
-        return;
     }
 
 
@@ -189,7 +187,7 @@ namespace pdm {
     --------------------------------------------------------------------------*/
     void Mat3::get_euler_zxy(Vec3 &ans1, Vec3 &ans2) const {
         float theta_z1 = std::asin(_m[1][0]);
-        float theta_z2;
+        float theta_z2 = 0.0f;
 
         if(theta_z1 >= 0.0f) {
             theta_z2 = std::numbers::pi_v<float> - theta_z1;
@@ -224,8 +222,6 @@ namespace pdm {
         ans2._x = theta_x2;
         ans2._y = theta_y2;
         ans2._z = theta_z2;
-    
-        return;
     }
 
     bool Mat3::operator==(const Mat3 &m) const {

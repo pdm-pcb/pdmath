@@ -3,11 +3,11 @@
 #include "pdmath/Matrix3.hpp"
 
 namespace pdm {
-    Vec3::Vec3(const float x, const float y, const float z):
+    Vec3::Vec3(const float x, const float y, const float z) noexcept:
         Point3(x, y, z)
     { }
 
-    Vec3::Vec3(const Point3 &p):
+    Vec3::Vec3(const Point3 &p) noexcept:
         Point3(p)
     { }
 

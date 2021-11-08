@@ -4,15 +4,16 @@
 #include "pdmath/Matrix4.hpp"
 
 namespace pdm {
-    Vec4::Vec4(const float x, const float y, const float z, const float w):
+    Vec4::Vec4(const float x, const float y,
+               const float z, const float w) noexcept:
         Point4(x, y, z, w)
     { }
 
-    Vec4::Vec4(const Vec3 &v, const float w) :
+    Vec4::Vec4(const Vec3 &v, const float w) noexcept :
         Point4(v._x, v._y, v._z, w)
     { }
 
-    Vec4::Vec4(const Point4 &p):
+    Vec4::Vec4(const Point4 &p) noexcept:
         Point4(p)
     { }
 

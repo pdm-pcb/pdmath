@@ -13,14 +13,23 @@ Checks: 'boost-*,
          performance-*,
          portability-*,
          readability-*,
+         -cppcoreguidelines-avoid-c-arrays,
+         -cppcoreguidelines-avoid-magic-numbers,
+         -cppcoreguidelines-pro-type-member-init,
+         -google-readability-namespace-comments,
+         -hicpp-avoid-c-arrays,
+         -hicpp-member-init,
+         -hicpp-uppercase-literal-suffix,
          -llvm-include-order,
+         -llvm-else-after-return,
+         -misc-non-private-member-variables-in-classes,
+         -modernize-avoid-c-arrays,
          -modernize-use-trailing-return-type,
          -modernize-use-nodiscard,
          -readability-avoid-const-params-in-decls,
-         -readability-uppercase-literal-suffix,
-         -hicpp-uppercase-literal-suffix,
-         -google-readability-namespace-comments,
-         -misc-non-private-member-variables-in-classes'
+         -readability-else-after-return,
+         -readability-magic-numbers,
+         -readability-uppercase-literal-suffix'
 WarningsAsErrors: ''
 HeaderFilterRegex: '.*'
 AnalyzeTemporaryDtors: false

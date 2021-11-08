@@ -9,10 +9,11 @@ namespace pdm {
 
     class Vec4 : public Point4 {
         public:
-            Vec4() = default;
-            Vec4(const float x, const float y, const float z, const float w);
-            Vec4(const Vec3 &v, const float w);
-            explicit Vec4(const Point4 &p);
+            Vec4() noexcept = default;
+            Vec4(const float x, const float y,
+                 const float z, const float w) noexcept;
+            Vec4(const Vec3 &v, const float w) noexcept;
+            explicit Vec4(const Point4 &p) noexcept;
 
             static const Vec4 zero;
             static const Vec4 one;
@@ -52,4 +53,4 @@ namespace pdm {
     Vec4 operator/(const float scalar, const Vec4 &v);
 } // namespace pdm
 
-#endif // PDMATH_VECTOR3_HPP
+#endif // PDMATH_VECTOR4_HPP

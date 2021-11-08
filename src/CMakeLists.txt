@@ -29,7 +29,7 @@ target_compile_options(
     "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
 )
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(EXPORT_COMPILE_COMMANDS ON)
 
 set_target_properties(
     pdMath PROPERTIES

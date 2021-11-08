@@ -1,3 +1,5 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
+
 Include(FetchContent)
 
 FetchContent_Declare(

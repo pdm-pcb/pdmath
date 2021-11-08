@@ -13,24 +13,25 @@ namespace pdm {
 
     class Mat4 {
         public:
-            Mat4() :
+            Mat4() noexcept:
                 _m{{0}, {0}, {0}, {0}}
             { }
 
             Mat4(const Point4 &x, const Point4 &y,
-                 const Point4 &z, const Point4 &w);
+                 const Point4 &z, const Point4 &w) noexcept;
             
             Mat4(const std::array<float, 4> &x,
                  const std::array<float, 4> &y,
                  const std::array<float, 4> &z,
-                 const std::array<float, 4> &w);
+                 const std::array<float, 4> &w) noexcept;
             
             Mat4(const float x1, const float y1, const float z1, const float w1,
                  const float x2, const float y2, const float z2, const float w2,
                  const float x3, const float y3, const float z3, const float w3,
-                 const float x4, const float y4, const float z4, const float w4);
+                 const float x4, const float y4, const float z4, const float w4)
+                 noexcept;
 
-            explicit Mat4(const Mat3 &m);
+            explicit Mat4(const Mat3 &m) noexcept;
 
             static const Mat4 identity;
 
@@ -89,4 +90,4 @@ namespace pdm {
     std::ostream& operator<<(std::ostream &os, const Mat4 &m);
 } // namespace pdm
 
-#endif // PDMATH_MATRIX3_HPP
+#endif // PDMATH_MATRIX4_HPP

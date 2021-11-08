@@ -100,7 +100,7 @@ namespace pdm {
     }
 
     Vec4 Camera::face_normal(const Point4 &a, const Point4 &b,
-                             const Point4 &c) const {
+                             const Point4 &c) {
         Point3 _a(a._x, a._y, a._z);
         Point3 _b(b._x, b._y, b._z);
         Point3 _c(c._x, c._y, c._z);
@@ -112,4 +112,4 @@ namespace pdm {
     Vec4 Camera::direction_to_point(const Point4 &p) const {
         return p - Vec4(_position, 0.0f) *= -1;
     }
-}
+} // namespace pdm

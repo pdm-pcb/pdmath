@@ -6,9 +6,9 @@
 namespace pdm {
     class Vec3 : public Point3 {
         public:
-            Vec3() = default;
-            Vec3(const float x, const float y, const float z);
-            explicit Vec3(const Point3 &p);
+            Vec3() noexcept = default;
+            Vec3(const float x, const float y, const float z) noexcept;
+            explicit Vec3(const Point3 &p) noexcept;
 
             static const Vec3 zero;
             static const Vec3 one;
@@ -24,8 +24,8 @@ namespace pdm {
             bool  is_collinear(const Vec3 &v) const;
             bool  is_perpendicular(const Vec3 &v) const;
 
-            const Vec3& operator+=(const Vec3 &p);
-            const Vec3& operator-=(const Vec3 &p);
+            const Vec3& operator+=(const Vec3 &v);
+            const Vec3& operator-=(const Vec3 &v);
 
             const Vec3& operator+=(const float scalar);
             const Vec3& operator-=(const float scalar);

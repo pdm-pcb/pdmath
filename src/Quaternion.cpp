@@ -5,19 +5,20 @@
 #include <iomanip>
 
 namespace pdm {
-    Quat::Quat(float theta, Vec3 axis) {
+    Quat::Quat(float theta, Vec3 axis) noexcept
+    {
         if(theta == 0.0f) {
             _w = theta;
             _v = axis;
+            return;
         }
-        else {
-            _w = std::cos(theta/2.0f);
-            _v = axis.normalized();
-            _v *= std::sin(theta/2.0f);
-        }
+        
+        _w = std::cos(theta/2.0f);
+        _v = axis.normalized();
+        _v *= std::sin(theta/2.0f);
     }
 
-    Quat::Quat(float theta, float x, float y, float z) {
+    Quat::Quat(float theta, float x, float y, float z) noexcept {
         _w = theta;
         _v = Vec3(x, y, z);
     }

@@ -22,6 +22,12 @@ namespace pdm {
                            const float x_res, const float y_res,
                            const float fov,   const float z_depth);
 
+            Mat4 view_to_world() const { return _view_to_world; }
+            Mat4 world_to_view() const { return _world_to_view; }
+            Mat4 ortho_ndc()     const { return _ortho_ndc;     }
+            Mat4 persp_ndc()     const { return _persp_ndc;     }
+            Mat4 screen()        const { return _screen;        }
+
             Point4 view(const Point4 &point) const;
 
             Point4 ortho_ndc(const Point4 &point) const;
@@ -30,10 +36,21 @@ namespace pdm {
             Point4 persp_ndc(const Point4 &point) const;
             Point4 persp_screen(const Point4 &point) const;
 
-            Vec4 face_normal(const Point4 &a, const Point4 &b,
-                             const Point4 &c) const;
+            static Vec4 face_normal(const Point4 &a, const Point4 &b,
+                                    const Point4 &c);
 
             Vec4 direction_to_point(const Point4 &p) const;
+    
+            Camera() :
+            _position{Vec3()}, _target{Vec3()}, _gaze{Vec3()}, _up{Vec3()}
+            { }
+            Camera(const Vec3 &pos, const Vec3 &target, const Vec3 &up);
+
+        private:
+            Vec3 _position;
+            Vec3 _target;
+            Vec3 _gaze;
+            Vec3 _up;
 
             Mat4 _view_to_world;
             Mat4 _world_to_view;
@@ -41,17 +58,7 @@ namespace pdm {
 
             Mat4 _ortho_ndc;
             Mat4 _persp_ndc;
-    
-            Camera()  = default;
-            Camera(const Vec3 &pos, const Vec3 &target, const Vec3 &up);
-            ~Camera() = default;
-
-        private:
-            Vec3 _position;
-            Vec3 _target;
-            Vec3 _gaze;
-            Vec3 _up;
     };
-}
+} // namespace pdm
 
 #endif // PDMATH_CAMERA_HPP

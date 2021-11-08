@@ -52,4 +52,4 @@ namespace pdm {
 
     std::ostream& operator<<(std::ostream &os, const Point4 &p);
 } // namespace pdm
-#endif // PDMATH_POINT_HPP
+#endif // PDMATH_POINT4_HPP

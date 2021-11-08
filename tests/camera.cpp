@@ -18,7 +18,7 @@ TEST_CASE("Orthographic camera gives correct View-to-World matrix",
             -0.995054f, 0.056801f,  0.081487f, -4.0f,
              0.0f,       0.0f,        0.0f,     1.0f);
 
-    REQUIRE(ortho._view_to_world == vtw);
+    REQUIRE(ortho.view_to_world() == vtw);
 }
 
 TEST_CASE("Orthographic camera gives correct World-to-View matrix",
@@ -28,7 +28,7 @@ TEST_CASE("Orthographic camera gives correct World-to-View matrix",
              0.816305f, -0.571843f,  0.081487f, -1.878504f,
              0.0f,       0.0f,       0.0f,       1.0f);
 
-    REQUIRE(ortho._world_to_view == wtv);
+    REQUIRE(ortho.world_to_view() == wtv);
 }
 
 TEST_CASE("Orthographic camera can set it's NDC projection matrix",
@@ -39,7 +39,7 @@ TEST_CASE("Orthographic camera can set it's NDC projection matrix",
                    0.0f,         0.0f,         -0.000286f, -1.000286f,
                    0.0f,         0.0f,          0.0f,       1.0f);
 
-    REQUIRE(ortho._ortho_ndc == ortho_ndc);
+    REQUIRE(ortho.ortho_ndc() == ortho_ndc);
 }
 
 TEST_CASE("Orthographic camera can set it's screen projection matrix",
@@ -49,7 +49,7 @@ TEST_CASE("Orthographic camera can set it's screen projection matrix",
                       0.0f,    0.0f,   0.5f, 0.5f,
                       0.0f,    0.0f,   0.0f, 1.0f);
 
-    REQUIRE(ortho._screen == ortho_screen);
+    REQUIRE(ortho.screen() == ortho_screen);
 }
 
 TEST_CASE("Orthographic camera can transform points properly", "[cameras]") {
@@ -83,26 +83,26 @@ TEST_CASE("Orthographic camera can pick points in space", "[cameras]") {
     Point4 screen_near(505, 558, 0, 1);
     Point4 screen_far (505, 558, 1, 1);
 
-    REQUIRE((ortho._screen.inverted() * screen_near) == 
+    REQUIRE((ortho.screen().inverted() * screen_near) == 
             Point4(-0.210937f, -0.55f, -1.0f, 1.0f));
-    REQUIRE((ortho._screen.inverted() * screen_far) == 
+    REQUIRE((ortho.screen().inverted() * screen_far) == 
             Point4(-0.210937f, -0.55f, 1.0f, 1.0f));
 
-    REQUIRE((ortho._ortho_ndc.inverted() * ortho._screen.inverted() *
+    REQUIRE((ortho.ortho_ndc().inverted() * ortho.screen().inverted() *
              screen_near) == 
             Point4(-147.65625f, -216.700012f, -1.0f, 1.0f));
-    REQUIRE((ortho._ortho_ndc.inverted() * ortho._screen.inverted() *
+    REQUIRE((ortho.ortho_ndc().inverted() * ortho.screen().inverted() *
              screen_far) == 
             Point4(-147.65625f, -216.7000122f, -7000.0f, 1.0f));
 
-    REQUIRE((ortho._view_to_world *
-             ortho._ortho_ndc.inverted() *
-             ortho._screen.inverted() *
+    REQUIRE((ortho.view_to_world() *
+             ortho.ortho_ndc().inverted() *
+             ortho.screen().inverted() *
              screen_near) == 
             Point4(-136.788665f, -178.200897f, 130.535522f, 1.0f));
-    REQUIRE((ortho._view_to_world *
-             ortho._ortho_ndc.inverted() *
-             ortho._screen.inverted() *
+    REQUIRE((ortho.view_to_world() *
+             ortho.ortho_ndc().inverted() *
+             ortho.screen().inverted() *
              screen_far) == 
             Point4(-5850.112793f, 3824.128418f, -439.796386f, 1.0f));
 }
@@ -122,7 +122,7 @@ TEST_CASE("Perspective camera gives correct View-to-World matrix",
              0.389241f,  0.728442f,  0.563794f,  3.0f,
              0.0f,       0.0f,       0.0f,       1.0f);
 
-    REQUIRE(persp._view_to_world == vtw);
+    REQUIRE(persp.view_to_world() == vtw);
 }
 
 
@@ -134,7 +134,7 @@ TEST_CASE("Perspective camera gives correct World-to-View matrix",
              0.0f,       0.0f,      0.0f,       1.0f);
          
 
-    REQUIRE(persp._world_to_view == wtv);
+    REQUIRE(persp.world_to_view() == wtv);
 }
 
 TEST_CASE("Perspective camera can set it's NDC projection matrix",
@@ -146,7 +146,7 @@ TEST_CASE("Perspective camera can set it's NDC projection matrix",
                    0.0f,   0.0f,     -1.00025f, -2.00025f,
                    0.0f,   0.0f,     -1.0f,      0.0f);
 
-    REQUIRE(persp._persp_ndc == persp_ndc);
+    REQUIRE(persp.persp_ndc() == persp_ndc);
 }
 
 TEST_CASE("Perspective camera can set it's screen projection matrix",
@@ -156,7 +156,7 @@ TEST_CASE("Perspective camera can set it's screen projection matrix",
                       0.0f,    0.0f,   0.5f, 0.5f,
                       0.0f,    0.0f,   0.0f, 1.0f);
 
-    REQUIRE(persp._screen == persp_screen);
+    REQUIRE(persp.screen() == persp_screen);
 }
 
 TEST_CASE("Perspective camera can transform points properly", "[cameras]") {
@@ -190,14 +190,14 @@ TEST_CASE("Perspective camera can pick points in space", "[cameras]") {
     Point4 screen_near(383, 5, 0, 1);
     Point4 screen_far (383, 5, 1, 1);
 
-    Point4 ndc_near = persp._screen.inverted() * screen_near;
-    Point4 ndc_far  = persp._screen.inverted() * screen_far;
+    Point4 ndc_near = persp.screen().inverted() * screen_near;
+    Point4 ndc_far  = persp.screen().inverted() * screen_far;
 
-    Point4 persp_near = persp._persp_ndc.inverted() * ndc_near;
-    Point4 persp_far  = persp._persp_ndc.inverted() * ndc_far;
+    Point4 persp_near = persp.persp_ndc().inverted() * ndc_near;
+    Point4 persp_far  = persp.persp_ndc().inverted() * ndc_far;
     
-    Point4 cam_near = persp._view_to_world * persp_near;
-    Point4 cam_far  = persp._view_to_world * persp_far;
+    Point4 cam_near = persp.view_to_world() * persp_near;
+    Point4 cam_far  = persp.view_to_world() * persp_far;
 
     Point4 world_near = cam_near / cam_near._w;
     Point4 world_far  = cam_far  / cam_far._w;
@@ -242,9 +242,9 @@ TEST_CASE("World space face culling", "[cameras]") {
               0.0f,      0.0f,      -1.002002f, -2.002002f,
               0.0f,      0.0f,      -1.0f,       0.0f);
 
-    REQUIRE(tgo_cam._view_to_world == vtw);
-    REQUIRE(tgo_cam._world_to_view == wtv);
-    REQUIRE(tgo_cam._persp_ndc     == proj);
+    REQUIRE(tgo_cam.view_to_world() == vtw);
+    REQUIRE(tgo_cam.world_to_view() == wtv);
+    REQUIRE(tgo_cam.persp_ndc()     == proj);
 
     Point4 p1_prime(2.120803f, -3.61847f, 3.083572f, 1.0f);
     Point4 p2_prime(3.395416f, -2.75188f, 4.703567f, 1.0f);
@@ -277,3 +277,200 @@ TEST_CASE("World space face culling", "[cameras]") {
     REQUIRE(camera_to_p1.dot(b_normal) == Catch::Approx(-10.7053f));
     REQUIRE(camera_to_p2.dot(w_normal) == Catch::Approx( 28.9177f));
 }
+
+// TEST_CASE("Lol") {
+//     // Homework
+//     Mat4 W1(0.2846,  0.0744, -0.059,   0,
+//             0,       0.1861,  0.2353, -5,
+//             0.0949, -0.223,   0.1765,  4,
+//             0,       0,       0,       1);
+
+//     Point4 W1_min(-4.50, -3.75, -3.75, 1.0);
+//     Point4 W1_max(5.50, 4.25, 4.25, 1.0);
+
+//     Vec4 W1_fwd(0.2846, 0, 0.0949, 0);
+
+//     Mat4 W2(0.6247,  0.2328, -0.745,  -1,
+//             0,       0.9545,  0.2981, -11,
+//             0.7809, -0.186,   0.5963,  9,
+//             0,       0,       0,       1);
+
+//     Point4 W2_min(-2.75, -5.00, -3.50, 1.0);
+//     Point4 W2_max(3.25, 5.00, 4.50, 1.0);
+
+//     Vec4 W2_fwd(-0.745, 0.2981, 0.5963, 0);
+
+//     // Practice
+//     // Mat4 W1(0.3, 0,       0,      4,
+//     //         0,   0.2846, -0.095, -3,
+//     //         0,   0.0949,  0.2846, 3,
+//     //         0,   0,       0,      1);
+
+//     // Point4 W1_min(-4.50, -4.50, -5.00, 1.0);
+//     // Point4 W1_max(5.50, 5.50, 5.00, 1.0);
+
+//     // Vec4 W1_fwd(0, -0.095, 0.2846, 0);
+
+//     // Mat4 W2(0.2425,  0.2287, -0.943,  6,
+//     //         0,       0.9718,  0.2357, 4,
+//     //         0.9701, -0.057,   0.2357, 8,
+//     //         0,       0,       0,      1);
+
+//     // Point4 W2_min(-4.00, -4.75, -4.50, 1.0);
+//     // Point4 W2_max(4.00, 5.25, 5.50, 1.0);
+
+//     // Vec4 W2_fwd(-0.943, 0.2357, 0.2357, 0);
+
+//     Vec4 cross_fwd(Vec3(W1_fwd._x, W1_fwd._y, W1_fwd._z).cross(
+//                         Vec3(W2_fwd._x, W2_fwd._y, W2_fwd._z)), 0);
+
+//     std::cout << "W1_fwd    : " << W1_fwd << " / "    << W1_fwd.length()    << "\n"
+//               << "W2_fwd    : " << W2_fwd << " / "    << W2_fwd.length()    << "\n"
+//               << "cross_fwd : " << cross_fwd << " / " << cross_fwd.length() << "\n"
+//               << std::endl;
+
+//     Point4 W1_C((W1_max._x - W1_min._x)/2,
+//                 (W1_max._y - W1_min._y)/2,
+//                 (W1_max._z - W1_min._z)/2, 1);
+
+//     Point4 W2_C((W2_max._x - W2_min._x)/2,
+//                 (W2_max._y - W2_min._y)/2,
+//                 (W2_max._z - W2_min._z)/2, 1);
+
+//     std::cout << "W1_C      : " << W1_C << "\n"
+//               << "W2_C      : " << W2_C << "\n\n"
+//               << "W1inv:\n"  << W1.inverted() << "\n"
+//               << "W2inv:\n"  << W2.inverted() << "\n\n"
+//               << std::endl;
+
+//     Vec4 W1_fwd_local    = W1.inverted() * W1_fwd;
+//     Vec4 W2_fwd_local    = W1.inverted() * W2_fwd;
+//     Vec4 cross_fwd_local = W1.inverted() * cross_fwd;
+    
+//     std::cout << "W1_fwd local    W1 : " << W1_fwd_local    << "\n"
+//               << "W2_fwd local    W1 : " << W2_fwd_local    << "\n"
+//               << "cross_fwd local W1 : " << cross_fwd_local << "\n"
+//               << std::endl;
+
+//     float W1_proj = ((std::abs(W1_fwd_local._x * W1_C._x)) +
+//                      (std::abs(W1_fwd_local._y * W1_C._y)) +
+//                      (std::abs(W1_fwd_local._z * W1_C._z))) / W1_fwd.length();
+
+//     std::cout << "W1_proj max    : " << W1_proj << "\n"
+//               << "W1 scale       : " << std::pow(W1.get_x_scale(), 2)
+//               << std::endl;
+
+//     W1_proj *= std::pow(W1.get_x_scale(), 2);
+
+//     float W1_rho1 = W1_proj;
+
+//     std::cout << "W1_proj scaled : " << W1_proj << std::endl;
+
+//     float W2_proj = ((std::abs(W2_fwd_local._x * W1_C._x)) +
+//                      (std::abs(W2_fwd_local._y * W1_C._y)) +
+//                      (std::abs(W2_fwd_local._z * W1_C._z))) / W2_fwd.length();
+
+//     std::cout << "W2_proj max    : " << W2_proj << std::endl;
+
+//     W2_proj *= std::pow(W1.get_x_scale(), 2);
+
+//     float W2_rho1 = W2_proj;
+
+//     std::cout << "W2_proj scaled : " << W2_proj << std::endl;
+
+//     float cross_proj = ((std::abs(cross_fwd_local._x * W1_C._x)) +
+//                         (std::abs(cross_fwd_local._y * W1_C._y)) +
+//                         (std::abs(cross_fwd_local._z * W1_C._z))) / cross_fwd.length();
+
+//     std::cout << "cross_proj max    : " << cross_proj << std::endl;
+
+//     cross_proj *= std::pow(W1.get_x_scale(), 2);
+
+//     float cross_rho1 = cross_proj;
+
+//     std::cout << "cross_proj scaled : " << cross_proj << "\n" << std::endl;
+
+
+
+//     W1_fwd_local    = W2.inverted() * W1_fwd;
+//     W2_fwd_local    = W2.inverted() * W2_fwd;
+//     cross_fwd_local = W2.inverted() * cross_fwd;
+    
+//     std::cout << "W1_fwd local    W2 : " << W1_fwd_local    << "\n"
+//               << "W2_fwd local    W2 : " << W2_fwd_local    << "\n"
+//               << "cross_fwd local W2 : " << cross_fwd_local << "\n"
+//               << std::endl;
+
+//     W1_proj = ((std::abs(W1_fwd_local._x * W2_C._x)) +
+//                (std::abs(W1_fwd_local._y * W2_C._y)) +
+//                (std::abs(W1_fwd_local._z * W2_C._z))) / W1_fwd.length();
+
+//     std::cout << "W1_proj max    : " << W1_proj << "\n"
+//               << "W2 scale       : " << std::pow(W2.get_x_scale(), 2)
+//               << std::endl;
+
+//     W1_proj *= std::pow(W2.get_x_scale(), 2);
+
+//     float W1_rho_sum = W1_rho1 + W1_proj;
+
+//     std::cout << "W1_proj scaled : " << W1_proj << std::endl;
+
+//     W2_proj = ((std::abs(W2_fwd_local._x * W2_C._x)) +
+//                (std::abs(W2_fwd_local._y * W2_C._y)) +
+//                (std::abs(W2_fwd_local._z * W2_C._z))) / W2_fwd.length();
+
+//     std::cout << "W2_proj max    : " << W2_proj << std::endl;
+
+//     W2_proj *= std::pow(W2.get_x_scale(), 2);
+//     float W2_rho_sum = W2_rho1 + W2_proj;
+
+//     std::cout << "W2_proj scaled : " << W2_proj << std::endl;
+
+//     cross_proj = ((std::abs(cross_fwd_local._x * W2_C._x)) +
+//                   (std::abs(cross_fwd_local._y * W2_C._y)) +
+//                   (std::abs(cross_fwd_local._z * W2_C._z))) / cross_fwd.length();
+
+//     std::cout << "cross_proj max    : " << cross_proj << std::endl;
+
+//     cross_proj *= std::pow(W2.get_x_scale(), 2);
+
+//     float cross_rho_sum = cross_rho1 + cross_proj;
+
+//     std::cout << "cross_proj scaled : " << cross_proj << "\n" << std::endl;
+
+//     std::cout << "W1 rho sum    : " << W1_rho_sum << "\n"
+//               << "W2 rho sum    : " << W2_rho_sum << "\n"
+//               << "cross rho sum : " << cross_rho_sum << "\n"
+//               << std::endl;
+
+//     W1_min *= W1;
+//     W1_max *= W1;
+
+//     W2_min *= W2;
+//     W2_max *= W2;
+
+//     Point4 W1_Clocal((W1_min._x + W1_max._x)/2,
+//                      (W1_min._y + W1_max._y)/2,
+//                      (W1_min._z + W1_max._z)/2, 1);
+
+//     Point4 W2_Clocal((W2_min._x + W2_max._x)/2,
+//                      (W2_min._y + W2_max._y)/2,
+//                      (W2_min._z + W2_max._z)/2, 1);
+
+//     Vec4 Cavg     = static_cast<Vec4>(W2_Clocal) - W1_Clocal;
+//     float W1_D    = std::abs(Cavg.dot(W1_fwd))    / W1_fwd.length();
+//     float W2_D    = std::abs(Cavg.dot(W2_fwd))    / W2_fwd.length();
+//     float cross_D = std::abs(Cavg.dot(cross_fwd)) / cross_fwd.length();
+
+//     std::cout << "W1_min local : " << W1_min << "\n"
+//               << "W1_max local : " << W1_max << "\n"
+//               << "W2_min local : " << W2_min << "\n"
+//               << "W2_max local : " << W2_max << "\n\n"
+//               << "W1_Clocal    : " << W1_Clocal << "\n"
+//               << "W2_Clocal    : " << W2_Clocal << "\n\n"
+//               << "Cavg         : " << Cavg << "\n"
+//               << "W1_D         : " << W1_D << "\n"
+//               << "W2_D         : " << W2_D << "\n"
+//               << "cross_D      : " << cross_D << "\n"
+//               << std::endl;
+// }
