@@ -7,9 +7,13 @@
 
 namespace pdm {
 
+class BSphere;
+
 class AABBox {
 public:
-    bool collides(const AABBox &other) const;
+    bool collides(const AABBox &other)   const;
+    bool collides(const Point4 &point)   const;
+    bool collides(const BSphere &sphere) const;
 
     std::pair<float, float> x_interval() const;
     std::pair<float, float> y_interval() const;

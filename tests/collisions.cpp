@@ -24,6 +24,23 @@ TEST_CASE("Bounding sphere - bounding sphere collision",
     REQUIRE(object2.collides(object1) == true);
 }
 
+TEST_CASE("Bounding sphere - axis aligned bounding box collision",
+          "[axis aligned bounding boxes][collisions]") {
+    BSphere object1(Point4(10.0f, 0.0f, 8.0f, 1.0f), 2.5, Mat4::identity);
+    AABBox object2(Point4(-6.0f, -1.0f, -5.0f, 1.0f),
+                   Point4(-4.0f, 1.0f, 8.0f, 1.0f));
+
+    REQUIRE(object1.collides(object2) == false);
+    REQUIRE(object2.collides(object1) == false);
+
+    object1 = BSphere(Point4(-9.0f, 0.0f, -5.0f, 1.0f), 2.5, Mat4::identity);
+    object2 = AABBox(Point4(-9.5f, -1.0f, -4.5f, 1.0f),
+                     Point4(-4.5f, 1.0f, 2.5f, 1.0f));
+    
+    REQUIRE(object1.collides(object2) == true);
+    REQUIRE(object2.collides(object1) == true);
+}
+
 TEST_CASE("Axis aligned bounding box - axis aligned bounding box collision",
           "[axis aligned bounding boxes][collisions]") {
     AABBox object1(Point4(-3.0f, -1.0f, 1.5f, 1.0f),
@@ -45,6 +62,23 @@ TEST_CASE("Axis aligned bounding box - axis aligned bounding box collision",
     REQUIRE(object2.collides(object1) == false);
 }
 
+TEST_CASE("Axis aligned bounding box - point collision",
+          "[axis aligned bounding boxes][points][collisions]") {
+    AABBox box(Point4(-2.5f, -1.0f, 0.5f, 1.0f),
+               Point4(2.5f, 1.0f, 5.5f, 1.0f));
+
+    Point4 point(7.0f, 2.0f, 5.0f, 1.0f);
+
+    REQUIRE(box.collides(point) == false);
+
+    box = AABBox(Point4(-8.5f, -1.0f, 1.5f, 1.0f),
+                 Point4(-1.5f, 1.0f, 4.5f, 1.0f));
+    
+    point = Point4(-8.0f, 0.5f, 3.0f, 1.0f);
+
+    REQUIRE(box.collides(point) == true);
+}
+
 TEST_CASE("Object bounding box - object bounding box collision",
           "[object bounding boxes][collisions]") {
     OBBox object1(Point4(-4.5f, -4.5f, -5.0f, 1.0f),
@@ -61,7 +95,7 @@ TEST_CASE("Object bounding box - object bounding box collision",
                        0.9701f, -0.057f,   0.2357f, 8.0f,
                        0.0f,     0.0f,     0.0f,    1.0f));
 
-    std::cout << (object1.collides(object2) ? "true\n" : "false\n") << std::endl;
+    REQUIRE(object1.collides(object2) == false);
 
     // Vec4 cross_fwd(object1.forward().cross(object2.forward()));
 

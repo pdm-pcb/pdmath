@@ -1,3 +1,6 @@
+2021-11-08:
+    - Add OOB/BSphere and OOB/AABB collision
+
 2021-11-04:
     - Why does Point4 *= Mat4 give a different answer than Vec4 *= Mat4?
 
