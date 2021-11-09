@@ -5,51 +5,51 @@
 #include <cmath>
 
 namespace pdm {
-    class Point3;
-    class Mat4;
+class Point3;
+class Mat4;
 
-    class Point4 {
-        public:
-            Point4() = default;
-            Point4(const float x, const float y, const float z, const float w);
-            Point4(const Point3 &p, const float w);
+class Point4 {
+public:
+    Point4() = default;
+    Point4(const float x, const float y, const float z, const float w);
+    Point4(const Point3 &p, const float w);
 
-            bool is_zero() const;
+    bool is_zero() const;
 
-            static constexpr uint8_t precision = 7;
-            static constexpr float   epsilon = 1.0e-6f;
+    static constexpr uint8_t precision = 7;
+    static constexpr float   epsilon = 1.0e-6f;
 
-            float _x;
-            float _y;
-            float _z;
-            float _w;
+    float _x;
+    float _y;
+    float _z;
+    float _w;
 
-            bool operator==(const Point4 &p) const;
+    bool operator==(const Point4 &p) const;
 
-            const Point4& operator+=(const Point4 &p);
-            const Point4& operator-=(const Point4 &p);
+    const Point4& operator+=(const Point4 &p);
+    const Point4& operator-=(const Point4 &p);
 
-            const Point4& operator+=(const float scalar);
-            const Point4& operator-=(const float scalar);
-            const Point4& operator*=(const float scalar);
-            const Point4& operator/=(const float scalar);
+    const Point4& operator+=(const float scalar);
+    const Point4& operator-=(const float scalar);
+    const Point4& operator*=(const float scalar);
+    const Point4& operator/=(const float scalar);
 
-            const Point4& operator*=(const Mat4 &m);
-    };
+    const Point4& operator*=(const Mat4 &m);
+};
 
-    Point4 operator+(const Point4 &p, const Point4 &t);
-    Point4 operator-(const Point4 &p, const Point4 &t);
+Point4 operator+(const Point4 &p, const Point4 &t);
+Point4 operator-(const Point4 &p, const Point4 &t);
 
-    Point4 operator+(const Point4 &p, const float scalar);
-    Point4 operator-(const Point4 &p, const float scalar);
-    Point4 operator*(const Point4 &p, const float scalar);
-    Point4 operator/(const Point4 &p, const float scalar);
+Point4 operator+(const Point4 &p, const float scalar);
+Point4 operator-(const Point4 &p, const float scalar);
+Point4 operator*(const Point4 &p, const float scalar);
+Point4 operator/(const Point4 &p, const float scalar);
 
-    Point4 operator+(const float scalar, const Point4 &p);
-    Point4 operator-(const float scalar, const Point4 &p);
-    Point4 operator*(const float scalar, const Point4 &p);
-    Point4 operator/(const float scalar, const Point4 &p);
+Point4 operator+(const float scalar, const Point4 &p);
+Point4 operator-(const float scalar, const Point4 &p);
+Point4 operator*(const float scalar, const Point4 &p);
+Point4 operator/(const float scalar, const Point4 &p);
 
-    std::ostream& operator<<(std::ostream &os, const Point4 &p);
+std::ostream& operator<<(std::ostream &os, const Point4 &p);
 } // namespace pdm
 #endif // PDMATH_POINT4_HPP

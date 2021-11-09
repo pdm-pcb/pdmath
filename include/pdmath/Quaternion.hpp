@@ -6,28 +6,28 @@
 #include <iostream>
 
 namespace pdm {
-    class Quat {
-        public:
-            Quat() noexcept = default;
-            Quat(float theta, Vec3 axis) noexcept;
-            Quat(float theta, float x, float y, float z) noexcept;
+class Quat {
+public:
+    Quat() noexcept = default;
+    Quat(float theta, Vec3 axis) noexcept;
+    Quat(float theta, float x, float y, float z) noexcept;
 
-            Quat inverted();
-            Quat normalized();
-            float length();
+    Quat inverted();
+    Quat normalized();
+    float length();
 
-            static const Quat identity;
+    static const Quat identity;
 
-            float _w;
-            Vec3  _v;
+    float _w;
+    Vec3  _v;
 
-            bool operator==(const Quat &q) const;
-            const Quat& operator*=(const Quat &q);
-    };
+    bool operator==(const Quat &q) const;
+    const Quat& operator*=(const Quat &q);
+};
 
-    Quat operator*(const Quat &q, const Quat &p);
+Quat operator*(const Quat &q, const Quat &p);
 
-    std::ostream& operator<<(std::ostream &os, const Quat &q);
+std::ostream& operator<<(std::ostream &os, const Quat &q);
 } // namespace pdm
 
 #endif // PDMATH_QUATERNION_HPP

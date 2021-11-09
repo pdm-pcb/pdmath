@@ -4,6 +4,41 @@
 #include "pdmath/Matrix4.hpp"
 
 namespace pdm {
+    const Vec4 Vec4::zero(0.0f, 0.0f, 0.0f, 0.0f);
+    const Vec4 Vec4::one(1.0f, 1.0f, 1.0f, 1.0f);
+
+    float Vec4::length() const {
+        return sqrtf(_x*_x + _y*_y + _z*_z + _w*_w);
+    }
+
+    float Vec4::dot(const Vec4 &v) const {
+        return this->_x * v._x +
+               this->_y * v._y +
+               this->_z * v._z +
+               this->_w * v._w;
+    }
+
+    Vec4 Vec4::cross(const Vec4 &v) const {
+        return Vec4(this->_y * v._z - this->_z * v._y,
+                    this->_z * v._x - this->_x * v._z,
+                    this->_x * v._y - this->_y * v._x,
+                    0.0f);
+    }
+
+    Vec4 Vec4::normalized() const {
+        float _length = length();
+
+        if(fabsf(_length - 1.0f) < Point4::epsilon) {
+            return Vec4(*this);
+        }
+        else {
+            return Vec4(_x / _length,
+                        _y / _length,
+                        _z / _length,
+                        _w / _length);
+        }
+    }
+
     Vec4::Vec4(const float x, const float y,
                const float z, const float w) noexcept:
         Point4(x, y, z, w)
@@ -17,33 +52,9 @@ namespace pdm {
         Point4(p)
     { }
 
-    const Vec4 Vec4::zero(0.0f, 0.0f, 0.0f, 0.0f);
-    const Vec4 Vec4::one(1.0f, 1.0f, 1.0f, 1.0f);
-
-    float Vec4::dot(const Vec4 &v) const {
-        return this->_x * v._x +
-               this->_y * v._y +
-               this->_z * v._z +
-               this->_w * v._w;
-    }
-
-    float Vec4::length() const {
-        return sqrtf(_x*_x + _y*_y + _z*_z + _w*_w);
-    }
-
-    Vec4 Vec4::normalized() {
-        float _length = length();
-
-        if(fabsf(_length - 1.0f) < Point4::epsilon) {
-            return Vec4(*this);
-        }
-        else {
-            return Vec4(_x / _length,
-                        _y / _length,
-                        _z / _length,
-                        _w / _length);
-        }
-    }
+    Vec4::Vec4(const Vec3 &v) noexcept:
+        Point4(v._x, v._y, v._z, 1.0f)
+    { }
 
     const Vec4& Vec4::operator+=(const Vec4 &v) {
         this->_x += v._x;
@@ -202,4 +213,5 @@ namespace pdm {
     Vec4 operator/(const float scalar, const Vec4 &v) {
         return (v / scalar);
     }
+
 } // namespace pdm

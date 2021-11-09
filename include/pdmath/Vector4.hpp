@@ -4,53 +4,54 @@
 #include "pdmath/Point4.hpp"
 
 namespace pdm {
-    class Vec3;
-    class Mat4;
+class Vec3;
+class Mat4;
 
-    class Vec4 : public Point4 {
-        public:
-            Vec4() noexcept = default;
-            Vec4(const float x, const float y,
-                 const float z, const float w) noexcept;
-            Vec4(const Vec3 &v, const float w) noexcept;
-            explicit Vec4(const Point4 &p) noexcept;
+class Vec4 : public Point4 {
+public:
+    static const Vec4 zero;
+    static const Vec4 one;
 
-            static const Vec4 zero;
-            static const Vec4 one;
+    float length() const;
+    float dot(const Vec4 &v) const;
+    Vec4  cross(const Vec4 &v) const;
+    Vec4  normalized() const;
 
-            float length() const;
-            float dot(const Vec4 &v) const;
+    Vec4() noexcept = default;
+    Vec4(const float x, const float y,
+         const float z, const float w) noexcept;
+    Vec4(const Vec3 &v, const float w) noexcept;
+    explicit Vec4(const Point4 &p) noexcept;
+    explicit Vec4(const Vec3 &v)   noexcept;
 
-            Vec4 normalized();
+    const Vec4& operator+=(const Vec4 &v);
+    const Vec4& operator-=(const Vec4 &v);
 
-            const Vec4& operator+=(const Vec4 &v);
-            const Vec4& operator-=(const Vec4 &v);
+    const Vec4& operator+=(const float scalar);
+    const Vec4& operator-=(const float scalar);
+    const Vec4& operator*=(const float scalar);
+    const Vec4& operator/=(const float scalar);
 
-            const Vec4& operator+=(const float scalar);
-            const Vec4& operator-=(const float scalar);
-            const Vec4& operator*=(const float scalar);
-            const Vec4& operator/=(const float scalar);
+    const Vec4& operator*=(const Mat4 &m);
+};
 
-            const Vec4& operator*=(const Mat4 &m);
-    };
+Vec4 operator+(const Vec4 &v, const Vec4 &w);
+Vec4 operator-(const Vec4 &v, const Vec4 &w);
 
-    Vec4 operator+(const Vec4 &v, const Vec4 &w);
-    Vec4 operator-(const Vec4 &v, const Vec4 &w);
+Vec4 operator+(const Vec4 &v, const Point4 &p);
+Vec4 operator-(const Vec4 &v, const Point4 &p);
+Vec4 operator+(const Point4 &p, const Vec4 &v);
+Vec4 operator-(const Point4 &p, const Vec4 &v);
 
-    Vec4 operator+(const Vec4 &v, const Point4 &p);
-    Vec4 operator-(const Vec4 &v, const Point4 &p);
-    Vec4 operator+(const Point4 &p, const Vec4 &v);
-    Vec4 operator-(const Point4 &p, const Vec4 &v);
+Vec4 operator+(const Vec4 &v, const float scalar);
+Vec4 operator-(const Vec4 &v, const float scalar);
+Vec4 operator*(const Vec4 &v, const float scalar);
+Vec4 operator/(const Vec4 &v, const float scalar);
 
-    Vec4 operator+(const Vec4 &v, const float scalar);
-    Vec4 operator-(const Vec4 &v, const float scalar);
-    Vec4 operator*(const Vec4 &v, const float scalar);
-    Vec4 operator/(const Vec4 &v, const float scalar);
-
-    Vec4 operator+(const float scalar, const Vec4 &v);
-    Vec4 operator-(const float scalar, const Vec4 &v);
-    Vec4 operator*(const float scalar, const Vec4 &v);
-    Vec4 operator/(const float scalar, const Vec4 &v);
+Vec4 operator+(const float scalar, const Vec4 &v);
+Vec4 operator-(const float scalar, const Vec4 &v);
+Vec4 operator*(const float scalar, const Vec4 &v);
+Vec4 operator/(const float scalar, const Vec4 &v);
 } // namespace pdm
 
 #endif // PDMATH_VECTOR4_HPP

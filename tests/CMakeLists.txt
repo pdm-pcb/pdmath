@@ -28,6 +28,7 @@ add_executable(
     matrices.cpp
     quaternions.cpp
     camera.cpp
+    collisions.cpp
     homeworks.cpp
 )
 

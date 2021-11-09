@@ -10,6 +10,9 @@ set(
     Line.cpp
     Plane.cpp
     Camera.cpp
+    BSphere.cpp
+    AABBox.cpp
+    OBBox.cpp
 )
 
 add_library(
