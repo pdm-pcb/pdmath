@@ -3,6 +3,9 @@
 
 #include "pdmath/Point4.hpp"
 #include "pdmath/Matrix4.hpp"
+#include "pdmath/BSphere.hpp"
+
+#include <utility>
 
 namespace pdm {
 
@@ -11,7 +14,9 @@ class Mat4;
 
 class OBBox {
 public:
-    bool collides(const OBBox &box);
+    bool collides(const OBBox &box) const;
+    bool collides(const BSphere &sphere) const;
+    bool collides(const Point4 &point) const;
 
     Vec4 side()    const;
     Vec4 up()      const;
@@ -32,6 +37,10 @@ public:
     inline Mat4   to_world()     const { return _world;        }
     inline Point4 center()       const { return _center;       }
     inline Point4 center_world() const { return _center_world; }
+
+    std::pair<float, float> x_interval() const;
+    std::pair<float, float> y_interval() const;
+    std::pair<float, float> z_interval() const;
 
     OBBox(const Point4 &min, const Point4 &max, const Mat4 &world) noexcept;
     OBBox() = delete;

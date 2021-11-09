@@ -16,12 +16,6 @@ bool AABBox::collides(const AABBox &other) const {
     return x_overlap && y_overlap && z_overlap;
 }
 
-bool AABBox::collides(const Point4 &point) const {
-    return _min._x < point._x && point._x < _max._x &&
-           _min._y < point._y && point._y < _max._y &&
-           _min._z < point._z && point._z < _max._z;
-}
-
 bool AABBox::collides(const BSphere &sphere) const {
     Point4 center_clamped(
         clamp(x_interval(), sphere.center()._x),
@@ -30,6 +24,12 @@ bool AABBox::collides(const BSphere &sphere) const {
         1.0f);
 
     return sphere.collides(center_clamped);
+}
+
+bool AABBox::collides(const Point4 &point) const {
+    return _min._x < point._x && point._x < _max._x &&
+           _min._y < point._y && point._y < _max._y &&
+           _min._z < point._z && point._z < _max._z;
 }
 
 std::pair<float, float> AABBox::x_interval() const {

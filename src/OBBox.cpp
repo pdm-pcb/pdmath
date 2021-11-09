@@ -1,10 +1,11 @@
 #include "pdmath/OBBox.hpp"
 
+#include "pdmath/util.hpp"
 #include "pdmath/Vector4.hpp"
 
 namespace pdm {
 
-bool OBBox::collides(const OBBox &other) {
+bool OBBox::collides(const OBBox &other) const {
     // gather all the cross product vectors we'll be using
     Vec4 sideside_cross = side().cross(other.side());
     Vec4 upside_cross   = up().cross(other.side());
@@ -143,6 +144,23 @@ bool OBBox::collides(const OBBox &other) {
            (fwdfwd_dist     < fwdfwd_proj);
 }
 
+bool OBBox::collides(const BSphere &sphere) const {
+    Point4 center_clamped = _local * sphere.center();
+    center_clamped._x = clamp(x_interval(), center_clamped._x);
+    center_clamped._y = clamp(y_interval(), center_clamped._y);
+    center_clamped._z = clamp(z_interval(), center_clamped._z);
+    center_clamped *= _world;
+
+    return sphere.collides(center_clamped);
+}
+
+bool OBBox::collides(const Point4 &point) const {
+    Point4 local_point = _local * point;
+    return _min._x < local_point._x && local_point._x < _max._x &&
+           _min._y < local_point._y && local_point._y < _max._y &&
+           _min._z < local_point._z && local_point._z < _max._z;
+}
+
 Vec4 OBBox::side() const {
     return Vec4(_world._m[0][0],
                 _world._m[1][0],
@@ -198,6 +216,18 @@ float OBBox::max_projection(const OBBox &local, const Vec4 &v) {
 
 float OBBox::scaled_projection(const OBBox &local, const Vec4 &v) {
     return max_projection(local, v) * local.get_proj_scale();
+}
+
+std::pair<float, float> OBBox::x_interval() const {
+    return std::pair<float, float>(_min._x, _max._x);
+}
+
+std::pair<float, float> OBBox::y_interval() const {
+    return std::pair<float, float>(_min._y, _max._y);
+}
+
+std::pair<float, float> OBBox::z_interval() const {
+    return std::pair<float, float>(_min._z, _max._z);
 }
 
 OBBox::OBBox(const Point4 &min, const Point4 &max, const Mat4 &world) noexcept:
