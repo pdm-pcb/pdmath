@@ -9,6 +9,42 @@
 using namespace pdm;
 using namespace Catch;
 
+TEST_CASE("Bounding sphere - bounding sphere collision",
+          "[axis aligned bounding boxes][collisions]") {
+    BSphere object1(Point4(-6.77f, 0.0f, -6.7f, 1.0f), 5, Mat4::identity);
+    BSphere object2(Point4(9.0f, 0.0f, 5.0f, 1.0f), 2.5, Mat4::identity);
+
+    REQUIRE(object1.collides(object2) == false);
+    REQUIRE(object2.collides(object1) == false);
+
+    object1 = BSphere(Point4(7.844f, 0.0f, 5.774f, 1.0f), 3, Mat4::identity);
+    object2 = BSphere(Point4(6.0f, 0.0f, 4.0f, 1.0f), 2.5, Mat4::identity);
+    
+    REQUIRE(object1.collides(object2) == true);
+    REQUIRE(object2.collides(object1) == true);
+}
+
+TEST_CASE("Axis aligned bounding box - axis aligned bounding box collision",
+          "[axis aligned bounding boxes][collisions]") {
+    AABBox object1(Point4(-3.0f, -1.0f, 1.5f, 1.0f),
+                   Point4(3.0f, 1.0f, 6.5f, 1.0f));
+
+    AABBox object2(Point4(2.5f, -1.0f, -3.0f, 1.0f),
+                   Point4(9.5f, 1.0f, 3.0f, 1.0f));
+
+    REQUIRE(object1.collides(object2) == true);
+    REQUIRE(object2.collides(object1) == true);
+
+    object1 = AABBox(Point4(-1.0f, -1.0f, 4.0f, 1.0f),
+                     Point4(1.0f, 1.0f, 8.0f, 1.0f));
+
+    object2 = AABBox(Point4(-5.5f, -1.0f, 1.5f, 1.0f),
+                     Point4(-2.5f, 1.0f, 2.5f, 1.0f));
+
+    REQUIRE(object1.collides(object2) == false);
+    REQUIRE(object2.collides(object1) == false);
+}
+
 TEST_CASE("Object bounding box - object bounding box collision",
           "[object bounding boxes][collisions]") {
     OBBox object1(Point4(-4.5f, -4.5f, -5.0f, 1.0f),

@@ -94,37 +94,37 @@ bool OBBox::collides(const OBBox &other) {
                             OBBox::scaled_projection(other, fwdfwd_cross);
     
 
-    std::cout << "o1 side : " << side()           << " / " << side().length()          << "\n"
-              << "o1 up   : " << up()             << " / " << up().length()            << "\n"
-              << "\033[1m\033[4mo1 fwd  : " << forward()        << " / " << forward().length()       << "\033[0m\n\n"
-              << "o2 side : " << other.side()     << " / " << other.side().length()    << "\n"
-              << "o2 up   : " << other.up()       << " / " << other.up().length()      << "\n"
-              << "\033[1m\033[4mo2 fwd  : " << other.forward()  << " / " << other.forward().length() << "\033[0m\n\n"
-              << "sxs     : " << sideside_cross   << "\n"
-              << "uxs     : " << upside_cross     << "\n"
-              << "fxs     : " << fwdside_cross    << "\n"
-              << "sxu     : " << sideup_cross     << "\n"
-              << "uxu     : " << upup_cross       << "\n"
-              << "fxu     : " << fwdup_cross      << "\n"
-              << "sxf     : " << sidefwd_cross    << "\n"
-              << "uxf     : " << upfwd_cross      << "\n"
-              << "fxf     : " << fwdfwd_cross     << "\n\n"
-              << "side o1 :  " << side_dist_local << "\t<  " << side_proj_local << "\t?  " << ((side_dist_local < side_proj_local) ? "true\n" : "false\n")
-              << "up   o1 :  " << up_dist_local   << "\t<  " << up_proj_local   << "\t?  " << ((up_dist_local   < up_proj_local)   ? "true\n" : "false\n")
-              << "fwd  o1 :  " << fwd_dist_local  << "\t<  " << fwd_proj_local  << "\t?  " << ((fwd_dist_local  < fwd_proj_local)  ? "true\n" : "false\n")
-              << "side o2 :  " << side_dist_other << "\t<  " << side_proj_other << "\t?  " << ((side_dist_other < side_proj_other) ? "true\n" : "false\n")
-              << "up   o2 :  " << up_dist_other   << "\t<  " << up_proj_other   << "\t?  " << ((up_dist_other   < up_proj_other)   ? "true\n" : "false\n")
-              << "fwd  o2 :  " << fwd_dist_other  << "\t<  " << fwd_proj_other  << "\t?  " << ((fwd_dist_other  < fwd_proj_other)  ? "true\n" : "false\n")
-              << "sxs     :  " << sideside_dist   << "\t<  " << sideside_proj   << "\t?  " << ((sideside_dist   < sideside_proj)   ? "true\n" : "false\n")
-              << "uxs     :  " << upside_dist     << "\t<  " << upside_proj     << "\t?  " << ((upside_dist     < upside_proj)     ? "true\n" : "false\n")
-              << "fxs     :  " << fwdside_dist    << "\t<  " << fwdside_proj    << "\t?  " << ((fwdside_dist    < fwdside_proj)    ? "true\n" : "false\n")
-              << "sxu     :  " << sideup_dist     << "\t<  " << sideup_proj     << "\t?  " << ((sideup_dist     < sideup_proj)     ? "true\n" : "false\n")
-              << "uxu     :  " << upup_dist       << "\t<  " << upup_proj       << "\t?  " << ((upup_dist       < upup_proj)       ? "true\n" : "false\n")
-              << "fxu     :  " << fwdup_dist      << "\t<  " << fwdup_proj      << "\t?  " << ((fwdup_dist      < fwdup_proj)      ? "true\n" : "false\n")
-              << "sxf     :  " << sidefwd_dist    << "\t<  " << sidefwd_proj    << "\t?  " << ((sidefwd_dist    < sidefwd_proj)    ? "true\n" : "false\n")
-              << "uxf     :  " << upfwd_dist      << "\t<  " << upfwd_proj      << "\t?  " << ((upfwd_dist      < upfwd_proj)      ? "true\n" : "false\n")
-              << "\033[1m\033[4mfxf     :  " << fwdfwd_dist     << "\t<  " << fwdfwd_proj     << "\t?\033[0m  " << ((fwdfwd_dist     < fwdfwd_proj)     ? "true\n" : "false\n")
-              << std::endl;
+    // std::cout << "o1 side : " << side()           << " / " << side().length()          << "\n"
+    //           << "o1 up   : " << up()             << " / " << up().length()            << "\n"
+    //           << "o1 fwd  : " << forward()        << " / " << forward().length()       << "\n\n"
+    //           << "o2 side : " << other.side()     << " / " << other.side().length()    << "\n"
+    //           << "o2 up   : " << other.up()       << " / " << other.up().length()      << "\n"
+    //           << "o2 fwd  : " << other.forward()  << " / " << other.forward().length() << "\n\n"
+    //           << "sxs     : " << sideside_cross   << "\n"
+    //           << "uxs     : " << upside_cross     << "\n"
+    //           << "fxs     : " << fwdside_cross    << "\n"
+    //           << "sxu     : " << sideup_cross     << "\n"
+    //           << "uxu     : " << upup_cross       << "\n"
+    //           << "fxu     : " << fwdup_cross      << "\n"
+    //           << "sxf     : " << sidefwd_cross    << "\n"
+    //           << "uxf     : " << upfwd_cross      << "\n"
+    //           << "fxf     : " << fwdfwd_cross     << "\n\n"
+    //           << "side o1 :  " << side_dist_local << "\t<  " << side_proj_local << "\t?  " << ((side_dist_local < side_proj_local) ? "true\n" : "false\n")
+    //           << "up   o1 :  " << up_dist_local   << "\t<  " << up_proj_local   << "\t?  " << ((up_dist_local   < up_proj_local)   ? "true\n" : "false\n")
+    //           << "fwd  o1 :  " << fwd_dist_local  << "\t<  " << fwd_proj_local  << "\t?  " << ((fwd_dist_local  < fwd_proj_local)  ? "true\n" : "false\n")
+    //           << "side o2 :  " << side_dist_other << "\t<  " << side_proj_other << "\t?  " << ((side_dist_other < side_proj_other) ? "true\n" : "false\n")
+    //           << "up   o2 :  " << up_dist_other   << "\t<  " << up_proj_other   << "\t?  " << ((up_dist_other   < up_proj_other)   ? "true\n" : "false\n")
+    //           << "fwd  o2 :  " << fwd_dist_other  << "\t<  " << fwd_proj_other  << "\t?  " << ((fwd_dist_other  < fwd_proj_other)  ? "true\n" : "false\n")
+    //           << "sxs     :  " << sideside_dist   << "\t<  " << sideside_proj   << "\t?  " << ((sideside_dist   < sideside_proj)   ? "true\n" : "false\n")
+    //           << "uxs     :  " << upside_dist     << "\t<  " << upside_proj     << "\t?  " << ((upside_dist     < upside_proj)     ? "true\n" : "false\n")
+    //           << "fxs     :  " << fwdside_dist    << "\t<  " << fwdside_proj    << "\t?  " << ((fwdside_dist    < fwdside_proj)    ? "true\n" : "false\n")
+    //           << "sxu     :  " << sideup_dist     << "\t<  " << sideup_proj     << "\t?  " << ((sideup_dist     < sideup_proj)     ? "true\n" : "false\n")
+    //           << "uxu     :  " << upup_dist       << "\t<  " << upup_proj       << "\t?  " << ((upup_dist       < upup_proj)       ? "true\n" : "false\n")
+    //           << "fxu     :  " << fwdup_dist      << "\t<  " << fwdup_proj      << "\t?  " << ((fwdup_dist      < fwdup_proj)      ? "true\n" : "false\n")
+    //           << "sxf     :  " << sidefwd_dist    << "\t<  " << sidefwd_proj    << "\t?  " << ((sidefwd_dist    < sidefwd_proj)    ? "true\n" : "false\n")
+    //           << "uxf     :  " << upfwd_dist      << "\t<  " << upfwd_proj      << "\t?  " << ((upfwd_dist      < upfwd_proj)      ? "true\n" : "false\n")
+    //           << "fxf     :  " << fwdfwd_dist     << "\t<  " << fwdfwd_proj     << "\t?  " << ((fwdfwd_dist     < fwdfwd_proj)     ? "true\n" : "false\n")
+    //           << std::endl;
 
     return (side_dist_local < side_proj_local) &&
            (up_dist_local   < up_proj_local)   &&
