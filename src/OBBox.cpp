@@ -92,14 +92,14 @@ bool OBBox::collides(const OBBox &other) {
                             OBBox::scaled_projection(other, upfwd_cross);
     float fwdfwd_proj     = OBBox::scaled_projection(*this, fwdfwd_cross) +
                             OBBox::scaled_projection(other, fwdfwd_cross);
-    //\033[1m\033[4m
+    
 
     std::cout << "o1 side : " << side()           << " / " << side().length()          << "\n"
               << "o1 up   : " << up()             << " / " << up().length()            << "\n"
-              << "o1 fwd  : " << forward()        << " / " << forward().length()       << "\n\n"
+              << "\033[1m\033[4mo1 fwd  : " << forward()        << " / " << forward().length()       << "\033[0m\n\n"
               << "o2 side : " << other.side()     << " / " << other.side().length()    << "\n"
               << "o2 up   : " << other.up()       << " / " << other.up().length()      << "\n"
-              << "o2 fwd  : " << other.forward()  << " / " << other.forward().length() << "\n\n"
+              << "\033[1m\033[4mo2 fwd  : " << other.forward()  << " / " << other.forward().length() << "\033[0m\n\n"
               << "sxs     : " << sideside_cross   << "\n"
               << "uxs     : " << upside_cross     << "\n"
               << "fxs     : " << fwdside_cross    << "\n"
@@ -123,7 +123,7 @@ bool OBBox::collides(const OBBox &other) {
               << "fxu     :  " << fwdup_dist      << "\t<  " << fwdup_proj      << "\t?  " << ((fwdup_dist      < fwdup_proj)      ? "true\n" : "false\n")
               << "sxf     :  " << sidefwd_dist    << "\t<  " << sidefwd_proj    << "\t?  " << ((sidefwd_dist    < sidefwd_proj)    ? "true\n" : "false\n")
               << "uxf     :  " << upfwd_dist      << "\t<  " << upfwd_proj      << "\t?  " << ((upfwd_dist      < upfwd_proj)      ? "true\n" : "false\n")
-              << "fxf     :  " << fwdfwd_dist     << "\t<  " << fwdfwd_proj     << "\t?  " << ((fwdfwd_dist     < fwdfwd_proj)     ? "true\n" : "false\n")
+              << "\033[1m\033[4mfxf     :  " << fwdfwd_dist     << "\t<  " << fwdfwd_proj     << "\t?\033[0m  " << ((fwdfwd_dist     < fwdfwd_proj)     ? "true\n" : "false\n")
               << std::endl;
 
     return (side_dist_local < side_proj_local) &&
