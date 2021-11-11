@@ -14,7 +14,7 @@ class Mat4;
 
 class OBBox {
 public:
-    bool collides(const OBBox &box) const;
+    bool collides(const OBBox &other) const;
     bool collides(const BSphere &sphere) const;
     bool collides(const Point4 &point) const;
 
@@ -60,4 +60,4 @@ private:
 
 } // namespace pdm
 
-#endif // PDMATH_OOBBOX_HPP
+#endif // PDMATH_OBBOX_HPP

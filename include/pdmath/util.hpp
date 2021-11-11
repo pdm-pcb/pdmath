@@ -1,5 +1,5 @@
-#ifndef PDMAT_UTIL_HPP
-#define PDMAT_UTIL_HPP
+#ifndef PDMATH_UTIL_HPP
+#define PDMATH_UTIL_HPP
 
 #include <utility>
 
@@ -29,4 +29,4 @@ static float clamp(const std::pair<float, float> &min_max, const float val) {
 
 } //namespace pdm
 
-#endif // PDMAT_UTIL_HPP
+#endif // PDMATH_UTIL_HPP

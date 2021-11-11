@@ -43,20 +43,24 @@ target_link_libraries(
     Catch2::Catch2WithMain
 )
 
-target_compile_options(
-    tests PRIVATE
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" or
-       CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        message(STATUS "Using gcc/Clang flags for tests.")
+if(UNIX)
+    message(STATUS "Using gcc/Clang flags for pdmath tests.")
+    target_compile_options(
+        tests PRIVATE
         -march=native -mtune=native
         -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
         "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        message(STATUS "Using MSVC flags for tests.")
-        /MP /std:c++20 /permissive /Za /sdl /Wall /Wl
+    )
+endif(UNIX)
+
+if(WIN32)
+    message(STATUS "Using MSVC flags for pdmath tests.")
+    target_compile_options(
+        tests PRIVATE
+        /MP /std:c++20 /permissive /Za /sdl /Wall
         "$<IF:$<CONFIG:Debug>,/Zi,/GL /Gw /fp:fast>"
-    endif()
-)
+    )
+endif(WIN32)
 
 set_target_properties(
     tests PROPERTIES

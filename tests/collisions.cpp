@@ -114,17 +114,19 @@ TEST_CASE("Object bounding box - object bounding box collision",
           "[object bounding boxes][collisions]") {
     OBBox object1(Point4(-4.5f, -4.5f, -5.0f, 1.0f),
                   Point4(5.5f, 5.5f, 5.0f, 1.0f),
-                  Mat4(0.3f, 0.0f,    0.0f,   4.0f,
-                       0.0f, 0.2846f,-0.095, -3.0f,
-                       0.0f, 0.0949f, 0.2846, 3.0f,
-                       0.0f, 0.0f,    0.0f,   1.0f));
+                  Mat4(
+                      0.3f, 0.0f,    0.0f,     4.0f,
+                       0.0f, 0.2846f,-0.095f, -3.0f,
+                       0.0f, 0.0949f, 0.2846f, 3.0f,
+                       0.0f, 0.0f,    0.0f,    1.0f));
 
     OBBox object2(Point4(-4.0f, -4.75f, -4.5f, 1.0f),
                   Point4(4.0f, 5.25f, 5.5f, 1.0f),
-                  Mat4(0.2425f,  0.2287f, -0.943f,  6.0f,
-                       0.0f,     0.9718f,  0.2357f, 4.0f,
-                       0.9701f, -0.057f,   0.2357f, 8.0f,
-                       0.0f,     0.0f,     0.0f,    1.0f));
+                  Mat4(
+                      0.2425f,  0.2287f, -0.943f,  6.0f,
+                      0.0f,     0.9718f,  0.2357f, 4.0f,
+                      0.9701f, -0.057f,   0.2357f, 8.0f,
+                      0.0f,     0.0f,     0.0f,    1.0f));
 
     REQUIRE(object1.collides(object2) == false);
 
@@ -134,8 +136,7 @@ TEST_CASE("Object bounding box - object bounding box collision",
                          1.961f, 0.0f,  0.392f,  9.0f,
                          0.0f,   2.0f,  0.0f,    0.0f,
                         -0.392f, 0.0f,  1.961f, -7.0f,
-                         0.0f,   0.0f,  0.0f,    1.0f
-                    ));
+                         0.0f,   0.0f,  0.0f,    1.0f));
 
     object2 = OBBox(Point4(-1.38f, -1.0f, -1.5f, 1.0f),
                     Point4(1.625f, 1.0f, 0.5f, 1.0f),
@@ -143,8 +144,7 @@ TEST_CASE("Object bounding box - object bounding box collision",
                         -2.0f, 0.0f,  1.2f,  6.0f,
                          0.0f, 2.0f,  0.0f,  0.0f,
                          0.0f, 0.0f, -2.0f, -9.0f,
-                         0.0f, 0.0f,  0.0f,  1.0f
-                    ));
+                         0.0f, 0.0f,  0.0f,  1.0f));
 
     REQUIRE(object1.collides(object2) == true);
 }

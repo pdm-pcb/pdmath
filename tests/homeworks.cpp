@@ -35,7 +35,7 @@ TEST_CASE("Spaceship 'forward' vector manipulation", "[vectors][matrices]") {
     Vec3 zrot = z_vec * cos_theta + k_cross_v * sin_theta +
                 k * k_dot_v * (1 - cos_theta);
 
-    REQUIRE(zrot == Vec3(-2.5723727, -3.2360680, 0.9543387));
+    REQUIRE(zrot == Vec3(-2.572372f, -3.236068f, 0.954338f));
 
     // back to the original rotation, but tipping the nose down with the
     // previously derived x-axis

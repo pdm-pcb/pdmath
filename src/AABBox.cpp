@@ -44,4 +44,4 @@ std::pair<float, float> AABBox::z_interval() const {
     return std::pair<float, float>(_min._z, _max._z);
 }
 
-}
+} // namespace pdm

@@ -150,17 +150,13 @@ bool OBBox::collides(const OBBox &other) const {
 
     return ((std::isnan(side_center_dist_this) ||
              std::isnan(side_proj_this)) ||
-            (side_center_dist_this < side_proj_this)) &&
-
-           ((std::isnan(side_center_dist_this) ||
-             std::isnan(side_proj_this)) ||
             (side_center_dist_this  < side_proj_this)) &&
 
            ((std::isnan(up_center_dist_this) ||
              std::isnan(up_proj_this)) ||
             (up_center_dist_this < up_proj_this)) && 
 
-           ((std::isnan(fwd_center_dist_this) < 
+           ((std::isnan(fwd_center_dist_this) || 
              std::isnan(fwd_proj_this)) || 
             (fwd_center_dist_this < fwd_proj_this)) &&
 
