@@ -1,10 +1,11 @@
 .vscode/
 *.code-workspace
+
 .vs/
+CMakeSettings.json
 
 compile_commands.json
 
 build/
 bin/
 lib/
-

@@ -31,7 +31,7 @@ if(UNIX)
         tests PRIVATE
         -march=native -mtune=native
         -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
-        "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
+        $<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>
     )
 endif(UNIX)
 
@@ -39,10 +39,12 @@ if(WIN32)
     message(STATUS "Using MSVC flags for pdmath pdmath library.")
     target_compile_options(
         tests PRIVATE
-        /MP /std:c++20 /permissive /Za /sdl /Wall
-        "$<IF:$<CONFIG:Debug>,/Zi,/GL /Gw /fp:fast>"
+        /MP /permissive /sdl /Wall
+        /D__STDC_WANT_SECURE_LIB__#0
+        $<IF:$<CONFIG:Debug>,/Za /Zi,/GL /Gw /fp:fast>
     )
 endif(WIN32)
+
 set(EXPORT_COMPILE_COMMANDS ON)
 
 set_target_properties(

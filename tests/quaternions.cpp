@@ -56,7 +56,7 @@ TEST_CASE("Quaternions rotate vectors properly", "[vectors][quaternions]") {
     Quat p_(0.0f, p);
 
     Quat qp_(q * p_);
-    REQUIRE(qp_ == Quat(-0.836414f, -4.739324f, 1.5197847f, 4.4192119f));
+    REQUIRE(qp_ == Quat(-0.8364145f, -4.7393255f, 1.5197842f, 4.4192119f));
 
     Quat qp_qinv(qp_ * q.inverted());
     Quat result(0.0f, -3.8955910f, -5.8259802f, -4.4589624f);
