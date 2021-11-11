@@ -1,5 +1,6 @@
 .vscode/
 *.code-workspace
+.vs/
 
 compile_commands.json
 

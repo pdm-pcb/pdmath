@@ -26,10 +26,18 @@ target_include_directories(
 )
 
 target_compile_options(
-    pdMath PRIVATE
-    -march=native -mtune=native
-    -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
-    "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
+    tests PRIVATE
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" or
+       CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message(STATUS "Using gcc/Clang flags for pdmath library.")
+        -march=native -mtune=native
+        -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
+        "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        message(STATUS "Using MSVC flags for pdmath library.")
+        /MP /std:c++20 /permissive /Za /sdl /Wall /Wl
+        "$<IF:$<CONFIG:Debug>,/Zi,/GL /Gw /fp:fast>"
+    endif()
 )
 
 set(EXPORT_COMPILE_COMMANDS ON)
@@ -42,4 +50,3 @@ set_target_properties(
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib/
 )
-

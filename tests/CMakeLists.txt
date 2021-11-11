@@ -43,6 +43,21 @@ target_link_libraries(
     Catch2::Catch2WithMain
 )
 
+target_compile_options(
+    tests PRIVATE
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" or
+       CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message(STATUS "Using gcc/Clang flags for tests.")
+        -march=native -mtune=native
+        -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
+        "$<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>"
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        message(STATUS "Using MSVC flags for tests.")
+        /MP /std:c++20 /permissive /Za /sdl /Wall /Wl
+        "$<IF:$<CONFIG:Debug>,/Zi,/GL /Gw /fp:fast>"
+    endif()
+)
+
 set_target_properties(
     tests PROPERTIES
     CXX_STANDARD 20
@@ -52,4 +67,3 @@ set_target_properties(
     RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/bin/debug/
     RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/release/
 )
-
