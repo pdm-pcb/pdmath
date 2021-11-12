@@ -7,7 +7,8 @@ set(
     Vector4.cpp
     Matrix4.cpp
     Quaternion.cpp
-    Line.cpp
+    Line3.cpp
+    Line4.cpp
     Plane.cpp
     Camera.cpp
     BSphere.cpp

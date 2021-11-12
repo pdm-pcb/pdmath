@@ -14,12 +14,18 @@ public:
 
     float length() const;
     float dot(const Vec4 &v) const;
+    float dot(const Vec3 &v) const;
     Vec4  cross(const Vec4 &v) const;
     Vec4  normalized() const;
+
+    bool  is_collinear(const Vec4 &v) const;
+    bool  is_perpendicular(const Vec4 &v) const;
 
     Vec4() noexcept = default;
     Vec4(const float x, const float y,
          const float z, const float w) noexcept;
+    Vec4(const float x, const float y,
+         const float z) noexcept;
     Vec4(const Vec3 &v, const float w) noexcept;
     explicit Vec4(const Point4 &p) noexcept;
     explicit Vec4(const Vec3 &v)   noexcept;

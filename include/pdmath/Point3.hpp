@@ -5,17 +5,14 @@
 #include <cmath>
 
 namespace pdm {
-class Line;
+class Line3;
 class Plane;
 class Mat3;
 
 class Point3 {
 public:
-    Point3() = default;
-    Point3(const float x, const float y, const float z);
-
     bool  are_collinear(const Point3 &b, const Point3 &c) const;
-    float distance_to_line(const Line &line) const;
+    float distance_to_line(const Line3 &line) const;
     bool  is_on_plane(const Plane &plane) const;
     float distance_to_plane(const Plane &plane) const;
 
@@ -27,6 +24,9 @@ public:
     float _x;
     float _y;
     float _z;
+
+    Point3() = default;
+    Point3(const float x, const float y, const float z);
 
     bool operator==(const Point3 &p) const;
 

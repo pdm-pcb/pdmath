@@ -2,6 +2,8 @@
 
 #include "pdmath/util.hpp"
 #include "pdmath/Vector4.hpp"
+#include "pdmath/BSphere.hpp"
+#include "pdmath/Plane.hpp"
 
 #include <cmath>
 
@@ -211,9 +213,9 @@ bool OBBox::collides(const OBBox &other) const {
 
 bool OBBox::collides(const BSphere &sphere) const {
     Point4 center_clamped = _local * sphere.center();
-    center_clamped._x = clamp(x_interval(), center_clamped._x);
-    center_clamped._y = clamp(y_interval(), center_clamped._y);
-    center_clamped._z = clamp(z_interval(), center_clamped._z);
+    center_clamped._x = clamp(center_clamped._x, x_interval());
+    center_clamped._y = clamp(center_clamped._y, y_interval());
+    center_clamped._z = clamp(center_clamped._z, z_interval());
     center_clamped *= _world;
 
     return sphere.collides(center_clamped);
@@ -224,6 +226,38 @@ bool OBBox::collides(const Point4 &point) const {
     return _min._x < local_point._x && local_point._x < _max._x &&
            _min._y < local_point._y && local_point._y < _max._y &&
            _min._z < local_point._z && local_point._z < _max._z;
+}
+
+bool OBBox::collides(const Plane &plane) const {
+    float h = max_projection(*this, static_cast<Vec4>(plane._n));
+    float h2 = scaled_projection(*this, static_cast<Vec4>(plane._n));
+    Point4 s1 = _center_world - h2 * (plane._n/plane._n.length());
+    Point4 s2 = _center_world + h2 * (plane._n/plane._n.length());
+    float d1 = Vec4(s1 - plane._p).dot(plane._n);
+    float d2 = Vec4(s2 - plane._p).dot(plane._n);
+
+    // std::cout << "\nh : " << h << "\n"
+    //           << "h2: "   << h2 << "\n"
+    //           << "n: "    << plane._n << "\n"
+    //           << "|n|: "  << plane._n.length() << "\n"
+    //           << "n/|n|: " << (plane._n/plane._n.length()) << "\n"
+    //           << "n': "   << _local * static_cast<Vec4>(plane._n) << "\n"
+    //           << "s1: "   << s1 << "\n"
+    //           << "s2: "   << s2 << "\n"
+    //           << "s1 - p0: " << Vec4(s1 - plane._p) << "\n"
+    //           << "s2 - p0: " << Vec4(s2 - plane._p) << "\n"
+    //           << "d1: "   << d1 << "\n"
+    //           << "d2: "   << d2 << "\n"
+    //           << "local c: " << _local * _center_world << "\n"
+    //           << "half-diag: " << _center << "\n"
+    //           << "scaling: " << _world.get_x_scale() << "\n"
+    //           << "world c: " << _center_world << "\n\n"
+    //           << "world:\n" << _world << "\n\n"
+    //           << "local:\n" << _local << "\n"
+    //           << "--------------------------------------------------------\n"
+    //           << std::endl;
+
+    return d1 < 0 && d2 > 0;
 }
 
 Vec4 OBBox::side() const {
@@ -275,9 +309,15 @@ float OBBox::max_projection(const OBBox &local, const Vec4 &v) {
     // put the projection vector into this OBB's local space
     Vec4 local_v = local.to_local() * v;
 
+    // std::cout << "\n---------------\n"
+    //           << "v_x * a: " << std::abs(local_v._x * local.center()._x) << "\n"
+    //           << "v_y * b: " << std::abs(local_v._y * local.center()._y) << "\n"
+    //           << "v_z * c: " << std::abs(local_v._z * local.center()._z) << "\n"
+    //           << std::endl;
+
     //--------------------------------------------------------------------------
     //
-    // (|v'_x * a| + |v'_y * b| + |v'_z * c|) // ||v||
+    // (|v'_x * a| + |v'_y * b| + |v'_z * c|) / ||v||
     //
     // where v is the vector onto which we're projecting, v' is that vector in
     // the object local space for this OBB, and (a,b,c) are the x, y, z
@@ -313,16 +353,16 @@ OBBox::OBBox(const Point4 &min, const Point4 &max, const Mat4 &world) noexcept:
 {
     _center = Point4((_max._x - _min._x) / 2.0f,
                      (_max._y - _min._y) / 2.0f,
-                     (_max._z - _min._z) / 2.0f,
-                     1.0f);
+                     (_max._z - _min._z) / 2.0f);
 
     _min_world = _world * _min;
     _max_world = _world * _max;
 
     _center_world = Point4((_min_world._x + _max_world._x) / 2.0f,
                            (_min_world._y + _max_world._y) / 2.0f,
-                           (_min_world._z + _max_world._z) / 2.0f,
-                           1.0f);
+                           (_min_world._z + _max_world._z) / 2.0f);
+
+    // _center_world = _world * _center;
 }
 
 } // namespace pdm

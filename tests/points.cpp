@@ -1,6 +1,6 @@
 #include "pdmath/Point3.hpp"
 #include "pdmath/Vector3.hpp"
-#include "pdmath/Line.hpp"
+#include "pdmath/Line3.hpp"
 #include "pdmath/Plane.hpp"
 
 #include "catch2/catch_test_macros.hpp"
@@ -32,7 +32,7 @@ TEST_CASE("Collinear points test as such", "[points]") {
 }
 
 TEST_CASE("Point3s can measure their distance to a line", "[Point3s]") {
-    Line  enemy_line(Point3(5, 2, -7), Vec3(-5, -8, 15));
+    Line3 enemy_line(Point3(5, 2, -7), Vec3(-5, -8, 15));
     Point3 player_loc(0, -5, 8);
 
     REQUIRE(player_loc.distance_to_line(enemy_line) ==

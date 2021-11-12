@@ -18,6 +18,12 @@ namespace pdm {
                this->_w * v._w;
     }
 
+    float Vec4::dot(const Vec3 &v) const {
+        return this->_x * v._x +
+               this->_y * v._y +
+               this->_z * v._z;
+    }
+
     Vec4 Vec4::cross(const Vec4 &v) const {
         return Vec4(this->_y * v._z - this->_z * v._y,
                     this->_z * v._x - this->_x * v._z,
@@ -39,9 +45,22 @@ namespace pdm {
         }
     }
 
+    bool Vec4::is_collinear(const Vec4 &v) const {
+        return cross(v).is_zero();
+    }
+
+    bool Vec4::is_perpendicular(const Vec4 &v) const {
+        return dot(v) == 0.0f;
+    }
+
     Vec4::Vec4(const float x, const float y,
                const float z, const float w) noexcept:
         Point4(x, y, z, w)
+    { }
+
+    Vec4::Vec4(const float x, const float y,
+               const float z) noexcept:
+        Point4(x, y, z, 1.0f)
     { }
 
     Vec4::Vec4(const Vec3 &v, const float w) noexcept :
@@ -53,7 +72,7 @@ namespace pdm {
     { }
 
     Vec4::Vec4(const Vec3 &v) noexcept:
-        Point4(v._x, v._y, v._z, 1.0f)
+        Point4(v._x, v._y, v._z, 0.0f)
     { }
 
     const Vec4& Vec4::operator+=(const Vec4 &v) {

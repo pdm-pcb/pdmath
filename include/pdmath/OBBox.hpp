@@ -3,20 +3,21 @@
 
 #include "pdmath/Point4.hpp"
 #include "pdmath/Matrix4.hpp"
-#include "pdmath/BSphere.hpp"
 
 #include <utility>
 
 namespace pdm {
 
 class Vec4;
-class Mat4;
+class BSphere;
+class Plane;
 
 class OBBox {
 public:
-    bool collides(const OBBox &other) const;
+    bool collides(const OBBox &other)    const;
     bool collides(const BSphere &sphere) const;
-    bool collides(const Point4 &point) const;
+    bool collides(const Point4 &point)   const;
+    bool collides(const Plane &plane)    const;
 
     Vec4 side()    const;
     Vec4 up()      const;

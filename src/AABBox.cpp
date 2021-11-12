@@ -2,26 +2,23 @@
 
 #include "pdmath/util.hpp"
 #include "pdmath/BSphere.hpp"
+#include "pdmath/Line4.hpp"
 
 namespace pdm {
 
 bool AABBox::collides(const AABBox &other) const {
-    bool x_overlap = (x_interval().second >= other.x_interval().first) &&
-                     (x_interval().first  <= other.x_interval().second);
-    bool y_overlap = (y_interval().second >= other.y_interval().first) &&
-                     (y_interval().first  <= other.y_interval().second);
-    bool z_overlap = (z_interval().second >= other.z_interval().first) &&
-                     (z_interval().first  <= other.z_interval().second);
+    bool x_overlap = overlap(x_interval(), other.x_interval());
+    bool y_overlap = overlap(y_interval(), other.y_interval());
+    bool z_overlap = overlap(z_interval(), other.z_interval());
 
     return x_overlap && y_overlap && z_overlap;
 }
 
 bool AABBox::collides(const BSphere &sphere) const {
     Point4 center_clamped(
-        clamp(x_interval(), sphere.center()._x),
-        clamp(y_interval(), sphere.center()._y),
-        clamp(z_interval(), sphere.center()._z),
-        1.0f);
+        clamp(sphere.center()._x, x_interval()),
+        clamp(sphere.center()._y, y_interval()),
+        clamp(sphere.center()._z, z_interval()));
 
     return sphere.collides(center_clamped);
 }
@@ -30,6 +27,54 @@ bool AABBox::collides(const Point4 &point) const {
     return _min._x < point._x && point._x < _max._x &&
            _min._y < point._y && point._y < _max._y &&
            _min._z < point._z && point._z < _max._z;
+}
+
+bool AABBox::collides(const Line4 &line) const {
+    if(line._v._x == 0.0f) {
+        if(line._p._x < _min._x || line._p._x > _max._x) {
+            // std::cout << "\nline's x value is zero and outside." << std::endl;
+            return false;
+        }
+    }
+    if(line._v._y == 0.0f) {
+        if(line._p._y < _min._y || line._p._y > _max._y) {
+            // std::cout << "\nline's y value is zero and outside." << std::endl;
+            return false;
+        }
+    }
+    if(line._v._z == 0.0f) {
+        if(line._p._z < _min._z || line._p._z > _max._z) {
+            // std::cout << "\nline's z value is zero and outside." << std::endl;
+            return false;
+        }
+    }
+
+    float ax = (_min._x - line._p._x) / line._v._x;
+    float bx = (_max._x - line._p._x) / line._v._x;
+
+    float sx = (ax < bx ? ax : bx);
+    float tx = (ax > bx ? ax : bx);
+
+    float ay = (_min._y - line._p._y) / line._v._y;
+    float by = (_max._y - line._p._y) / line._v._y;
+
+    float sy = (ay < by ? ay : by);
+    float ty = (ay > by ? ay : by);
+
+    float az = (_min._z - line._p._z) / line._v._z;
+    float bz = (_max._z - line._p._z) / line._v._z;
+
+    float sz = (az < bz ? az : bz);
+    float tz = (az > bz ? az : bz);
+
+    // std::cout << "\nx interval: " << sx << ", " << tx << "\n"
+    //           << "y interval: "   << sy << ", " << ty << "\n"
+    //           << "z interval: "   << sz << ", " << tz << "\n"
+    //           << std::endl;
+
+    return overlap(sx, tx, sy, ty) &&
+           overlap(sy, ty, sz, tz) &&
+           overlap(sz, tz, sx, tx);
 }
 
 std::pair<float, float> AABBox::x_interval() const {

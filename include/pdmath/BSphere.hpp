@@ -8,6 +8,7 @@ namespace pdm {
 
 class AABBox;
 class OBBox;
+class Plane;
 
 class BSphere {
 public:
@@ -15,6 +16,9 @@ public:
     bool collides(const Point4  &point) const;
     bool collides(const AABBox  &box)   const;
     bool collides(const OBBox   &box)   const;
+    bool collides(const Plane   &plane) const;
+    
+    bool above_plane(const Plane &plane) const;
 
     Vec4 center_to_center(const BSphere &other) const;
 

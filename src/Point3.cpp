@@ -1,24 +1,20 @@
 #include "pdmath/Point3.hpp"
 
 #include "pdmath/Vector3.hpp"
-#include "pdmath/Line.hpp"
+#include "pdmath/Line3.hpp"
 #include "pdmath/Plane.hpp"
 #include "pdmath/Matrix3.hpp"
 
 #include <iomanip>
 
 namespace pdm {
-    Point3::Point3(const float x, const float y, const float z) :
-        _x{x}, _y{y}, _z{z}
-    { }
-
     bool Point3::are_collinear(const Point3 &b, const Point3 &c) const {
         Vec3 vec_ab(b - *this);
         Vec3 vec_ac(c - *this);
         return vec_ab.is_collinear(vec_ac);
     }
 
-    float Point3::distance_to_line(const Line &line) const {
+    float Point3::distance_to_line(const Line3 &line) const {
         Vec3 s_minus_p(line._p - *this);
         Vec3 perp = s_minus_p - (s_minus_p.dot(line._v) /
                                  line._v.dot(line._v)) * line._v;
@@ -40,6 +36,10 @@ namespace pdm {
                (_y == 0.0f) &&
                (_z == 0.0f);
     }
+
+    Point3::Point3(const float x, const float y, const float z) :
+        _x{x}, _y{y}, _z{z}
+    { }
 
     bool Point3::operator==(const Point3 &p) const {
         float x_diff = (fabsf(this->_x) - fabsf(p._x));

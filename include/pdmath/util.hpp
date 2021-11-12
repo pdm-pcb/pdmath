@@ -5,7 +5,7 @@
 
 namespace pdm {
 
-static float clamp(const float min, const float max, const float val) {
+static float clamp(const float val, const float min, const float max) {
     if(val > max) {
         return max;
     }
@@ -16,7 +16,7 @@ static float clamp(const float min, const float max, const float val) {
     return val;
 }
 
-static float clamp(const std::pair<float, float> &min_max, const float val) {
+static float clamp(const float val, const std::pair<float, float> &min_max) {
     if(val > min_max.second) {
         return min_max.second;
     }
@@ -25,6 +25,16 @@ static float clamp(const std::pair<float, float> &min_max, const float val) {
     }
     
     return val;
+}
+
+static bool overlap(const std::pair<float, float> &a,
+                    const std::pair<float, float> &b) {
+    return (a.second >= b.first) && (a.first  <= b.second);
+}
+
+static bool overlap(const float a_min, const float a_max,
+                    const float b_min, const float b_max) {
+    return (a_max >= b_min) && (a_min  <= b_max);
 }
 
 } //namespace pdm
