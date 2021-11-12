@@ -229,7 +229,7 @@ bool OBBox::collides(const Point4 &point) const {
 }
 
 bool OBBox::collides(const Plane &plane) const {
-    float h = max_projection(*this, static_cast<Vec4>(plane._n));
+    // float h = max_projection(*this, static_cast<Vec4>(plane._n));
     float h2 = scaled_projection(*this, static_cast<Vec4>(plane._n));
     Point4 s1 = _center_world - h2 * (plane._n/plane._n.length());
     Point4 s2 = _center_world + h2 * (plane._n/plane._n.length());

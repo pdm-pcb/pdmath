@@ -1,5 +1,5 @@
-#ifndef PDMATH_LINE_HPP
-#define PDMATH_LINE_HPP
+#ifndef PDMATH_LINE3_HPP
+#define PDMATH_LINE3_HPP
 
 #include "pdmath/Point3.hpp"
 #include "pdmath/Vector3.hpp"
@@ -25,4 +25,4 @@ public:
 };
 } // namespace pdm
 
-#endif // PDMATH_LINE_HPP
+#endif // PDMATH_LINE3_HPP
