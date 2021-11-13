@@ -1,5 +1,7 @@
 #include "pdmath/Quaternion.hpp"
 
+#include "pdmath/util.hpp"
+
 #include <cmath>
 #include <numbers>
 #include <iomanip>
@@ -32,7 +34,7 @@ namespace pdm {
     Quat Quat::normalized() {
         float _length = length();
 
-        if(fabsf(_length - 1.0f) < Point3::epsilon) {
+        if(fabsf(_length - 1.0f) < float_epsilon) {
             return Quat(*this);
         }
         else {
@@ -49,7 +51,7 @@ namespace pdm {
 
     bool Quat::operator==(const Quat &q) const {
         float diff = fabsf(this->_w) - fabsf(q._w);
-        return fabsf(diff) < Point3::epsilon && this->_v == q._v;
+        return fabsf(diff) < float_epsilon && this->_v == q._v;
     }
 
     const Quat& Quat::operator*=(const Quat &q) {
@@ -70,7 +72,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Quat &q) {
-        os << std::fixed << std::setprecision(Point3::precision) << "["
+        os << std::fixed << std::setprecision(float_precision) << "["
             << q._w << ", "
             << q._v << "]";
         return os;

@@ -1,7 +1,8 @@
 #include "pdmath/Point3.hpp"
 #include "pdmath/Vector3.hpp"
-#include "pdmath/Line3.hpp"
+#include "pdmath/Line.hpp"
 #include "pdmath/Plane.hpp"
+#include "pdmath/util.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"
@@ -32,11 +33,11 @@ TEST_CASE("Collinear points test as such", "[points]") {
 }
 
 TEST_CASE("Point3s can measure their distance to a line", "[Point3s]") {
-    Line3 enemy_line(Point3(5, 2, -7), Vec3(-5, -8, 15));
+    Line enemy_line(Point3(5, 2, -7), Vec3(-5, -8, 15));
     Point3 player_loc(0, -5, 8);
 
     REQUIRE(player_loc.distance_to_line(enemy_line) ==
-            Catch::Approx(0.892288f).margin(Vec3::epsilon));
+            Catch::Approx(0.892288f).margin(float_epsilon));
 }
 
 TEST_CASE("Point3s know if they're on a plane", "[Point3s]") {
@@ -55,13 +56,13 @@ TEST_CASE("Point3s know how far they are from a plane", "[Point3s]") {
     Plane plane(Point3(0, 0, 0), Vec3(0, 1, 0));
     Point3 test_point(5, 0, -5);
     REQUIRE(test_point.distance_to_plane(plane) ==
-            Catch::Approx(0.0f).margin(Vec3::epsilon));
+            Catch::Approx(0.0f).margin(float_epsilon));
 
     test_point  = Point3(5, 2, -5);
     REQUIRE(test_point.distance_to_plane(plane) ==
-            Catch::Approx(2.0f).margin(Vec3::epsilon));
+            Catch::Approx(2.0f).margin(float_epsilon));
 
     test_point  = Point3(5, -2, -5);
     REQUIRE(test_point.distance_to_plane(plane) ==
-            Catch::Approx(-2.0f).margin(Vec3::epsilon));
+            Catch::Approx(-2.0f).margin(float_epsilon));
 }

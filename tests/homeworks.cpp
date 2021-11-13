@@ -111,29 +111,29 @@ TEST_CASE("Distribute enemies about a player", "[vectors][matrices]") {
 }
 
 TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
-    Point4 p1(-1, 0, -1, 1);
-    Point4 p2( 0, 0,  2, 1);
-    Point4 p3( 1, 0, -1, 1);
+    Point3 p1(-1.0f, 0.0f, -1.0f);
+    Point3 p2( 0.0f, 0.0f,  2.0f);
+    Point3 p3( 1.0f, 0.0f, -1.0f);
 
     // Move forward by 7 followed by a rotation about the y axis of 1π/4
-    Vec3 translation(0, 0, 7);
+    Vec3 translation(0.0f, 0.0f, 7.0f);
     float theta = std::numbers::pi_v<float> / 4.0f;
     Vec3 prev_translation;
     Mat3 prev_rotation;
 
-    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
+    Point3 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                                     prev_translation, prev_rotation);
-    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
+    Point3 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                                     prev_translation, prev_rotation);
-    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
+    Point3 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                                     prev_translation, prev_rotation);
 
-    REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
-    REQUIRE(new_p2 == Point4(1.414213f, 0.0f, 8.414213f, 1.0f));
-    REQUIRE(new_p3 == Point4(0.0f, 0.0f, 5.585786f, 1.0f));
+    REQUIRE(new_p1 == Point3(-1.414213f, 0.0f, 7.0f));
+    REQUIRE(new_p2 == Point3(1.414213f, 0.0f, 8.414213f));
+    REQUIRE(new_p3 == Point3(0.0f, 0.0f, 5.585786f));
 
     // Move forward by 10 followed by a rotation about the y axis of 2π/4
-    translation = Vec3(0, 0, 10);
+    translation = Vec3(0.0f, 0.0f, 10.0f);
     theta = std::numbers::pi_v<float> / 2.0f;
 
     new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
@@ -143,12 +143,12 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
 
-    REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
-    REQUIRE(new_p2 == Vec4(8.485281f, 0.0f, 12.656854f, 1.0f));
-    REQUIRE(new_p3 == Vec4(5.656854f, 0.0f, 14.071067f, 1.0f));
+    REQUIRE(new_p1 == Point3(7.071067f, 0.0f, 15.485281f));
+    REQUIRE(new_p2 == Point3(8.485281f, 0.0f, 12.656854f));
+    REQUIRE(new_p3 == Point3(5.656854f, 0.0f, 14.071067f));
 
     // Move forward by 7 followed by a rotation about the y axis of -2π/4
-    translation = Vec3(0, 0, 7);
+    translation = Vec3(0.0f, 0.0f, 7.0f);
     theta = std::numbers::pi_v<float> / -2.0f;
 
 
@@ -159,9 +159,9 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
 
-    REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
-    REQUIRE(new_p2 == Vec4(13.435028f, 0.0f, 10.535533f, 1.0f));
-    REQUIRE(new_p3 == Vec4(12.020814f, 0.0f, 7.707106f, 1.0f));
+    REQUIRE(new_p1 == Point3(10.606601f, 0.0f, 9.121319f));
+    REQUIRE(new_p2 == Point3(13.435028f, 0.0f, 10.535533f));
+    REQUIRE(new_p3 == Point3(12.020814f, 0.0f, 7.707106f));
 
     // Move forward by 6 followed by a rotation about the y axis of -3π/4
     translation = Vec3(0, 0, 6);
@@ -174,37 +174,37 @@ TEST_CASE("Triangular game object transformations", "[vectors][matrices]") {
     new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_translation, prev_rotation);
 
-    REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));
-    REQUIRE(new_p2 == Vec4(14.263454f, 0.0f, 13.36396f, 1.0f));
-    REQUIRE(new_p3 == Vec4(17.263454f, 0.0f, 14.36396f, 1.0f));
+    REQUIRE(new_p1 == Point3(17.263454f, 0.0f, 12.36396f));
+    REQUIRE(new_p2 == Point3(14.263454f, 0.0f, 13.36396f));
+    REQUIRE(new_p3 == Point3(17.263454f, 0.0f, 14.36396f));
 }
 
 TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
-    Point4 p1(-1, 0, -1, 1);
-    Point4 p2( 0, 0,  2, 1);
-    Point4 p3( 1, 0, -1, 1);
+    Point3 p1(-1.0f, 0.0f, -1.0f);
+    Point3 p2( 0.0f, 0.0f,  2.0f);
+    Point3 p3( 1.0f, 0.0f, -1.0f);
 
     // Move forward by 7 followed by a rotation about the y axis of 1π/4
     Mat4 prev_transform1 = Mat4::identity;
     Mat4 prev_transform2 = Mat4::identity;
     Mat4 prev_transform3 = Mat4::identity;
     
-    Vec3 translation(0, 0, 7);
+    Vec3 translation(0.0f, 0.0f, 7.0f);
     float theta = std::numbers::pi_v<float> / 4.0f;
 
-    Point4 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
+    Point3 new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
                                     prev_transform1);
-    Point4 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
+    Point3 new_p2 = Mat4::transform(p2, translation, 1, theta, 1, Vec3::one,
                                     prev_transform2);
-    Point4 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
+    Point3 new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                                     prev_transform3);
 
-    REQUIRE(new_p1 == Point4(-1.414213f, 0.0f, 7.0f, 1.0f));
-    REQUIRE(new_p2 == Point4(1.414213f, 0.0f, 8.414213f, 1.0f));
-    REQUIRE(new_p3 == Point4(0.0f, 0.0f, 5.585786f, 1.0f));
+    REQUIRE(new_p1 == Point3(-1.414213f, 0.0f, 7.0f));
+    REQUIRE(new_p2 == Point3(1.414213f, 0.0f, 8.414213f));
+    REQUIRE(new_p3 == Point3(0.0f, 0.0f, 5.585786f));
 
     // Move forward by 10 followed by a rotation about the y axis of 2π/4
-    translation = Vec3(0, 0, 10);
+    translation = Vec3(0.0f, 0.0f, 10.0f);
     theta = std::numbers::pi_v<float> / 2.0f;
 
     new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
@@ -214,12 +214,12 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_transform3);
 
-    REQUIRE(new_p1 == Vec4(7.071067f, 0.0f, 15.485281f, 1.0f));
-    REQUIRE(new_p2 == Vec4(8.485281f, 0.0f, 12.656854f, 1.0f));
-    REQUIRE(new_p3 == Vec4(5.656854f, 0.0f, 14.071067f, 1.0f));
+    REQUIRE(new_p1 == Point3(7.071067f, 0.0f, 15.485281f));
+    REQUIRE(new_p2 == Point3(8.485281f, 0.0f, 12.656854f));
+    REQUIRE(new_p3 == Point3(5.656854f, 0.0f, 14.071067f));
 
     // Move forward by 7 followed by a rotation about the y axis of -2π/4
-    translation = Vec3(0, 0, 7);
+    translation = Vec3(0.0f, 0.0f, 7.0f);
     theta = std::numbers::pi_v<float> / -2.0f;
 
     new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
@@ -229,12 +229,12 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_transform3);
 
-    REQUIRE(new_p1 == Vec4(10.606601f, 0.0f, 9.121319f, 1.0f));
-    REQUIRE(new_p2 == Vec4(13.435028f, 0.0f, 10.535533f, 1.0f));
-    REQUIRE(new_p3 == Vec4(12.020814f, 0.0f, 7.707106f, 1.0f));
+    REQUIRE(new_p1 == Point3(10.606601f, 0.0f, 9.121319f));
+    REQUIRE(new_p2 == Point3(13.435028f, 0.0f, 10.535533f));
+    REQUIRE(new_p3 == Point3(12.020814f, 0.0f, 7.707106f));
 
     // Move forward by 6 followed by a rotation about the y axis of -3π/4
-    translation = Vec3(0, 0, 6);
+    translation = Vec3(0.0f, 0.0f, 6.0f);
     theta = (-3 * std::numbers::pi_v<float>) / 4.0f;
 
     new_p1 = Mat4::transform(p1, translation, 1, theta, 1, Vec3::one,
@@ -244,9 +244,9 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     new_p3 = Mat4::transform(p3, translation, 1, theta, 1, Vec3::one,
                              prev_transform3);
 
-    REQUIRE(new_p1 == Vec4(17.263454f, 0.0f, 12.36396f, 1.0f));
-    REQUIRE(new_p2 == Vec4(14.263454f, 0.0f, 13.36396f, 1.0f));
-    REQUIRE(new_p3 == Vec4(17.263454f, 0.0f, 14.36396f, 1.0f));
+    REQUIRE(new_p1 == Point3(17.263454f, 0.0f, 12.36396f));
+    REQUIRE(new_p2 == Point3(14.263454f, 0.0f, 13.36396f));
+    REQUIRE(new_p3 == Point3(17.263454f, 0.0f, 14.36396f));
 }
 
 TEST_CASE("TRS Deductions", "[matrices]") {
@@ -255,7 +255,7 @@ TEST_CASE("TRS Deductions", "[matrices]") {
            -1.789f, -1.744f, 1.114f,  1.0f,
             0.0f,    0.0f,   0.0f,    1.0f);
 
-    REQUIRE(w.get_world_position() == Vec4(-4, -1, 1, 1));
+    REQUIRE(w.get_world_position() == Vec3(-4.0f, -1.0f, 1.0f));
 
     // limitations of working with three decimal places above
     REQUIRE(w.get_x_scale() == Catch::Approx(4.0f).margin(1.0e-3f));
@@ -269,9 +269,8 @@ TEST_CASE("TRS Deductions", "[matrices]") {
     // further precision limitations
     REQUIRE(w.determinant() == Catch::Approx(21.0f).margin(1.0e-2f));
 
-    Vec4 new_obj(-5, 0, -5, 1);
-    REQUIRE((w.inverted() * new_obj) ==
-        Vec4(0.447177f, 1.162852f, -2.847383f, 1.0f));
+    Vec3 new_obj(-5.0f, 0.0f, -5.0f);
+    REQUIRE((w.inverted() * new_obj) == Vec3(0.447177f, 1.162852f, -2.847383f));
 
     Mat4 new_obj_mat(1, 0, -3, -5,
                      0, 1,  0,  0,

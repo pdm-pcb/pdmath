@@ -13,6 +13,7 @@ class Plane;
 class BSphere {
 public:
     bool collides(const BSphere &other) const;
+    bool collides(const Point3  &point) const;
     bool collides(const Point4  &point) const;
     bool collides(const AABBox  &box)   const;
     bool collides(const OBBox   &box)   const;
@@ -20,13 +21,13 @@ public:
     
     bool above_plane(const Plane &plane) const;
 
-    Vec4 center_to_center(const BSphere &other) const;
+    Vec3 center_to_center(const BSphere &other) const;
 
     inline float  scale()  const { return _world.get_x_scale(); }
-    inline Point4 center() const { return _center; }
+    inline Point3 center() const { return _center; }
     inline float  radius() const { return _radius; }
 
-    BSphere(const Point4 &center, const float radius, const Mat4 &world) :
+    BSphere(const Point3 &center, const float radius, const Mat4 &world) :
         _center{center},
         _radius{radius},
         _world{world},
@@ -35,7 +36,7 @@ public:
     BSphere() = delete;
 
 private:
-    Point4 _center;
+    Point3 _center;
     float  _radius;
     Mat4   _world;
     Mat4   _local;

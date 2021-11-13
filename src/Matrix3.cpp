@@ -1,5 +1,6 @@
 #include "pdmath/Matrix3.hpp"
 
+#include "pdmath/util.hpp"
 #include "pdmath/Vector3.hpp"
 #include "pdmath/Point3.hpp"
 
@@ -8,28 +9,6 @@
 #include <numbers>
 
 namespace pdm {
-    Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) noexcept:
-        _m{{x._x, y._x, z._x},
-              {x._y, y._y, z._y},
-              {x._z, y._z, z._z}}
-    { }
-
-    Mat3::Mat3(const std::array<float, 3> &x,
-               const std::array<float, 3> &y,
-               const std::array<float, 3> &z) noexcept:
-        _m{{x[0], y[0], z[0]},
-              {x[1], y[1], z[0]},
-              {x[2], y[2], z[2]}}
-    { }
-    
-    Mat3::Mat3(const float x1, const float y1, const float z1,
-               const float x2, const float y2, const float z2,
-               const float x3, const float y3, const float z3) noexcept:
-        _m{{x1, y1, z1},
-              {x2, y2, z2},
-              {x3, y3, z3}}
-    { }
-    
     const Mat3 Mat3::identity(1.0f, 0.0f, 0.0f,
                               0.0f, 1.0f, 0.0f,
                               0.0f, 0.0f, 1.0f);
@@ -224,6 +203,28 @@ namespace pdm {
         ans2._z = theta_z2;
     }
 
+    Mat3::Mat3(const Point3 &x, const Point3 &y, const Point3 &z) noexcept:
+        _m{{x._x, y._x, z._x},
+              {x._y, y._y, z._y},
+              {x._z, y._z, z._z}}
+    { }
+
+    Mat3::Mat3(const std::array<float, 3> &x,
+               const std::array<float, 3> &y,
+               const std::array<float, 3> &z) noexcept:
+        _m{{x[0], y[0], z[0]},
+              {x[1], y[1], z[0]},
+              {x[2], y[2], z[2]}}
+    { }
+    
+    Mat3::Mat3(const float x1, const float y1, const float z1,
+               const float x2, const float y2, const float z2,
+               const float x3, const float y3, const float z3) noexcept:
+        _m{{x1, y1, z1},
+              {x2, y2, z2},
+              {x3, y3, z3}}
+    { }
+    
     bool Mat3::operator==(const Mat3 &m) const {
         if(this == &m) {
             return true;
@@ -441,7 +442,7 @@ namespace pdm {
     }
 
     std::ostream& operator<<(std::ostream &os, const Mat3 &m) {
-        os << std::fixed << std::setprecision(Point3::precision)
+        os << std::fixed << std::setprecision(float_precision)
            << "[" << m._m[0][0] << ", " << m._m[0][1] << ", "
            << m._m[0][2] << "]\n"
            << "[" << m._m[1][0] << ", " << m._m[1][1] << ", "

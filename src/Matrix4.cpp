@@ -1,5 +1,6 @@
 #include "pdmath/Matrix4.hpp"
 
+#include "pdmath/util.hpp"
 #include "pdmath/Vector4.hpp"
 #include "pdmath/Point4.hpp"
 #include "pdmath/Vector3.hpp"
@@ -12,6 +13,38 @@ namespace pdm {
                               0.0f, 1.0f, 0.0f, 0.0f,
                               0.0f, 0.0f, 1.0f, 0.0f,
                               0.0f, 0.0f, 0.0f, 1.0f);
+
+    Point3 Mat4::transform(const Point3 &point, const Vec3 &translation,
+            const float theta_x, const float theta_y, const float theta_z,
+            const Vec3& scale,
+            Vec3 &prev_translation, Mat3 &prev_rotation) {
+        Vec3 _translation = prev_translation + (prev_rotation * translation);
+
+        Mat3 _rotation = prev_rotation * Mat3::populate_rotation(theta_x,
+                                                                 theta_y,
+                                                                 theta_z);
+        Mat4 transform(_rotation);
+        transform.apply_scale(scale);
+        transform.set_translation(_translation);
+
+        prev_translation = _translation;
+        prev_rotation    = _rotation;
+
+        return transform * point;
+    }
+
+    Point3 Mat4::transform(const Point3 &point, const Vec3 &translation,
+                const float theta_x, const float theta_y, const float theta_z,
+                const Vec3 &scale, Mat4 &prev_transform) {
+        Mat4 transform(Mat3::populate_rotation(theta_x, theta_y, theta_z));
+        transform.apply_scale(scale);
+        transform *= prev_transform;
+        transform.set_translation(translation);
+
+        prev_transform = transform;
+
+        return transform * point;
+    }
 
     Point4 Mat4::transform(const Point4 &point, const Vec3 &translation,
             const float theta_x, const float theta_y, const float theta_z,
@@ -45,11 +78,10 @@ namespace pdm {
         return transform * point;
     }
 
-    Vec4 Mat4::get_world_position() const {
-        return Vec4(this->_m[0][3],
+    Vec3 Mat4::get_world_position() const {
+        return Vec3(this->_m[0][3],
                     this->_m[1][3],
-                    this->_m[2][3],
-                    this->_m[3][3]);
+                    this->_m[2][3]);
     }
 
     float Mat4::get_x_scale() const {
@@ -284,15 +316,15 @@ namespace pdm {
             return true;
         }
 
-        Vec4 x(_m[0][0], _m[1][0], _m[2][0], _m[3][0]);
-        Vec4 y(_m[0][1], _m[1][1], _m[2][1], _m[3][1]);
-        Vec4 z(_m[0][2], _m[1][2], _m[2][2], _m[3][2]);
-        Vec4 t(_m[0][3], _m[1][3], _m[2][3], _m[3][3]);
+        Vec4 x(_m[0][0], _m[1][0], _m[2][0]);
+        Vec4 y(_m[0][1], _m[1][1], _m[2][1]);
+        Vec4 z(_m[0][2], _m[1][2], _m[2][2]);
+        Vec4 t(_m[0][3], _m[1][3], _m[2][3]);
 
-        Vec4 m_x(m._m[0][0], m._m[1][0], m._m[2][0], m._m[3][0]);
-        Vec4 m_y(m._m[0][1], m._m[1][1], m._m[2][1], m._m[3][1]);
-        Vec4 m_z(m._m[0][2], m._m[1][2], m._m[2][2], m._m[3][2]);
-        Vec4 m_t(m._m[0][3], m._m[1][3], m._m[2][3], m._m[3][3]);
+        Vec4 m_x(m._m[0][0], m._m[1][0], m._m[2][0]);
+        Vec4 m_y(m._m[0][1], m._m[1][1], m._m[2][1]);
+        Vec4 m_z(m._m[0][2], m._m[1][2], m._m[2][2]);
+        Vec4 m_t(m._m[0][3], m._m[1][3], m._m[2][3]);
     
         return x == m_x && y == m_y && z == m_z && t == m_t;
     }
@@ -601,7 +633,7 @@ namespace pdm {
                     m._m[3][3] - n._m[3][3]);
     }
 
-    Point4 operator*(const Mat4 &m,   const Point4 &p) {
+    Point4 operator*(const Mat4 &m, const Point4 &p) {
         return Point4((m._m[0][0] * p._x) +
                       (m._m[0][1] * p._y) +
                       (m._m[0][2] * p._z) +
@@ -620,7 +652,7 @@ namespace pdm {
                       (m._m[3][3] * p._w));
     }
 
-    Vec4 operator*(const Mat4 &m,   const Vec4 &v) {
+    Vec4 operator*(const Mat4 &m, const Vec4 &v) {
         return Vec4((m._m[0][0] * v._x) +
                     (m._m[0][1] * v._y) +
                     (m._m[0][2] * v._z) +
@@ -639,8 +671,32 @@ namespace pdm {
                     (m._m[3][3] * v._w));
     }
 
+    Point3 operator*(const Mat4 &m, const Point3 &p) {
+        return Point3((m._m[0][0] * p._x) +
+                      (m._m[0][1] * p._y) +
+                      (m._m[0][2] * p._z),
+                      (m._m[1][0] * p._x) +
+                      (m._m[1][1] * p._y) +
+                      (m._m[1][2] * p._z),
+                      (m._m[2][0] * p._x) +
+                      (m._m[2][1] * p._y) +
+                      (m._m[2][2] * p._z));
+    }
+
+    Vec3 operator*(const Mat4 &m, const Vec3 &v) {
+        return Vec3((m._m[0][0] * v._x) +
+                    (m._m[0][1] * v._y) +
+                    (m._m[0][2] * v._z), 
+                    (m._m[1][0] * v._x) +
+                    (m._m[1][1] * v._y) +
+                    (m._m[1][2] * v._z),
+                    (m._m[2][0] * v._x) +
+                    (m._m[2][1] * v._y) +
+                    (m._m[2][2] * v._z));
+    }
+
     std::ostream& operator<<(std::ostream &os, const Mat4 &m) {
-        os << std::fixed << std::setprecision(Point4::precision)
+        os << std::fixed << std::setprecision(float_precision)
            << "[" << m._m[0][0] << ", " << m._m[0][1] << ", "
            << m._m[0][2] << ", " << m._m[0][3] << "]\n"
            << "[" << m._m[1][0] << ", " << m._m[1][1] << ", "

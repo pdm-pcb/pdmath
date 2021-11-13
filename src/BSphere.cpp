@@ -13,8 +13,12 @@ bool BSphere::collides(const BSphere &other) const {
             center_to_center(other).length();
 }
 
+bool BSphere::collides(const Point3 &point) const {
+    return (static_cast<Vec3>(point) - _center).length() < _radius;
+}
+
 bool BSphere::collides(const Point4 &point) const {
-    return (static_cast<Vec4>(point) - _center).length() < _radius;
+    return (static_cast<Vec3>(point) - _center).length() < _radius;
 }
 
 bool BSphere::collides(const AABBox &box) const {
@@ -27,17 +31,17 @@ bool BSphere::collides(const AABBox &box) const {
 }
 
 bool BSphere::collides(const OBBox &box) const {
-    Point4 center_clamped = box.to_local() * _center;
+    Point3 center_clamped = box.to_local(_center);
     center_clamped._x = clamp(center_clamped._x, box.x_interval());
     center_clamped._y = clamp(center_clamped._y, box.y_interval());
     center_clamped._z = clamp(center_clamped._z, box.z_interval());
-    center_clamped *= box.to_world();
+    center_clamped *= box.get_world();
 
     return collides(center_clamped);
 }
 
 bool BSphere::collides(const Plane &plane) const {
-    Vec4 c_minus_p(static_cast<Vec4>(_center) - plane._p);
+    Vec3 c_minus_p(_center - plane._p);
     // std::cout << "\nC-P0: " << c_minus_p << std::endl;
     // std::cout << "||n||: " << plane._n.length() << std::endl;
 
@@ -51,7 +55,7 @@ bool BSphere::collides(const Plane &plane) const {
 }
 
 bool BSphere::above_plane(const Plane &plane) const {
-    Vec4 c_minus_p(static_cast<Vec4>(_center) - plane._p);
+    Vec3 c_minus_p(_center - plane._p);
     // std::cout << "\nC-P0: " << c_minus_p << std::endl;
 
     float distance = c_minus_p.dot(plane._n);
@@ -60,8 +64,8 @@ bool BSphere::above_plane(const Plane &plane) const {
     return distance > 0.0f;
 }
 
-Vec4 BSphere::center_to_center(const BSphere &other) const {
-    return static_cast<Vec4>(other.center()) - _center;
+Vec3 BSphere::center_to_center(const BSphere &other) const {
+    return static_cast<Vec3>(other.center()) - _center;
 }
 
 } // namespace pdm

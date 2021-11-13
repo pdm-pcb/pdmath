@@ -1,9 +1,13 @@
 #ifndef PDMATH_UTIL_HPP
 #define PDMATH_UTIL_HPP
 
+#include <cstdint>
 #include <utility>
 
 namespace pdm {
+
+static constexpr uint8_t float_precision = 7;
+static constexpr float   float_epsilon = 1.0e-6f;
 
 static float clamp(const float val, const float min, const float max) {
     if(val > max) {

@@ -15,6 +15,17 @@ class Mat4 {
 public:
     static const Mat4 identity;
 
+    static Point3 transform(const Point3 &point,
+        const Vec3 &translation,
+        const float theta_x, const float theta_y, const float theta_z,
+        const Vec3 &scale,
+        Vec3 &prev_translation, Mat3 &prev_rotation);
+
+    static Point3 transform(const Point3 &point,
+        const Vec3 &translation,
+        const float theta_x, const float theta_y, const float theta_z,
+        const Vec3 &scale, Mat4 &prev_transform);
+
     static Point4 transform(const Point4 &point,
         const Vec3 &translation,
         const float theta_x, const float theta_y, const float theta_z,
@@ -26,7 +37,7 @@ public:
         const float theta_x, const float theta_y, const float theta_z,
         const Vec3 &scale, Mat4 &prev_transform);
     
-    Vec4 get_world_position() const;
+    Vec3 get_world_position() const;
 
     float get_x_scale() const;
     float get_y_scale() const;
@@ -79,13 +90,16 @@ public:
 };
 
 Mat4 operator*(const Mat4 &m, const Mat4 &n);
-Mat4 operator*(const Mat4 &m, const float scalar);
-Mat4 operator*(const float scalar, const Mat4 &m);
 Mat4 operator+(const Mat4 &m, const Mat4 &n);
 Mat4 operator-(const Mat4 &m, const Mat4 &n);
 
-Point4 operator*(const Mat4 &m,   const Point4 &p);
-Vec4   operator*(const Mat4 &m,   const Vec4 &v);
+Mat4 operator*(const Mat4 &m, const float scalar);
+Mat4 operator*(const float scalar, const Mat4 &m);
+
+Point4 operator*(const Mat4 &m, const Point4 &p);
+Vec4   operator*(const Mat4 &m, const Vec4 &v);
+Point3 operator*(const Mat4 &m, const Point3 &p);
+Vec3   operator*(const Mat4 &m, const Vec3 &v);
 
 std::ostream& operator<<(std::ostream &os, const Mat4 &m);
 } // namespace pdm

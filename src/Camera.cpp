@@ -1,12 +1,11 @@
 #include "pdmath/Camera.hpp"
 
-namespace pdm {
-    Camera::Camera(const Vec3 &pos, const Vec3 &target, const Vec3 &up) :
-        _position{pos}, _target{target}, _up{up}
-    {
-        set_view(_position, _target, _up);
-    }
+#include "pdmath/Point4.hpp"
+#include "pdmath/Vector4.hpp"
 
+#include <cmath>
+
+namespace pdm {
     void Camera::set_view(const Vec3 &pos, const Vec3 &target, const Vec3 &up) {
         _position = pos;
         _target = target;
@@ -82,15 +81,15 @@ namespace pdm {
     }
 
     Point4 Camera::ortho_ndc(const Point4 &point) const {
-        return _ortho_ndc * _world_to_view * point;
+        return _ortho_ndc * view(point);
     }
 
     Point4 Camera::ortho_screen(const Point4 &point) const {
-        return _screen * _ortho_ndc * _world_to_view * point;
+        return _screen * ortho_ndc(point);
     }
 
     Point4 Camera::persp_ndc(const Point4 &point) const {
-        Point4 result(_persp_ndc * _world_to_view * point);
+        Point4 result(_persp_ndc * view(point));
         result /= result._w;
         return result;
     }
@@ -99,17 +98,27 @@ namespace pdm {
         return _screen * persp_ndc(point);
     }
 
-    Vec4 Camera::face_normal(const Point4 &a, const Point4 &b,
-                             const Point4 &c) {
+    Vec3 Camera::face_normal(const Point3 &a, const Point3 &b,
+                             const Point3 &c) {
         Point3 _a(a._x, a._y, a._z);
         Point3 _b(b._x, b._y, b._z);
         Point3 _c(c._x, c._y, c._z);
 
-        return Vec4(
-        ((static_cast<Vec3>(_b) - _a).cross(static_cast<Vec3>(_c) - _a)), 1.0f);
+        return static_cast<Vec3>(_b - _a).cross(static_cast<Vec3>(_c - _a));
     }
 
-    Vec4 Camera::direction_to_point(const Point4 &p) const {
-        return p - Vec4(_position, 0.0f) *= -1;
+    Vec3 Camera::direction_to_point(const Point3 &p) const {
+        return static_cast<Vec3>(p) - _position;
+    }
+
+    Camera::Camera() noexcept :
+        _position{Vec3()}, _target{Vec3()}, _gaze{Vec3()}, _up{Vec3()}
+    { }
+
+    Camera::Camera(const Vec3 &pos, const Vec3 &target, const Vec3 &up)
+    noexcept :
+        _position{pos}, _target{target}, _up{up}
+    {
+        set_view(_position, _target, _up);
     }
 } // namespace pdm

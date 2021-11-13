@@ -1,5 +1,6 @@
 #include "pdmath/Vector3.hpp"
 #include "pdmath/Vector4.hpp"
+#include "pdmath/util.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/catch_approx.hpp"
@@ -8,65 +9,88 @@ using namespace pdm;
 using namespace Catch;
 
 TEST_CASE("Dot products are correct and symmetrical", "[vectors]") {
-    Vec3 u(-1,  7,  7);
-    Vec3 v(-5, -4, -4);
+    Vec3 u(-1.0f,  7.0f,  7.0f);
+    Vec3 v(-5.0f, -4.0f, -4.0f);
     REQUIRE(u.dot(v) == -51.0f);
     REQUIRE(v.dot(u) == -51.0f);
 
-    u = Vec3(10, -5, 7);
-    v = Vec3(2,  -4, 6);
+    u = Vec3(10.0f, -5.0f, 7.0f);
+    v = Vec3(2.0f,  -4.0f, 6.0f);
     REQUIRE(u.dot(v) == 82.0f);
     REQUIRE(v.dot(u) == 82.0f);
 
-    u = Vec3(-4, -7, 5);
-    v = Vec3(-3,  6, 9);
+    u = Vec3(-4.0f, -7.0f, 5.0f);
+    v = Vec3(-3.0f,  6.0f, 9.0f);
     REQUIRE(u.dot(v) == 15.0f);
     REQUIRE(v.dot(u) == 15.0f);
 
-    Vec4 u4(-1,  7,  7, 0);
-    Vec4 v4(-5, -4, -4, 0);
+    Vec4 u4(-1.0f,  7.0f,  7.0f);
+    Vec4 v4(-5.0f, -4.0f, -4.0f);
     REQUIRE(u4.dot(v4) == -51.0f);
     REQUIRE(v4.dot(u4) == -51.0f);
 
-    u4 = Vec4(10, -5, 7, 0);
-    v4 = Vec4(2,  -4, 6, 0);
+    u4 = Vec4(10.0f, -5.0f, 7.0f);
+    v4 = Vec4(2.0f,  -4.0f, 6.0f);
     REQUIRE(u4.dot(v4) == 82.0f);
     REQUIRE(v4.dot(u4) == 82.0f);
 
-    u4 = Vec4(-4, -7, 5, 0);
-    v4 = Vec4(-3,  6, 9, 0);
+    u4 = Vec4(-4.0f, -7.0f, 5.0f);
+    v4 = Vec4(-3.0f,  6.0f, 9.0f);
     REQUIRE(u4.dot(v4) == 15.0f);
     REQUIRE(v4.dot(u4) == 15.0f);
 }
 
 TEST_CASE("Euclidean norm is correct", "[vectors]") {
-    Vec3 v(-5, -10, -6);
-    REQUIRE(v.length() == Catch::Approx(12.68858f).margin(Vec3::epsilon));
+    Vec3 v(-5.0f, -10.0f, -6.0f);
+    REQUIRE(v.length() == Catch::Approx(12.68858f).margin(float_epsilon));
 
-    v = Vec3(10, -1, -1);
-    REQUIRE(v.length() == Catch::Approx(10.0995f).margin(Vec3::epsilon));
+    v = Vec3(10.0f, -1.0f, -1.0f);
+    REQUIRE(v.length() == Catch::Approx(10.0995f).margin(float_epsilon));
 
-    v = Vec3(10, -6, 8);
-    REQUIRE(v.length() == Catch::Approx(14.14214f).margin(Vec3::epsilon));
+    v = Vec3(10.0f, -6.0f, 8.0f);
+    REQUIRE(v.length() == Catch::Approx(14.14214f).margin(float_epsilon));
+
+    Vec4 w(-5.0f, -10.0f, -6.0f);
+    REQUIRE(w.length() == Catch::Approx(12.68858f).margin(float_epsilon));
+
+    w = Vec4(10.0f, -1.0f, -1.0f);
+    REQUIRE(w.length() == Catch::Approx(10.0995f).margin(float_epsilon));
+
+    w = Vec4(10.0f, -6.0f, 8.0f);
+    REQUIRE(w.length() == Catch::Approx(14.14214f).margin(float_epsilon));
 
 }
 
 TEST_CASE("Normalized vectors have length 1", "[vectors]") {
-    Vec3 v(-5, -5, 3);
-    REQUIRE(v.length() == Catch::Approx(7.68115f).margin(Vec3::epsilon));
+    Vec3 v(-5.0f, -5.0f, 3.0f);
+    REQUIRE(v.length() == Catch::Approx(7.68115f).margin(float_epsilon));
     Vec3 w = v.normalized();
-    REQUIRE(w.length() == Catch::Approx(1.0f).margin(Vec3::epsilon));
+    REQUIRE(w.length() == Catch::Approx(1.0f).margin(float_epsilon));
 
-    v = Vec3(2, -2, 1);
-    REQUIRE(v.length() == Catch::Approx(3.0f).margin(Vec3::epsilon));
+    v = Vec3(2.0f, -2.0f, 1.0f);
+    REQUIRE(v.length() == Catch::Approx(3.0f).margin(float_epsilon));
     w = v.normalized();
-    REQUIRE(w.length() == Catch::Approx(1.0f).margin(Vec3::epsilon));
+    REQUIRE(w.length() == Catch::Approx(1.0f).margin(float_epsilon));
 
-    v = Vec3(1, -2, 5);
-    REQUIRE(v.length() == Catch::Approx(5.47723f).margin(Vec3::epsilon));
+    v = Vec3(1.0f, -2.0f, 5.0f);
+    REQUIRE(v.length() == Catch::Approx(5.47723f).margin(float_epsilon));
     w = v.normalized();
-    REQUIRE(w.length() == Catch::Approx(1.0f).margin(Vec3::epsilon));
+    REQUIRE(w.length() == Catch::Approx(1.0f).margin(float_epsilon));
 
+    Vec4 a(-5.0f, -5.0f, 3.0f);
+    REQUIRE(a.length() == Catch::Approx(7.68115f).margin(float_epsilon));
+    Vec4 b = a.normalized();
+    REQUIRE(b.length() == Catch::Approx(1.0f).margin(float_epsilon));
+
+    a = Vec4(2.0f, -2.0f, 1.0f);
+    REQUIRE(a.length() == Catch::Approx(3.0f).margin(float_epsilon));
+    b = a.normalized();
+    REQUIRE(b.length() == Catch::Approx(1.0f).margin(float_epsilon));
+
+    a = Vec4(1.0f, -2.0f, 5.0f);
+    REQUIRE(a.length() == Catch::Approx(5.47723f).margin(float_epsilon));
+    b = a.normalized();
+    REQUIRE(b.length() == Catch::Approx(1.0f).margin(float_epsilon));
 }
 
 TEST_CASE("Projected vectors are correct", "[vectors]") {

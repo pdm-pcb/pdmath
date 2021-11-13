@@ -1,236 +1,169 @@
 #include "pdmath/Vector4.hpp"
 
+#include "pdmath/util.hpp"
+#include "pdmath/Point3.hpp"
+#include "pdmath/Point4.hpp"
 #include "pdmath/Vector3.hpp"
-#include "pdmath/Matrix4.hpp"
+
+#include <iomanip>
+#include <cmath>
 
 namespace pdm {
-    const Vec4 Vec4::zero(0.0f, 0.0f, 0.0f, 0.0f);
-    const Vec4 Vec4::one(1.0f, 1.0f, 1.0f, 1.0f);
+const Vec4 Vec4::zero = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
+const Vec4 Vec4::one  = Vec4(1.0f, 1.0f, 1.0f, 0.0f);
 
-    float Vec4::length() const {
-        return sqrtf(_x*_x + _y*_y + _z*_z + _w*_w);
+float Vec4::dot(const Vec4 &v) const {
+    return this->_x * v._x +
+           this->_y * v._y +
+           this->_z * v._z +
+           this->_w * v._w;
+}
+
+Vec4 Vec4::normalized() const {
+    float _length = length();
+
+    if(fabsf(_length - 1.0f) < float_epsilon) {
+        return Vec4(*this);
     }
+    return Vec4(_x / _length,
+                _y / _length,
+                _z / _length);
+}
 
-    float Vec4::dot(const Vec4 &v) const {
-        return this->_x * v._x +
-               this->_y * v._y +
-               this->_z * v._z +
-               this->_w * v._w;
-    }
+Vec4 Vec4::cross(const Vec4 &v) const {
+    return Vec4(this->_y * v._z - this->_z * v._y,
+                this->_z * v._x - this->_x * v._z,
+                this->_x * v._y - this->_y * v._x);
+}
 
-    float Vec4::dot(const Vec3 &v) const {
-        return this->_x * v._x +
-               this->_y * v._y +
-               this->_z * v._z;
-    }
+Vec4 Vec4::project_onto(const Vec4 &v) const {
+    float projection_length = dot(v)/v.dot(v);
+    return Vec4(v * projection_length);
+}
 
-    Vec4 Vec4::cross(const Vec4 &v) const {
-        return Vec4(this->_y * v._z - this->_z * v._y,
-                    this->_z * v._x - this->_x * v._z,
-                    this->_x * v._y - this->_y * v._x,
-                    0.0f);
-    }
+Vec4 Vec4::projection_perp(const Vec4 &v) const {
+    Vec4 perp = *this - project_onto(v);
+    return perp;
+}
 
-    Vec4 Vec4::normalized() const {
-        float _length = length();
+bool Vec4::operator==(const Vec4 &p) const {
+    float x_diff = (fabsf(_x) - fabsf(p._x));
+    float y_diff = (fabsf(_y) - fabsf(p._y));
+    float z_diff = (fabsf(_z) - fabsf(p._z));
+    float w_diff = (fabsf(_w) - fabsf(p._w));
 
-        if(fabsf(_length - 1.0f) < Point4::epsilon) {
-            return Vec4(*this);
-        }
-        else {
-            return Vec4(_x / _length,
-                        _y / _length,
-                        _z / _length,
-                        _w / _length);
-        }
-    }
+    return x_diff < float_epsilon &&
+           y_diff < float_epsilon &&
+           z_diff < float_epsilon &&
+           w_diff < float_epsilon;
+}
+Vec4 operator+(const Vec4 &v, const Vec3 &w) {
+    return Vec4(v._x + w._x,
+                v._y + w._y,
+                v._z + w._z,
+                v._w);
+}
 
-    bool Vec4::is_collinear(const Vec4 &v) const {
-        return cross(v).is_zero();
-    }
+Vec4 operator-(const Vec4 &v, const Vec3 &w) {
+    return Vec4(v._x - w._x,
+                v._y - w._y,
+                v._z - w._z,
+                v._w);
+}
 
-    bool Vec4::is_perpendicular(const Vec4 &v) const {
-        return dot(v) == 0.0f;
-    }
+Vec4 operator+(const Vec4 &v, const Vec4 &w) {
+    return Vec4(v._x + w._x,
+                v._y + w._y,
+                v._z + w._z,
+                v._w + w._w);
+}
 
-    Vec4::Vec4(const float x, const float y,
-               const float z, const float w) noexcept:
-        Point4(x, y, z, w)
-    { }
+Vec4 operator-(const Vec4 &v, const Vec4 &w) {
+    return Vec4(v._x - w._x,
+                v._y - w._y,
+                v._z - w._z,
+                v._w - w._w);
+}
 
-    Vec4::Vec4(const float x, const float y,
-               const float z) noexcept:
-        Point4(x, y, z, 1.0f)
-    { }
+Vec4 operator+(const Vec4 &v, const Point3 &p) {
+    return Vec4(v._x + p._x,
+                v._y + p._y,
+                v._z + p._z,
+                v._w);
+}
 
-    Vec4::Vec4(const Vec3 &v, const float w) noexcept :
-        Point4(v._x, v._y, v._z, w)
-    { }
+Vec4 operator-(const Vec4 &v, const Point3 &p) {
+    return Vec4(v._x - p._x,
+                v._y - p._y,
+                v._z - p._z,
+                v._w);
+}
 
-    Vec4::Vec4(const Point4 &p) noexcept:
-        Point4(p)
-    { }
+Vec4 operator+(const Vec4 &v, const Point4 &p) {
+    return Vec4(v._x + p._x,
+                v._y + p._y,
+                v._z + p._z,
+                v._w + p._w);
+}
 
-    Vec4::Vec4(const Vec3 &v) noexcept:
-        Point4(v._x, v._y, v._z, 0.0f)
-    { }
+Vec4 operator-(const Vec4 &v, const Point4 &p) {
+    return Vec4(v._x - p._x,
+                v._y - p._y,
+                v._z - p._z,
+                v._w - p._w);
+}
 
-    const Vec4& Vec4::operator+=(const Vec4 &v) {
-        this->_x += v._x;
-        this->_y += v._y;
-        this->_z += v._z;
-        this->_w += v._w;
-        return *this;
-    }
+Vec4 operator+(const Vec4 &v, const float scalar) {
+    return Vec4(v._x + scalar,
+                v._y + scalar,
+                v._z + scalar,
+                v._w + scalar);
+}
 
-    const Vec4& Vec4::operator-=(const Vec4 &v) {
-        this->_x -= v._x;
-        this->_y -= v._y;
-        this->_z -= v._z;
-        this->_w -= v._w;
-        return *this;
-    }
+Vec4 operator-(const Vec4 &v, const float scalar) {
+    return Vec4(v._x - scalar,
+                v._y - scalar,
+                v._z - scalar,
+                v._w - scalar);
+}
 
-    const Vec4& Vec4::operator+=(const float scalar) {
-        this->_x += scalar;
-        this->_y += scalar;
-        this->_z += scalar;
-        this->_w += scalar;
-        return *this;
-    }
+Vec4 operator*(const Vec4 &v, const float scalar) {
+    return Vec4(v._x * scalar,
+                v._y * scalar,
+                v._z * scalar,
+                v._w * scalar);
+}
 
-    const Vec4& Vec4::operator-=(const float scalar) {
-        this->_x -= scalar;
-        this->_y -= scalar;
-        this->_z -= scalar;
-        this->_w -= scalar;
-        return *this;
-    }
+Vec4 operator/(const Vec4 &v, const float scalar) {
+    return Vec4(v._x / scalar,
+                v._y / scalar,
+                v._z / scalar,
+                v._w / scalar);
+}
 
-    const Vec4& Vec4::operator*=(const float scalar) {
-        this->_x *= scalar;
-        this->_y *= scalar;
-        this->_z *= scalar;
-        this->_w *= scalar;
-        return *this;
-    }
+Vec4 operator+(const float scalar, const Vec4 &v) {
+    return v + scalar;
+}
 
-    const Vec4& Vec4::operator/=(const float scalar) {
-        this->_x /= scalar;
-        this->_y /= scalar;
-        this->_z /= scalar;
-        this->_w /= scalar;
-        return *this;
-    }
+Vec4 operator-(const float scalar, const Vec4 &v) {
+    return v - scalar;
+}
 
-    const Vec4& Vec4::operator*=(const Mat4 &m) {
-        float x = this->_x * m._m[0][0] +
-                  this->_y * m._m[0][1] +
-                  this->_z * m._m[0][2] +
-                  this->_w * m._m[0][3];
+Vec4 operator*(const float scalar, const Vec4 &v) {
+    return v * scalar;
+}
 
-        float y = this->_x * m._m[1][0] +
-                  this->_y * m._m[1][1] +
-                  this->_z * m._m[1][2] +
-                  this->_w * m._m[1][3];
+Vec4 operator/(const float scalar, const Vec4 &v) {
+    return v / scalar;
+}
 
-        float z = this->_x * m._m[2][0] +
-                  this->_y * m._m[2][1] +
-                  this->_z * m._m[2][2] +
-                  this->_w * m._m[2][3];
-
-        float w = this->_x * m._m[3][0] +
-                  this->_y * m._m[3][1] +
-                  this->_z * m._m[3][2] +
-                  this->_w * m._m[3][3];
-        
-        this->_x = x;
-        this->_y = y;
-        this->_z = z;
-        this->_w = w;
-
-        return *this;
-    }
-
-    Vec4 operator+(const Vec4 &v, const Vec4 &w) {
-        return Vec4(v._x + w._x,
-                    v._y + w._y,
-
-                    v._z + w._z,
-                    v._w + w._w);
-    }
-
-    Vec4 operator-(const Vec4 &v, const Vec4 &w) {
-        return Vec4(v._x - w._x,
-                    v._y - w._y,
-                    v._z - w._z,
-                    v._w - w._w);
-    }
-
-    Vec4 operator+(const Vec4 &v, const Point4 &p) {
-        return Vec4(v._x + p._x,
-                    v._y + p._y,
-                    v._z + p._z,
-                    v._w + p._w);
-    }
-    Vec4 operator-(const Vec4 &v, const Point4 &p) {
-        return Vec4(v._x - p._x,
-                    v._y - p._y,
-                    v._z - p._z,
-                    v._w - p._w);
-    }
-
-    Vec4 operator+(const Point4 &p, const Vec4 &v) {
-        return (v + p);
-    }
-
-    Vec4 operator-(const Point4 &p, const Vec4 &v) {
-        return (v - p);
-    }
-
-    Vec4 operator+(const Vec4 &v, const float scalar){
-        return Vec4(v._x + scalar,
-                    v._y + scalar,
-                    v._z + scalar,
-                    v._w + scalar);
-    }
-
-    Vec4 operator-(const Vec4 &v, const float scalar){
-        return Vec4(v._x - scalar,
-                    v._y - scalar,
-                    v._z - scalar,
-                    v._w - scalar);
-    }
-
-    Vec4 operator*(const Vec4 &v, const float scalar){
-        return Vec4(v._x * scalar,
-                    v._y * scalar,
-                    v._z * scalar,
-                    v._w * scalar);
-    }
-
-    Vec4 operator/(const Vec4 &v, const float scalar){
-
-        return Vec4(v._x / scalar,
-                    v._y / scalar,
-                    v._z / scalar,
-                    v._w / scalar);
-    }
-
-    Vec4 operator+(const float scalar, const Vec4 &v) {
-        return (v + scalar);
-    }
-
-    Vec4 operator-(const float scalar, const Vec4 &v) {
-        return (v - scalar);
-    }
-    
-    Vec4 operator*(const float scalar, const Vec4 &v) {
-        return (v * scalar);
-    }
-
-    Vec4 operator/(const float scalar, const Vec4 &v) {
-        return (v / scalar);
-    }
+std::ostream& operator<<(std::ostream &os, const Vec4 &p) {
+    os << std::fixed << std::setprecision(float_precision) << "("
+        << p._x << ", "
+        << p._y << ", "
+        << p._z << ", "
+        << p._w << ")";
+    return os;
+}
 
 } // namespace pdm

@@ -2,7 +2,7 @@
 
 #include "pdmath/util.hpp"
 #include "pdmath/BSphere.hpp"
-#include "pdmath/Line4.hpp"
+#include "pdmath/Line.hpp"
 
 namespace pdm {
 
@@ -23,13 +23,19 @@ bool AABBox::collides(const BSphere &sphere) const {
     return sphere.collides(center_clamped);
 }
 
+bool AABBox::collides(const Point3 &point) const {
+    return _min._x < point._x && point._x < _max._x &&
+           _min._y < point._y && point._y < _max._y &&
+           _min._z < point._z && point._z < _max._z;
+}
+
 bool AABBox::collides(const Point4 &point) const {
     return _min._x < point._x && point._x < _max._x &&
            _min._y < point._y && point._y < _max._y &&
            _min._z < point._z && point._z < _max._z;
 }
 
-bool AABBox::collides(const Line4 &line) const {
+bool AABBox::collides(const Line &line) const {
     if(line._v._x == 0.0f) {
         if(line._p._x < _min._x || line._p._x > _max._x) {
             // std::cout << "\nline's x value is zero and outside." << std::endl;
