@@ -119,37 +119,34 @@ TEST_CASE("Object bounding box - object bounding box collision",
           "[object bounding boxes][collisions]") {
     OBBox object1(Point3(-4.5f, -4.5f, -5.0f),
                   Point3(5.5f, 5.5f, 5.0f),
-                  Mat4(
-                       0.3f, 0.0f,    0.0f,    4.0f,
+                  Mat4(0.3f, 0.0f,    0.0f,    4.0f,
                        0.0f, 0.2846f,-0.095f, -3.0f,
                        0.0f, 0.0949f, 0.2846f, 3.0f,
                        0.0f, 0.0f,    0.0f,    1.0f));
 
     OBBox object2(Point3(-4.0f, -4.75f, -4.5f),
                   Point3(4.0f, 5.25f, 5.5f),
-                  Mat4(
-                      0.2425f,  0.2287f, -0.943f,  6.0f,
-                      0.0f,     0.9718f,  0.2357f, 4.0f,
-                      0.9701f, -0.057f,   0.2357f, 8.0f,
-                      0.0f,     0.0f,     0.0f,    1.0f));
+                  Mat4(0.2425f,  0.2287f, -0.943f,  6.0f,
+                       0.0f,     0.9718f,  0.2357f, 4.0f,
+                       0.9701f, -0.057f,   0.2357f, 8.0f,
+                       0.0f,     0.0f,     0.0f,    1.0f));
 
     REQUIRE(object1.collides(object2) == false);
+    REQUIRE(object2.collides(object1) == false);
 
-    object1 = OBBox(Point3(-1.88f, -1.0f, -3.0f),
-                    Point3(2.125f, 1.0f, 2.0f),
-                    Mat4(
-                         1.961f, 0.0f,  0.392f,  9.0f,
-                         0.0f,   2.0f,  0.0f,    0.0f,
-                        -0.392f, 0.0f,  1.961f, -7.0f,
-                         0.0f,   0.0f,  0.0f,    1.0f));
+    object1 = OBBox(Point3(-2.13f, -1.0f, -2.38f),
+                    Point3(2.875f, 1.0f, 1.625f),
+                    Mat4(0.771743633f, 0.0f, -1.286239389f,  8.0f,
+                         0.0f,         1.5f,  0.0f,          0.0f,
+                         1.286239389f, 0.0f,  0.771743633f, -9.0f,
+                         0.0f,         0.0f,  0.0f,          1.0f));
 
-    object2 = OBBox(Point3(-1.38f, -1.0f, -1.5f),
-                    Point3(1.625f, 1.0f, 0.5f),
-                    Mat4(
-                        -2.0f, 0.0f,  1.2f,  6.0f,
-                         0.0f, 2.0f,  0.0f,  0.0f,
-                         0.0f, 0.0f, -2.0f, -9.0f,
-                         0.0f, 0.0f,  0.0f,  1.0f));
+    object2 = OBBox(Point3(-1.5f, -1.0f, -1.75f),
+                    Point3(0.5f, 1.0f, 2.25f),
+                    Mat4(0.937042571f, 0.0f, -1.171303214f, 10.0f,
+                         0.0f,         1.5,   0.0f,          0.0f,
+                         1.171303214f, 0.0f,  0.937042571f, -5.0f,
+                         0.0f,         0.0f,  0.0f,          1.0f));
 
     REQUIRE(object1.collides(object2) == true);
 }
@@ -158,11 +155,10 @@ TEST_CASE("Object bounding box - sphere collision",
           "[object bounding boxes][spheres][collisions]") {
     OBBox box(Point3(-1.75f, -1.0f, -1.13f),
               Point3(2.25f, 1.0f, 0.875f),
-              Mat4(
-                  -0.83f, 0.0f,  0.555f, -10.0f,
-                  0.0f,   1.0f,  0.0f,     0.0f,
-                  -0.55f, 0.0f, -0.83f,    4.0f,
-                  0.0f,   0.0f,  0.0f,     1.0f));
+              Mat4(-0.83f, 0.0f,  0.555f, -10.0f,
+                    0.0f,  1.0f,  0.0f,     0.0f,
+                   -0.55f, 0.0f, -0.83f,    4.0f,
+                    0.0f,  0.0f,  0.0f,     1.0f));
 
     BSphere sphere(Point3(-5.28f, 0.0f, 9.965f), 2.5f, Mat4::identity);
 
@@ -171,11 +167,10 @@ TEST_CASE("Object bounding box - sphere collision",
 
     box = OBBox(Point3(-2.88f, -1.0f, -1.38f),
                 Point3(2.125f, 1.0f, 1.625f),
-                Mat4(
-                    -1.34f,  0.0f, -0.67f, 8.0f,
-                     0.0f,   1.5f,  0.0f,  0.0f,
-                     0.671f, 0.0f, -1.34f, 9.0f,
-                     0.0f,   0.0f,  0.0f,  1.0f));
+                Mat4(-1.34f,  0.0f, -0.67f, 8.0f,
+                      0.0f,   1.5f,  0.0f,  0.0f,
+                      0.671f, 0.0f, -1.34f, 9.0f,
+                      0.0f,   0.0f,  0.0f,  1.0f));
 
     sphere = BSphere(Point3(7.419f, 0.0f, 11.58f), 2, Mat4::identity);
 
@@ -187,11 +182,10 @@ TEST_CASE("Object bounding box - point collision",
           "[object bounding boxes][points][collisions]") {
     OBBox box(Point3(-1.75f, -1.0f, -1.13f),
               Point3(2.25f, 1.0f, 0.875f),
-              Mat4(
-                  -0.83f, 0.0f,  0.555f, -10.0f,
-                  0.0f,   1.0f,  0.0f,     0.0f,
-                  -0.55f, 0.0f, -0.83f,    4.0f,
-                  0.0f,   0.0f,  0.0f,     1.0f));
+              Mat4(-0.83f, 0.0f,  0.555f, -10.0f,
+                    0.0f,  1.0f,  0.0f,     0.0f,
+                   -0.55f, 0.0f, -0.83f,    4.0f,
+                    0.0f,  0.0f,  0.0f,     1.0f));
 
     Point3 point(-5.28f, 0.0f, 9.965f);
 

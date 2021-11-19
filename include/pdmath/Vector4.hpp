@@ -70,7 +70,7 @@ Vec4 operator-(const float scalar, const Vec4 &v);
 Vec4 operator*(const float scalar, const Vec4 &v);
 Vec4 operator/(const float scalar, const Vec4 &v);
 
-std::ostream& operator<<(std::ostream &os, const Vec3 &p);
+std::ostream& operator<<(std::ostream &os, const Vec4 &p);
 
 } // namespace pdm
 

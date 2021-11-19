@@ -107,39 +107,41 @@ bool OBBox::collides(const OBBox &other) const {
                             OBBox::scaled_projection(other, fwdfwd_cross);
 
     std::cout << "\n=========================================================\n"
-              << "center dist: " << center_dist         << "\n"
-              << "o1 center  : " << center_world()       << "\n"
-              << "o2 center  : " << other.center_world() << "\n\n"
-              << "o1 side   : " << side()           << "\tlength: " << side().length()          << "\n"
-              << "o1 up     : " << up()             << "\tlength: " << up().length()            << "\n"
-              << "o1 fwd    : " << forward()        << "\tlength: " << forward().length()       << "\n\n"
-              << "o2 side   : " << other.side()     << "\tlength: " << other.side().length()    << "\n"
-              << "o2 up     : " << other.up()       << "\tlength: " << other.up().length()      << "\n"
-              << "o2 fwd    : " << other.forward()  << "\tlength: " << other.forward().length() << "\n\n"
-              << "sxs       : " << sideside_cross   << "\tlength: " << sideside_cross.length()  << "\n"
-              << "uxs       : " << upside_cross     << "\tlength: " << upside_cross.length()    << "\n"
-              << "fxs       : " << fwdside_cross    << "\tlength: " << fwdside_cross.length()   << "\n"
-              << "sxu       : " << sideup_cross     << "\tlength: " << sideup_cross.length()    << "\n"
-              << "uxu       : " << upup_cross       << "\tlength: " << upup_cross.length()      << "\n"
-              << "fxu       : " << fwdup_cross      << "\tlength: " << fwdup_cross.length()     << "\n"
-              << "sxf       : " << sidefwd_cross    << "\tlength: " << sidefwd_cross.length()   << "\n"
-              << "uxf       : " << upfwd_cross      << "\tlength: " << upfwd_cross.length()     << "\n"
-              << "fxf       : " << fwdfwd_cross     << "\tlength: " << fwdfwd_cross.length()    << "\n\n"
-              << "side o1 dist  :  " << side_center_dist_this  << "\t<   proj length sum: " << side_proj_this  << "\t?  " << ((side_center_dist_this < side_proj_this)   ? "true\n" : "false\n")
-              << "up   o1 dist  :  " << up_center_dist_this    << "\t<   proj length sum: " << up_proj_this    << "\t?  " << ((up_center_dist_this   < up_proj_this)     ? "true\n" : "false\n")
-              << "fwd  o1 dist  :  " << fwd_center_dist_this   << "\t<   proj length sum: " << fwd_proj_this   << "\t?  " << ((fwd_center_dist_this  < fwd_proj_this)    ? "true\n" : "false\n")
-              << "side o2 dist  :  " << side_center_dist_other << "\t<   proj length sum: " << side_proj_other << "\t?  " << ((side_center_dist_other < side_proj_other) ? "true\n" : "false\n")
-              << "up   o2 dist  :  " << up_center_dist_other   << "\t<   proj length sum: " << up_proj_other   << "\t?  " << ((up_center_dist_other   < up_proj_other)   ? "true\n" : "false\n")
-              << "fwd  o2 dist  :  " << fwd_center_dist_other  << "\t<   proj length sum: " << fwd_proj_other  << "\t?  " << ((fwd_center_dist_other  < fwd_proj_other)  ? "true\n" : "false\n")
-              << "sxs dist      :  " << sideside_center_dist   << "\t<   proj length sum: " << sideside_proj   << "\t?  " << ((sideside_center_dist   < sideside_proj)   ? "true\n" : "false\n")
-              << "uxs dist      :  " << upside_center_dist     << "\t<   proj length sum: " << upside_proj     << "\t?  " << ((upside_center_dist     < upside_proj)     ? "true\n" : "false\n")
-              << "fxs dist      :  " << fwdside_center_dist    << "\t<   proj length sum: " << fwdside_proj    << "\t?  " << ((fwdside_center_dist    < fwdside_proj)    ? "true\n" : "false\n")
-              << "sxu dist      :  " << sideup_center_dist     << "\t<   proj length sum: " << sideup_proj     << "\t?  " << ((sideup_center_dist     < sideup_proj)     ? "true\n" : "false\n")
-              << "uxu dist      :  " << upup_center_dist       << "\t<   proj length sum: " << upup_proj       << "\t?  " << ((upup_center_dist       < upup_proj)       ? "true\n" : "false\n")
-              << "fxu dist      :  " << fwdup_center_dist      << "\t<   proj length sum: " << fwdup_proj      << "\t?  " << ((fwdup_center_dist      < fwdup_proj)      ? "true\n" : "false\n")
-              << "sxf dist      :  " << sidefwd_center_dist    << "\t<   proj length sum: " << sidefwd_proj    << "\t?  " << ((sidefwd_center_dist    < sidefwd_proj)    ? "true\n" : "false\n")
-              << "uxf dist      :  " << upfwd_center_dist      << "\t<   proj length sum: " << upfwd_proj      << "\t?  " << ((upfwd_center_dist      < upfwd_proj)      ? "true\n" : "false\n")
-              << "fxf dist      :  " << fwdfwd_center_dist     << "\t<   proj length sum: " << fwdfwd_proj     << "\t?  " << ((fwdfwd_center_dist     < fwdfwd_proj)     ? "true\n" : "false\n")
+              << "center dist     : " << center_dist          << "\n"
+              << "o1 local center : " << center()             << "\n"
+              << "o2 local center : " << other.center()       << "\n"
+              << "o1 world center : " << center_world()       << "\n"
+              << "o2 world center : " << other.center_world() << "\n\n"
+              << "o1 side : " << side()          << "\tlength: " << side().length()          << "\n"
+              << "o1 up   : " << up()            << "\tlength: " << up().length()            << "\n"
+              << "o1 fwd  : " << forward()       << "\tlength: " << forward().length()       << "\n\n"
+              << "o2 side : " << other.side()    << "\tlength: " << other.side().length()    << "\n"
+              << "o2 up   : " << other.up()      << "\tlength: " << other.up().length()      << "\n"
+              << "o2 fwd  : " << other.forward() << "\tlength: " << other.forward().length() << "\n\n"
+              << "sxs     : " << sideside_cross  << "\tlength: " << sideside_cross.length()  << "\n"
+              << "uxs     : " << upside_cross    << "\tlength: " << upside_cross.length()    << "\n"
+              << "fxs     : " << fwdside_cross   << "\tlength: " << fwdside_cross.length()   << "\n"
+              << "sxu     : " << sideup_cross    << "\tlength: " << sideup_cross.length()    << "\n"
+              << "uxu     : " << upup_cross      << "\tlength: " << upup_cross.length()      << "\n"
+              << "fxu     : " << fwdup_cross     << "\tlength: " << fwdup_cross.length()     << "\n"
+              << "sxf     : " << sidefwd_cross   << "\tlength: " << sidefwd_cross.length()   << "\n"
+              << "uxf     : " << upfwd_cross     << "\tlength: " << upfwd_cross.length()     << "\n"
+              << "fxf     : " << fwdfwd_cross    << "\tlength: " << fwdfwd_cross.length()    << "\n\n"
+              << "side o1 dist  :  " << side_center_dist_this  << "\t<=   proj length sum: " << side_proj_this  << "\t?  " << ((side_center_dist_this  <= side_proj_this)  ? "true\n" : "false\n")
+              << "up   o1 dist  :  " << up_center_dist_this    << "\t<=   proj length sum: " << up_proj_this    << "\t?  " << ((up_center_dist_this    <= up_proj_this)    ? "true\n" : "false\n")
+              << "fwd  o1 dist  :  " << fwd_center_dist_this   << "\t<=   proj length sum: " << fwd_proj_this   << "\t?  " << ((fwd_center_dist_this   <= fwd_proj_this)   ? "true\n" : "false\n")
+              << "side o2 dist  :  " << side_center_dist_other << "\t<=   proj length sum: " << side_proj_other << "\t?  " << ((side_center_dist_other <= side_proj_other) ? "true\n" : "false\n")
+              << "up   o2 dist  :  " << up_center_dist_other   << "\t<=   proj length sum: " << up_proj_other   << "\t?  " << ((up_center_dist_other   <= up_proj_other)   ? "true\n" : "false\n")
+              << "fwd  o2 dist  :  " << fwd_center_dist_other  << "\t<=   proj length sum: " << fwd_proj_other  << "\t?  " << ((fwd_center_dist_other  <= fwd_proj_other)  ? "true\n" : "false\n")
+              << "sxs dist      :  " << sideside_center_dist   << "\t<=   proj length sum: " << sideside_proj   << "\t?  " << ((sideside_center_dist   <= sideside_proj)   ? "true\n" : "false\n")
+              << "uxs dist      :  " << upside_center_dist     << "\t<=   proj length sum: " << upside_proj     << "\t?  " << ((upside_center_dist     <= upside_proj)     ? "true\n" : "false\n")
+              << "fxs dist      :  " << fwdside_center_dist    << "\t<=   proj length sum: " << fwdside_proj    << "\t?  " << ((fwdside_center_dist    <= fwdside_proj)    ? "true\n" : "false\n")
+              << "sxu dist      :  " << sideup_center_dist     << "\t<=   proj length sum: " << sideup_proj     << "\t?  " << ((sideup_center_dist     <= sideup_proj)     ? "true\n" : "false\n")
+              << "uxu dist      :  " << upup_center_dist       << "\t<=   proj length sum: " << upup_proj       << "\t?  " << ((upup_center_dist       <= upup_proj)       ? "true\n" : "false\n")
+              << "fxu dist      :  " << fwdup_center_dist      << "\t<=   proj length sum: " << fwdup_proj      << "\t?  " << ((fwdup_center_dist      <= fwdup_proj)      ? "true\n" : "false\n")
+              << "sxf dist      :  " << sidefwd_center_dist    << "\t<=   proj length sum: " << sidefwd_proj    << "\t?  " << ((sidefwd_center_dist    <= sidefwd_proj)    ? "true\n" : "false\n")
+              << "uxf dist      :  " << upfwd_center_dist      << "\t<=   proj length sum: " << upfwd_proj      << "\t?  " << ((upfwd_center_dist      <= upfwd_proj)      ? "true\n" : "false\n")
+              << "fxf dist      :  " << fwdfwd_center_dist     << "\t<=   proj length sum: " << fwdfwd_proj     << "\t?  " << ((fwdfwd_center_dist     <= fwdfwd_proj)     ? "true\n" : "false\n")
               << std::endl;
 
     // If the length of the center distance projection is less than the sum
@@ -152,63 +154,63 @@ bool OBBox::collides(const OBBox &other) const {
 
     return ((std::isnan(side_center_dist_this) ||
              std::isnan(side_proj_this)) ||
-            (side_center_dist_this  < side_proj_this)) &&
+            (side_center_dist_this <= side_proj_this)) &&
 
            ((std::isnan(up_center_dist_this) ||
              std::isnan(up_proj_this)) ||
-            (up_center_dist_this < up_proj_this)) && 
+            (up_center_dist_this <= up_proj_this)) && 
 
            ((std::isnan(fwd_center_dist_this) || 
              std::isnan(fwd_proj_this)) || 
-            (fwd_center_dist_this < fwd_proj_this)) &&
+            (fwd_center_dist_this <= fwd_proj_this)) &&
 
            ((std::isnan(side_center_dist_other) || 
              std::isnan(side_proj_other)) || 
-            (side_center_dist_other < side_proj_other)) &&
+            (side_center_dist_other <= side_proj_other)) &&
 
            ((std::isnan(up_center_dist_other) ||
              std::isnan(up_proj_other)) ||
-            (up_center_dist_other < up_proj_other)) &&
+            (up_center_dist_other <= up_proj_other)) &&
 
            ((std::isnan(fwd_center_dist_other) ||
              std::isnan(fwd_proj_other)) || 
-            (fwd_center_dist_other < fwd_proj_other)) &&
+            (fwd_center_dist_other <= fwd_proj_other)) &&
 
            ((std::isnan(sideside_center_dist) ||
              std::isnan(sideside_proj)) ||
-            (sideside_center_dist < sideside_proj)) &&
+            (sideside_center_dist <= sideside_proj)) &&
             
            ((std::isnan(upside_center_dist) ||
              std::isnan(upside_proj)) ||
-            (upside_center_dist < upside_proj)) &&
+            (upside_center_dist <= upside_proj)) &&
             
            ((std::isnan(fwdside_center_dist) ||
              std::isnan(fwdside_proj)) ||
-            (fwdside_center_dist < fwdside_proj)) &&
+            (fwdside_center_dist <= fwdside_proj)) &&
             
            ((std::isnan(sideup_center_dist) ||
              std::isnan(sideup_proj)) ||
-            (sideup_center_dist < sideup_proj)) &&
+            (sideup_center_dist <= sideup_proj)) &&
 
            ((std::isnan(upup_center_dist) ||
              std::isnan(upup_proj)) ||  
-            (upup_center_dist < upup_proj)) &&
+            (upup_center_dist <= upup_proj)) &&
             
            ((std::isnan(fwdup_center_dist) ||
              std::isnan(fwdup_proj)) ||
-            (fwdup_center_dist < fwdup_proj)) &&
+            (fwdup_center_dist <= fwdup_proj)) &&
             
            ((std::isnan(sidefwd_center_dist) ||
              std::isnan(sidefwd_proj)) ||
-            (sidefwd_center_dist < sidefwd_proj)) &&
+            (sidefwd_center_dist <= sidefwd_proj)) &&
             
            ((std::isnan(upfwd_center_dist) ||
              std::isnan(upfwd_proj)) ||
-            (upfwd_center_dist < upfwd_proj)) &&
+            (upfwd_center_dist <= upfwd_proj)) &&
             
            ((std::isnan(fwdfwd_center_dist) ||
              std::isnan(fwdfwd_proj)) || 
-            (fwdfwd_center_dist < fwdfwd_proj));
+            (fwdfwd_center_dist <= fwdfwd_proj));
 }
 
 bool OBBox::collides(const Point3 &point) const {
@@ -358,17 +360,10 @@ OBBox::OBBox(const Point3 &min, const Point3 &max, const Mat4 &world) noexcept:
     _world{world},
     _local{_world.inverted()}
 {
-    _center = Point3((_max._x - _min._x) / 2.0f,
-                     (_max._y - _min._y) / 2.0f,
-                     (_max._z - _min._z) / 2.0f);
+    _center = (_max + _min) / 2.0f;
 
-    _min_world = _world * _min;
-    _max_world = _world * _max;
-
-    // _center_world = Point3((_min_world._x + _max_world._x) / 2.0f,
-    //                        (_min_world._y + _max_world._y) / 2.0f,
-    //                        (_min_world._z + _max_world._z) / 2.0f);
-
+    _min_world    = _world * _min;
+    _max_world    = _world * _max;
     _center_world = _world * _center;
 }
 

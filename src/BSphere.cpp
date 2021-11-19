@@ -14,11 +14,11 @@ bool BSphere::collides(const BSphere &other) const {
 }
 
 bool BSphere::collides(const Point3 &point) const {
-    return (static_cast<Vec3>(point) - _center).length() < _radius;
+    return (static_cast<Vec3>(point) - _center).length() <= _radius;
 }
 
 bool BSphere::collides(const Point4 &point) const {
-    return (static_cast<Vec3>(point) - _center).length() < _radius;
+    return (static_cast<Vec3>(point) - _center).length() <= _radius;
 }
 
 bool BSphere::collides(const AABBox &box) const {

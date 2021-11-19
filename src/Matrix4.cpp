@@ -672,21 +672,30 @@ namespace pdm {
     }
 
     Point3 operator*(const Mat4 &m, const Point3 &p) {
-        return Point3((m._m[0][0] * p._x) +
-                      (m._m[0][1] * p._y) +
-                      (m._m[0][2] * p._z),
-                      (m._m[1][0] * p._x) +
-                      (m._m[1][1] * p._y) +
-                      (m._m[1][2] * p._z),
-                      (m._m[2][0] * p._x) +
-                      (m._m[2][1] * p._y) +
-                      (m._m[2][2] * p._z));
+        Point4 intermediate((m._m[0][0] * p._x) +
+                            (m._m[0][1] * p._y) +
+                            (m._m[0][2] * p._z) +
+                            (m._m[0][3] * 1.0f),
+                            (m._m[1][0] * p._x) +
+                            (m._m[1][1] * p._y) +
+                            (m._m[1][2] * p._z) +
+                            (m._m[1][3] * 1.0f),
+                            (m._m[2][0] * p._x) +
+                            (m._m[2][1] * p._y) +
+                            (m._m[2][2] * p._z) +
+                            (m._m[2][3] * 1.0f),
+                            (m._m[3][0] * p._x) +
+                            (m._m[3][1] * p._y) +
+                            (m._m[3][2] * p._z) +
+                            (m._m[3][3] * 1.0f));
+
+        return Point3(intermediate._x, intermediate._y, intermediate._z);
     }
 
     Vec3 operator*(const Mat4 &m, const Vec3 &v) {
         return Vec3((m._m[0][0] * v._x) +
                     (m._m[0][1] * v._y) +
-                    (m._m[0][2] * v._z), 
+                    (m._m[0][2] * v._z),
                     (m._m[1][0] * v._x) +
                     (m._m[1][1] * v._y) +
                     (m._m[1][2] * v._z),
