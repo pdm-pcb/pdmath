@@ -46,6 +46,8 @@ public:
                                                 get_y_scale() *
                                                 get_z_scale();}
 
+    Vec3 get_x_vec() const;
+
     Vec3 get_x_unit_vector() const;
     Vec3 get_y_unit_vector() const;
     Vec3 get_z_unit_vector() const;

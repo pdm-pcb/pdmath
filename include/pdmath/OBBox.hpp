@@ -2,13 +2,15 @@
 #define PDMATH_OBBOX_HPP
 
 #include "pdmath/Point3.hpp"
+#include "pdmath/Point4.hpp"
+#include "pdmath/Vector3.hpp"
+#include "pdmath/Vector4.hpp"
 #include "pdmath/Matrix4.hpp"
 
 #include <utility>
 
 namespace pdm {
 
-class Vec3;
 class BSphere;
 class Plane;
 
@@ -30,6 +32,8 @@ public:
     float get_proj_scale() const;
     static float max_projection(const OBBox &local, const Vec3 &v);
     static float scaled_projection(const OBBox &local, const Vec3 &v);
+    float max_projection(const Vec3 &v);
+    float scaled_projection(const Vec3 &v);
     
     Vec3 to_local(const Vec3 &v) const;
     Vec3 to_world(const Vec3 &v) const;
@@ -37,10 +41,14 @@ public:
     Point3 to_local(const Point3 &p) const;
     Point3 to_world(const Point3 &p) const;
 
+    Point4 to_local(const Point4 &p) const;
+    Point4 to_world(const Point4 &p) const;
+
     inline Mat4   get_local()    const { return _local;        }
     inline Mat4   get_world()    const { return _world;        }
     inline Point3 center()       const { return _center;       }
     inline Point3 center_world() const { return _center_world; }
+    inline Vec3   best_diag()    const { return _best_diag;    }
 
     std::pair<float, float> x_interval() const;
     std::pair<float, float> y_interval() const;
@@ -53,6 +61,8 @@ private:
     Point3 _min;
     Point3 _max;
     Point3 _center;
+
+    Vec3   _best_diag;
 
     Point3 _min_world;
     Point3 _max_world;

@@ -20,89 +20,89 @@ bool Point3::are_collinear(const Point3 &b, const Point3 &c) const {
 }
 
 float Point3::distance_to_line(const Line &line) const {
-    Vec3 s_minus_p(line._p - *this);
-    Vec3 perp = s_minus_p - line._v * (s_minus_p.dot(line._v) /
-                line._v.dot(line._v));
+    Vec3 s_minus_p(line.point_a() - *this);
+    Vec3 perp = s_minus_p - line.vec() * (s_minus_p.dot(line.vec()) /
+                line.vec().dot(line.vec()));
     return perp.length();
 }
 
 bool Point3::is_on_plane(const Plane &plane) const {
-    Vec3 point_vector(*this - plane._p);
-    return point_vector.dot(plane._n) == 0.0f;
+    Vec3 point_vector(*this - plane.point());
+    return point_vector.dot(plane.normal()) == 0.0f;
 }
 
 float Point3::distance_to_plane(const Plane &plane) const {
-    Vec3 point_vector(*this - plane._p);
-    return point_vector.dot(plane._n);
+    Vec3 point_vector(*this - plane.point());
+    return point_vector.dot(plane.normal());
 }
 
 Point3 Point3::nearest_approach(const Line &line) const {
-    Vec3 q_minus_p = static_cast<Vec3>(*this) - line._p;
-    float t = line._v.dot(q_minus_p);
-    t /= line._v.dot(line._v);
-    Vec3 offset = line._v * t;
+    Vec3 q_minus_p = static_cast<Vec3>(*this) - line.point_a();
+    float t = line.vec().dot(q_minus_p);
+    t /= line.vec().dot(line.vec());
+    Vec3 offset = line.vec() * t;
 
     std::cout << "\nQ-P: "    << q_minus_p << "\n"
-                << "P1-P2: "  << line._v << "\n"
+                << "P1-P2: "  << line.vec() << "\n"
                 << "t : "     << t << "\n"
                 << "offset: " << offset << "\n"
-                << "result: " << line._p + offset << "\n"
+                << "result: " << line.point_a() + offset << "\n"
                 << std::endl;
 
-    return line._p + offset;
+    return line.point_a() + offset;
 }
 
 Point3 Point3::nearest_approach_segment(const Line &line) const {
-    Vec3 q_minus_p = static_cast<Vec3>(*this) - line._p;
-    // std::cout << "P1-P0: " << line._v << "\n"
+    Vec3 q_minus_p = static_cast<Vec3>(*this) - line.point_a();
+    // std::cout << "P1-P0: " << line.vec() << "\n"
     //           << "Q: " << *this << "\n"
     //           << "Q-P0: " << q_minus_p << "\n"
-    //           << "(P1-P0).(Q-P0): " << line._v.dot(q_minus_p)
+    //           << "(P1-P0).(Q-P0): " << line.vec().dot(q_minus_p)
     //           << std::endl;
 
-    float t = line._v.dot(q_minus_p);
+    float t = line.vec().dot(q_minus_p);
     // std::cout << "t : " << t << std::endl;
-    t /= line._v.dot(line._v);
+    t /= line.vec().dot(line.vec());
     // std::cout << "t scaled : " << t << std::endl;
 
     if(t <= 0.0f) {
-        // std::cout << "result: " << line._p << "\n" << std::endl;
-        return line._p;
+        // std::cout << "result: " << line.point_a() << "\n" << std::endl;
+        return line.point_a();
     }
     if(t >= 1.0f) {
-        // std::cout << "result: " << line._v << "\n" << std::endl;
-        return static_cast<Point3>(line._v);
+        // std::cout << "result: " << line.vec() << "\n" << std::endl;
+        return static_cast<Point3>(line.vec());
     }
 
-    Vec3 offset = line._v * t;
+    Vec3 offset = line.vec() * t;
     // std::cout << "offset: " << offset << "\n"
-    //           << "result: " << line._p + offset << "\n"
+    //           << "result: " << line.point_a() + offset << "\n"
     //           << std::endl;
 
-    return line._p + offset;
+    return line.point_a() + offset;
 }
 
 Point3 Point3::nearest_approach_ray(const Line &line) const {
-    Vec3 q_minus_p = static_cast<Vec3>(*this) - line._p;
+    Vec3 q_minus_p = static_cast<Vec3>(*this) - line.point_a();
     // std::cout << "\nQ-P: " << q_minus_p << "\n"
-    //           << "P1-P2: " << line._v << std::endl;
+    //           << "P1-P2: " << line.vec() << std::endl;
 
-    float t = line._v.dot(q_minus_p);
+    float t = line.vec().dot(q_minus_p);
     // std::cout << "t : " << t << std::endl;
-    t /= line._v.dot(line._v);
+    t /= line.vec().dot(line.vec());
     // std::cout << "t': " << t << std::endl;
 
     if(t <= 0.0f) {
-        // std::cout << "result: " << line._p << "\n" << std::endl;
-        return line._p;
+        // std::cout << "result: " << line.point_a() << "\n" << std::endl;
+        return line.point_a();
     }
 
-    Vec3 offset = line._v * t;
+    Vec3 offset = line.vec() * t;
     // std::cout << "offset: " << offset << "\n"
-    //           << "result: " << line._p + offset << "\n"
+    //           << "result: " << line.point_a() + offset << "\n"
     //           << std::endl;
 
-    return line._p + offset;
+    return line.point_a() + offset;
 }
 
 Point3::Point3() noexcept:
@@ -134,24 +134,10 @@ const Point3& Point3::operator+=(const Point3 &p) {
     return *this;
 }
 
-const Point3& Point3::operator-=(const Point3 &p) {
-    this->_x -= p._x;
-    this->_y -= p._y;
-    this->_z -= p._z;
-    return *this;
-}
-
 const Point3& Point3::operator+=(const Point4 &p) {
     this->_x += p._x;
     this->_y += p._y;
     this->_z += p._z;
-    return *this;
-}
-
-const Point3& Point3::operator-=(const Point4 &p) {
-    this->_x -= p._x;
-    this->_y -= p._y;
-    this->_z -= p._z;
     return *this;
 }
 
@@ -257,22 +243,10 @@ Point3 operator+(const Point3 &p, const Point3 &t) {
                   p._z + t._z);
 }
 
-Point3 operator-(const Point3 &p, const Point3 &t) {
-    return Point3(p._x - t._x,
-                  p._y - t._y,
-                  p._z - t._z);
-}
-
 Point3 operator+(const Point3 &p, const Point4 &t) {
     return Point3(p._x + t._x,
                   p._y + t._y,
                   p._z + t._z);
-}
-
-Point3 operator-(const Point3 &p, const Point4 &t) {
-    return Point3(p._x - t._x,
-                  p._y - t._y,
-                  p._z - t._z);
 }
 
 Point3 operator+(const Point3 &p, const Vec3 &v) {
@@ -282,9 +256,9 @@ Point3 operator+(const Point3 &p, const Vec3 &v) {
 }
 
 Point3 operator-(const Point3 &p, const Vec3 &v) {
-    return Point3(p._x + v._x,
-                  p._y + v._y,
-                  p._z + v._z);
+    return Point3(p._x - v._x,
+                  p._y - v._y,
+                  p._z - v._z);
 }
 
 Point3 operator+(const Point3 &p, const Vec4 &v) {
@@ -294,9 +268,9 @@ Point3 operator+(const Point3 &p, const Vec4 &v) {
 }
 
 Point3 operator-(const Point3 &p, const Vec4 &v) {
-    return Point3(p._x + v._x,
-                  p._y + v._y,
-                  p._z + v._z);
+    return Point3(p._x - v._x,
+                  p._y - v._y,
+                  p._z - v._z);
 }
 
 Point3 operator+(const Point3 &p, const float scalar){

@@ -20,7 +20,7 @@ float Line::distance_to(const Line &other) const {
     //             << "c: " << c << "\n"
     //             << "d: " << d << "\n"
     //             << "e: " << e << "\n"
-    //             << "p1 - p2: " << Vec4(_p - other._p) << "\n"
+    //             << "p1 - p2: " << Vec4(_p - other.point()) << "\n"
     //             << std::endl;
 
     float angle = b * b - a * c;
@@ -49,18 +49,18 @@ float Line::distance_to(const Line &other) const {
 }
 
 bool Line::parallel_to_plane(const Plane &plane) const {
-    return this->_v.dot(plane._n) == 0.0f;
+    return this->_v.dot(plane.normal()) == 0.0f;
 }
 
 bool Line::within_plane(const Plane &plane) const {
-    return Vec3(this->_p - plane._p).dot(plane._n) == 0.0f;
+    return Vec3(this->_p - plane.point()).dot(plane.normal()) == 0.0f;
 }
 
 bool Line::intersects(const Plane &plane) const {
-    Vec3 s1_minus_p(_p - plane._p);
-    Vec3 s2_minus_p(_t - plane._p);
-    float d1 = s1_minus_p.dot(plane._n);
-    float d2 = s2_minus_p.dot(plane._n);
+    Vec3 s1_minus_p(_p - plane.point());
+    Vec3 s2_minus_p(_t - plane.point());
+    float d1 = s1_minus_p.dot(plane.normal());
+    float d2 = s2_minus_p.dot(plane.normal());
 
     // std::cout << "\nS1 - P0: " << s1_minus_p << "\n"
     //           << "S2 - P0: "   << s2_minus_p << "\n"
@@ -73,10 +73,10 @@ bool Line::intersects(const Plane &plane) const {
 }
 
 float Line::intersects_depth(const Plane &plane) const {
-    Vec3 p_minus_s1(plane._p - _p);
+    Vec3 p_minus_s1(plane.point() - _p);
     Vec3 s2_minus_s1(_t - _p);
-    float t_num = p_minus_s1.dot(plane._n);
-    float t_den = s2_minus_s1.dot(plane._n);
+    float t_num = p_minus_s1.dot(plane.normal());
+    float t_den = s2_minus_s1.dot(plane.normal());
 
     // std::cout << "\nP0 - S1: " << p_minus_s1 << "\n"
     //           << "S2 - S1: "   << s2_minus_s1 << "\n"
@@ -93,8 +93,8 @@ float Line::intersects_depth(const Plane &plane) const {
 }
 
 Point3 Line::intersects_at(const Plane &plane) const {
-    float lambda = (Vec3(plane._p - this->_p).dot(plane._n));
-    lambda /= this->_v.dot(plane._n);
+    float lambda = (Vec3(plane.point() - this->_p).dot(plane.normal()));
+    lambda /= this->_v.dot(plane.normal());
 
     return this->_p + static_cast<Point3>(this->_v) * lambda;
 }

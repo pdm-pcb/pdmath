@@ -35,9 +35,7 @@ public:
     bool operator==(const Point3 &p) const;
 
     const Point3& operator+=(const Point3 &p);
-    const Point3& operator-=(const Point3 &p);
     const Point3& operator+=(const Point4 &p);
-    const Point3& operator-=(const Point4 &p);
 
     const Point3& operator+=(const float scalar);
     const Point3& operator-=(const float scalar);
@@ -54,9 +52,7 @@ public:
 };
 
 Point3 operator+(const Point3 &p, const Point3 &t);
-Point3 operator-(const Point3 &p, const Point3 &t);
 Point3 operator+(const Point3 &p, const Point4 &t);
-Point3 operator-(const Point3 &p, const Point4 &t);
 
 Point3 operator+(const Point3 &p, const Vec3 &v);
 Point3 operator-(const Point3 &p, const Vec3 &v);

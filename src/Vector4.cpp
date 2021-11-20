@@ -15,8 +15,7 @@ const Vec4 Vec4::one  = Vec4(1.0f, 1.0f, 1.0f, 0.0f);
 float Vec4::dot(const Vec4 &v) const {
     return this->_x * v._x +
            this->_y * v._y +
-           this->_z * v._z +
-           this->_w * v._w;
+           this->_z * v._z;
 }
 
 Vec4 Vec4::normalized() const {
@@ -60,85 +59,85 @@ bool Vec4::operator==(const Vec4 &p) const {
 Vec4 operator+(const Vec4 &v, const Vec3 &w) {
     return Vec4(v._x + w._x,
                 v._y + w._y,
-                v._z + w._z,
-                v._w);
+                v._z + w._z);
 }
 
 Vec4 operator-(const Vec4 &v, const Vec3 &w) {
     return Vec4(v._x - w._x,
                 v._y - w._y,
-                v._z - w._z,
-                v._w);
+                v._z - w._z);
 }
 
 Vec4 operator+(const Vec4 &v, const Vec4 &w) {
     return Vec4(v._x + w._x,
                 v._y + w._y,
-                v._z + w._z,
-                v._w + w._w);
+                v._z + w._z);
 }
 
 Vec4 operator-(const Vec4 &v, const Vec4 &w) {
     return Vec4(v._x - w._x,
                 v._y - w._y,
-                v._z - w._z,
-                v._w - w._w);
+                v._z - w._z);
 }
 
 Vec4 operator+(const Vec4 &v, const Point3 &p) {
     return Vec4(v._x + p._x,
                 v._y + p._y,
-                v._z + p._z,
-                v._w);
+                v._z + p._z);
 }
 
 Vec4 operator-(const Vec4 &v, const Point3 &p) {
     return Vec4(v._x - p._x,
                 v._y - p._y,
-                v._z - p._z,
-                v._w);
+                v._z - p._z);
 }
 
 Vec4 operator+(const Vec4 &v, const Point4 &p) {
     return Vec4(v._x + p._x,
                 v._y + p._y,
-                v._z + p._z,
-                v._w + p._w);
+                v._z + p._z);
 }
 
 Vec4 operator-(const Vec4 &v, const Point4 &p) {
     return Vec4(v._x - p._x,
                 v._y - p._y,
-                v._z - p._z,
-                v._w - p._w);
+                v._z - p._z);
+}
+
+Vec4 operator-(const Point4 &p, const Point4 &t) {
+    return Vec4(p._x - t._x,
+                p._y - t._y,
+                p._z - t._z);
+}
+
+Vec4 operator-(const Point4 &p, const Point3 &t) {
+    return Vec4(p._x - t._x,
+                p._y - t._y,
+                p._z - t._z);
 }
 
 Vec4 operator+(const Vec4 &v, const float scalar) {
     return Vec4(v._x + scalar,
                 v._y + scalar,
-                v._z + scalar,
-                v._w + scalar);
+                v._z + scalar);
 }
 
 Vec4 operator-(const Vec4 &v, const float scalar) {
     return Vec4(v._x - scalar,
                 v._y - scalar,
-                v._z - scalar,
-                v._w - scalar);
+                v._z - scalar);
 }
 
 Vec4 operator*(const Vec4 &v, const float scalar) {
     return Vec4(v._x * scalar,
                 v._y * scalar,
-                v._z * scalar,
-                v._w * scalar);
+                v._z * scalar);
 }
 
 Vec4 operator/(const Vec4 &v, const float scalar) {
     return Vec4(v._x / scalar,
                 v._y / scalar,
-                v._z / scalar,
-                v._w / scalar);
+                v._z / scalar);
 }
 
 Vec4 operator+(const float scalar, const Vec4 &v) {

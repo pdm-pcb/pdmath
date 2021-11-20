@@ -24,6 +24,11 @@ public:
     Line(const Point3 &p, const Vec3 &v);
     Line(const Point4 &p, const Vec4 &v);
 
+    Point3 point_a() const { return _p; }
+    Point3 point_b() const { return _t; }
+    Vec3   vec()     const { return _v; }
+
+private:
     Point3 _p;
     Point3 _t;
     Vec3   _v;

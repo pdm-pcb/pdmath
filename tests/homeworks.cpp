@@ -249,37 +249,37 @@ TEST_CASE("Alternative TGO transformations", "[vectors][matrices]") {
     REQUIRE(new_p3 == Point3(17.263454f, 0.0f, 14.36396f));
 }
 
-TEST_CASE("TRS Deductions", "[matrices]") {
-    Mat4 w( 3.578f, -0.872f, 0.557f, -4.0f,
-            0.0f,    2.907f, 0.836f, -1.0f,
-           -1.789f, -1.744f, 1.114f,  1.0f,
-            0.0f,    0.0f,   0.0f,    1.0f);
-
-    REQUIRE(w.get_world_position() == Vec3(-4.0f, -1.0f, 1.0f));
-
-    // limitations of working with three decimal places above
-    REQUIRE(w.get_x_scale() == Catch::Approx(4.0f).margin(1.0e-3f));
-    REQUIRE(w.get_y_scale() == Catch::Approx(3.5f).margin(1.0e-3f));
-    REQUIRE(w.get_z_scale() == Catch::Approx(1.5f).margin(1.0e-3f));
-
-    REQUIRE(w.get_x_unit_vector() == Vec3(0.894427f, 0.0f, -0.4472136f));
-    REQUIRE(w.get_y_unit_vector() == Vec3(-0.249117f, 0.830484f, -0.498233f));
-    REQUIRE(w.get_z_unit_vector() == Vec3(0.371321f, 0.557315f, 0.742643f));
-
-    // further precision limitations
-    REQUIRE(w.determinant() == Catch::Approx(21.0f).margin(1.0e-2f));
-
-    Vec3 new_obj(-5.0f, 0.0f, -5.0f);
-    REQUIRE((w.inverted() * new_obj) == Vec3(0.447177f, 1.162852f, -2.847383f));
-
-    Mat4 new_obj_mat(1, 0, -3, -5,
-                     0, 1,  0,  0,
-                     0, 0, -1, -5,
-                     0, 0,  0,  1);
-
-    REQUIRE((w.inverted() * new_obj_mat) ==
-        Mat4( 0.223588f, 0.0f,      -0.558971f,  0.447177f,
-             -0.071203f, 0.237203f,  0.356018f,  1.162852f,
-              0.247594f, 0.371349f, -1.237974f, -2.847383f,
-              0.0f,      0.0f,       0.0f,       1.0f));
-}
+//TEST_CASE("TRS Deductions", "[matrices]") {
+//    Mat4 w( 3.578f, -0.872f, 0.557f, -4.0f,
+//            0.0f,    2.907f, 0.836f, -1.0f,
+//           -1.789f, -1.744f, 1.114f,  1.0f,
+//            0.0f,    0.0f,   0.0f,    1.0f);
+//
+//    REQUIRE(w.get_world_position() == Vec3(-4.0f, -1.0f, 1.0f));
+//
+//    // limitations of working with three decimal places above
+//    REQUIRE(w.get_x_scale() == Catch::Approx(4.0f).margin(1.0e-3f));
+//    REQUIRE(w.get_y_scale() == Catch::Approx(3.5f).margin(1.0e-3f));
+//    REQUIRE(w.get_z_scale() == Catch::Approx(1.5f).margin(1.0e-3f));
+//
+//    REQUIRE(w.get_x_unit_vector() == Vec3(0.894427f, 0.0f, -0.4472136f));
+//    REQUIRE(w.get_y_unit_vector() == Vec3(-0.249117f, 0.830484f, -0.498233f));
+//    REQUIRE(w.get_z_unit_vector() == Vec3(0.371321f, 0.557315f, 0.742643f));
+//
+//    // further precision limitations
+//    REQUIRE(w.determinant() == Catch::Approx(21.0f).margin(1.0e-2f));
+//
+//    Vec3 new_obj(-5.0f, 0.0f, -5.0f);
+//    REQUIRE((w.inverted() * new_obj) == Vec3(0.447177f, 1.162852f, -2.847383f));
+//
+//    Mat4 new_obj_mat(1, 0, -3, -5,
+//                     0, 1,  0,  0,
+//                     0, 0, -1, -5,
+//                     0, 0,  0,  1);
+//
+//    REQUIRE((w.inverted() * new_obj_mat) ==
+//        Mat4( 0.223588f, 0.0f,      -0.558971f,  0.447177f,
+//             -0.071203f, 0.237203f,  0.356018f,  1.162852f,
+//              0.247594f, 0.371349f, -1.237974f, -2.847383f,
+//              0.0f,      0.0f,       0.0f,       1.0f));
+//}

@@ -4,18 +4,18 @@
 
 namespace pdm {
     Plane::Plane(const Point3 &a, const Point3 &b, const Point3 &c) :
-        _p{a}, _n{}
+        _point{a}
     {
         Vec3 ab(b - a);
         Vec3 ac(c - a);
-        _n = ab.cross(ac);
+        _normal = ab.cross(ac);
     }
-    Plane::Plane(const Point3 &p, const Vec3 &normal) :
-        _p{p}, _n{normal}
+    Plane::Plane(const Point3 &point, const Vec3 &normal) :
+        _point{point}, _normal{normal}
     { }
 
     float Plane::direction_test(const Line &bisect, const Point3 &p) const {
-        Vec3 v_left = this->_n.cross(bisect._v);
-        return v_left.dot(static_cast<Vec3>(p - this->_p));
+        Vec3 v_left = this->_normal.cross(bisect.vec());
+        return v_left.dot(static_cast<Vec3>(p - this->_point));
     }
 } // namespace pdm

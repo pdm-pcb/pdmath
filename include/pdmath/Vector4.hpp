@@ -60,6 +60,9 @@ Vec4 operator-(const Vec4 &v, const Point3 &p);
 Vec4 operator+(const Vec4 &v, const Point4 &p);
 Vec4 operator-(const Vec4 &v, const Point4 &p);
 
+Vec4 operator-(const Point4 &p, const Point4 &t);
+Vec4 operator-(const Point4 &p, const Point3 &t);
+
 Vec4 operator+(const Vec4 &v, const float scalar);
 Vec4 operator-(const Vec4 &v, const float scalar);
 Vec4 operator*(const Vec4 &v, const float scalar);

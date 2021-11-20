@@ -132,50 +132,69 @@ TEST_CASE("Object bounding box - object bounding box collision",
                        0.0f,     0.0f,     0.0f,    1.0f));
 
     REQUIRE(object1.collides(object2) == false);
-    REQUIRE(object2.collides(object1) == false);
 
-    object1 = OBBox(Point3(-2.13f, -1.0f, -2.38f),
-                    Point3(2.875f, 1.0f, 1.625f),
-                    Mat4(0.771743633f, 0.0f, -1.286239389f,  8.0f,
-                         0.0f,         1.5f,  0.0f,          0.0f,
-                         1.286239389f, 0.0f,  0.771743633f, -9.0f,
-                         0.0f,         0.0f,  0.0f,          1.0f));
+    object1 = OBBox(Point3(-2.625f, -1.0f, -1.625f),
+                    Point3(2.375f, 1.0f, 2.375f),
+                    Mat4(-0.632f, 0.0f, -1.897f, -7.0f,
+                          0.0f, 2.0f, 0.0f, 0.0f,
+                          1.897f, 0.0f, -0.632f, 4.0f,
+                          0.0f,     0.0f,     0.0f,    1.0f));
 
-    object2 = OBBox(Point3(-1.5f, -1.0f, -1.75f),
-                    Point3(0.5f, 1.0f, 2.25f),
-                    Mat4(0.937042571f, 0.0f, -1.171303214f, 10.0f,
-                         0.0f,         1.5,   0.0f,          0.0f,
-                         1.171303214f, 0.0f,  0.937042571f, -5.0f,
-                         0.0f,         0.0f,  0.0f,          1.0f));
+    object2 = OBBox(Point3(-1.25f, 0.0f, 0.75f),
+                    Point3(0.75f, 1.0f, 1.125f),
+                    Mat4(-1.6f, 0.0f, 1.2f, -10.0f,
+                          0.0f, 2.0f, 0.0f, 0.0f,
+                         -1.2f, 0.0f, -1.6f, 9.0f,
+                         0.0f, 0.0f,     0.0f,    1.0f));
 
-    REQUIRE(object1.collides(object2) == true);
+    REQUIRE(object1.collides(object2) == true); 
 }
 
 TEST_CASE("Object bounding box - sphere collision", 
           "[object bounding boxes][spheres][collisions]") {
-    OBBox box(Point3(-1.75f, -1.0f, -1.13f),
-              Point3(2.25f, 1.0f, 0.875f),
-              Mat4(-0.83f, 0.0f,  0.555f, -10.0f,
-                    0.0f,  1.0f,  0.0f,     0.0f,
-                   -0.55f, 0.0f, -0.83f,    4.0f,
-                    0.0f,  0.0f,  0.0f,     1.0f));
+    OBBox box(Point3(-0.875f, - 1.0f, - 2.75f),
+              Point3(1.125f, 1.0f, 2.25f),
+              Mat4(-1.414213f, 0.0f, -1.414213f,  4.0f,
+                    0.0f,      2.0f,  0.0f,       0.0f,
+                    1.414213f, 0.0f, -1.414213f, -4.0f,
+                    0.0f,      0.0f,  0.0f,       1.0f));
 
-    BSphere sphere(Point3(-5.28f, 0.0f, 9.965f), 2.5f, Mat4::identity);
+    BSphere sphere(Point3(9.176776f, 0.0f, -2.469669f), 1.5f, Mat4::identity);
 
-    REQUIRE(box.collides(sphere) == false);
-    REQUIRE(sphere.collides(box) == false);
+    Point3 C_local(-1.289213f, 0.0f, -2.371321f);
+    Point3 C_clamped_local(-0.875f, 0.0f, -2.371321f);
+    Point3 C_clamped_world(8.590990f, 0.0f, -1.883882f);
+    Vec3   Q_minus_C(-0.59f, 0.0f, 0.586f);
 
-    box = OBBox(Point3(-2.88f, -1.0f, -1.38f),
-                Point3(2.125f, 1.0f, 1.625f),
-                Mat4(-1.34f,  0.0f, -0.67f, 8.0f,
-                      0.0f,   1.5f,  0.0f,  0.0f,
-                      0.671f, 0.0f, -1.34f, 9.0f,
-                      0.0f,   0.0f,  0.0f,  1.0f));
-
-    sphere = BSphere(Point3(7.419f, 0.0f, 11.58f), 2, Mat4::identity);
+    REQUIRE(box.to_local(sphere.center()) == C_local);
+    REQUIRE(sphere.center_clamped(box)    == C_clamped_local);
+    REQUIRE(box.to_world(sphere.center_clamped(box)) == C_clamped_world);
+    REQUIRE(C_clamped_world - sphere.center() == Q_minus_C);
 
     REQUIRE(box.collides(sphere) == true);
     REQUIRE(sphere.collides(box) == true);
+
+    box = OBBox(Point3(4.0f, 0.0f, -5.0f),
+                Point3(6.0f, 4.0f, 1.0f),
+                Mat4(1.4142f, 0.0f, 1.4142f, 60.0f,
+                      0.0f,   2.0f,  0.0f,  -60.0f,
+                     -1.414f, 0.0f, 1.4142f, -45.0f,
+                      0.0f,   0.0f,  0.0f,  1.0f));
+
+    sphere = BSphere(Point3(72.0f, -63.0f, -42.0f), 6, Mat4::identity);
+
+    C_local = Point3(3.182235f, -1.499998f, 5.303127f);
+    C_clamped_local = Point3(4.0f, 0.0f, 1.0f);
+    C_clamped_world = Point3(67.070999f, -60.0f, -49.241798f);
+    Q_minus_C = Vec3(-4.929f, 3.0f, -7.243f);
+
+    REQUIRE(box.to_local(sphere.center()) == C_local);
+    REQUIRE(sphere.center_clamped(box) == C_clamped_local);
+    REQUIRE(box.to_world(sphere.center_clamped(box)) == C_clamped_world);
+    REQUIRE(C_clamped_world - sphere.center() == Q_minus_C);
+
+    REQUIRE(box.collides(sphere) == false);
+    REQUIRE(sphere.collides(box) == false);
 }
 
 TEST_CASE("Object bounding box - point collision", 
@@ -192,26 +211,6 @@ TEST_CASE("Object bounding box - point collision",
     REQUIRE(box.collides(point) == false);
 }
 
-
-// HOMEWORK 7 ------------------------------------------------------------------
-
-
-TEST_CASE("Point of nearest approach on a segment",
-          "[points][lines][collisions") {
-    Line l(Point3(198.0f, 98.0f, 199.0f),
-           Point3(202.0f, 102.0f, 201.0f));
-
-    Point3 p(214.0f, 90.0f,  186.0f);
-    Point3 q(196.0f, 108.0f, 207.0f);
-    Point3 r(193.0f, 90.0f,  201.0f);
-    Point3 s(196.0f, 114.0f, 192.0f);
-
-    REQUIRE(p.nearest_approach_segment(l) == Point3(198.666671f, 98.666664f, 199.333328f));
-    REQUIRE(q.nearest_approach_segment(l) == Point3(202.0f,  102.0f, 201.0f));
-    REQUIRE(r.nearest_approach_segment(l) == Point3(198.0f,  98.0f, 199.0f));
-    REQUIRE(s.nearest_approach_segment(l) == Point3(202.0f,  102.0f, 201.0f));
-}
-
 TEST_CASE("Axis aligned bounding box - line collision",
           "[axis aligned bounding boxes][lines][collisions]") {
     AABBox box(Point3(-21.0f, -7.0f, 10.0f),
@@ -225,13 +224,6 @@ TEST_CASE("Axis aligned bounding box - line collision",
 
     REQUIRE(box.collides(l1) == true);
     REQUIRE(box.collides(l2) == true);
-}
-
-TEST_CASE("Distance between lines", "[lines][collisions]") {
-    Line l1(Point3(-73.0f, -5.0f, -4.0f),  Vec3(14.0f, 7.0f, 4.0f));
-    Line l2(Point3(-47.0f, -13.0f, 16.0f), Vec3(-8.0f, -9.0f, 0.0f));
-
-    REQUIRE(l1.distance_to(l2) == l2.distance_to(l1));
 }
 
 TEST_CASE("Bounding sphere - plane intersection"
@@ -269,98 +261,44 @@ TEST_CASE("Plane - segment intersection" "[planes][lines][collisions]") {
 
 TEST_CASE("Object bounding box - plane intersection",
           "[object bounding boxes][planes][collisions]") {
-    OBBox box(Point3(-5.75f, -5.625f, -1.75f),
-              Point3(6.25f, 6.375f, 2.25f),
-              Mat4(
-                  -1.4142f,  1.1547f,  0.8165f, -17.0f,
-                   0.0f,     1.1547f, -1.633f,   -8.0f,
-                  -1.4142f, -1.1547f, -0.8165f,   5.0f,
-                   0.0f,     0.0f,     0.0f,      1.0f));
+    OBBox box(Point3(-4.0f, -2.75f, -3.75f),
+              Point3(4.0f, 3.25f, 4.25f),
+              Mat4( 0.486664f,  1.377596f, -0.339683f, 13.0f,
+                   -0.729996f,  0.551038f,  1.188890f,  0.0f,
+                    1.216660f, -0.220415f,  0.849207f, -4.0f,
+                    0.0f,       0.0f,       0.0f,       1.0f));
 
-    Plane plane(Point3(9.0f, -9.0f, 9.0f), Vec3(2.0f, 4.0f, -3.0f));
+    Plane plane(Point3(7.0f, -9.0f, -6.0f), Vec3(0.0f, -2.0f, -8.0f));
+
+    Vec3   local_normal = box.to_local(plane.normal());
+    Point3 world_center = box.center_world();
+    float  scale        = box.get_proj_scale();
+    float  proj_max     = box.max_projection(plane.normal());
+    float  proj_scaled  = box.scaled_projection(plane.normal());
+
+    Vec3 s1(box.center_world() - proj_scaled * plane.normal().normalized());
+    Vec3 s2(box.center_world() + proj_scaled * plane.normal().normalized());
+
+    Vec3 s1_minus_p0(s1 - plane.point());
+    Vec3 s2_minus_p0(s2 - plane.point());
+
+    float d1 = s1_minus_p0.dot(plane.normal());
+    float d2 = s2_minus_p0.dot(plane.normal());
+
+    REQUIRE(local_normal == Vec3(-3.68f, 0.294f, -4.08f));
+    REQUIRE(world_center == Point3(13.259478f, 0.434982f, -3.842802f));
+    REQUIRE(scale        == Catch::Approx(2.25f));
+    REQUIRE(proj_max     == Catch::Approx(3.86778f));
+    REQUIRE(proj_scaled  == Catch::Approx(8.7025f));
+
+    REQUIRE(s1 == Vec3(13.26f, 2.546f, 4.6f));
+    REQUIRE(s2 == Vec3(13.26f, -1.68f, -12.3f));
+
+    REQUIRE(s1_minus_p0 == Vec3(6.259478f, 11.545648f, 10.599864f));
+    REQUIRE(s2_minus_p0 == Vec3(6.259478f, 7.324315f, -6.285468f));
+
+    REQUIRE(d1 == Catch::Approx(-107.89021f));
+    REQUIRE(d2 == Catch::Approx(35.63511f));
 
     REQUIRE(box.collides(plane) == true);
-}
-
-
-
-TEST_CASE("Problem 1") {
-    Line l(Point3(-43.0f, -42.0f, -44.0f),
-           Point3(-37.0, -38.0, -36.0f));
-
-    Point3 p(-37.0f, -53.0f, -27.0f);
-    Point3 q(-46.0f, -26.0f, -27.0f);
-    Point3 r(-34.0f, -50.0f, -48.0f);
-    Point3 s(-34.0f, -44.0f, -45.0f);
-
-    p.nearest_approach_segment(l);
-    q.nearest_approach_segment(l);
-    r.nearest_approach_segment(l);
-    s.nearest_approach_segment(l);
-}
-
-TEST_CASE("Problem 2") {
-    AABBox box(Point3(-35.0f, -9.0f, 6.0f),
-               Point3(-15.0f, -1.0f, 14.0f));
-
-    Line l1(Point3(-60.0f, -19.0f, 8.0f),
-             Vec3(10.0f, 4.0f, 0.0f));
-
-    Line l2(Point3(-35.0f, -29.0f, 26.0f),
-             Vec3(-5.0f, -6.0f, 2.0f));
-
-    // std::cout << box.collides(l1) << std::endl;
-    // std::cout << box.collides(l2) << std::endl;
-}
-
-
-
-TEST_CASE("Problem 3") {
-    Line l1(Point4(-43.0f, -68.0f, -18.0f), Vec4(11.0f, 14.0f, 5.0f));
-    Line l2(Point4(-20.0f, -87.0f, 14.0f), Vec4(-6.0f, -17.0f, 1.0f));
-
-    // std::cout << l1.distance_to(l2) << std::endl;
-}
-
-TEST_CASE("Problem 4") {
-    Plane plane(Point3(-12.0f, -3.0f, -9.0f),
-                Vec3(-3.0f, 2.0f, 3.0f));
-
-    BSphere s1(Point4(-11.0f, 10.0f, -4.0f), 10.0f, Mat4::identity);
-
-    BSphere s2(Point4(-3.0f, 4.0f, -12.0f), 4.0f, Mat4::identity);
-
-    // std::cout << s1.collides(plane) << std::endl;
-    // std::cout << s1.above_plane(plane) << std::endl;
-
-    // std::cout << s2.collides(plane)    << std::endl;
-    // std::cout << s2.above_plane(plane) << std::endl;
-}
-
-TEST_CASE("Problem 5") {
-    Plane plane(Point3(-3.0f, 12.0f, -12.0f),
-                Vec3(-4.0f, -5.0f, 4.0f));
-
-    Line l1(Point3(10.0f, 5.0f, 0.0f),
-             Point3(16.0f, 13.0f, -4.0f));
-
-    Line l2(Point3(12.0f, 9.0f, -1.0f),
-             Point3(13.0f, 10.0f, 1.0f));
-
-    // std::cout << l1.intersects(plane) << std::endl;
-    // std::cout << l2.intersects(plane) << std::endl;
-}
-
-TEST_CASE("Problem 6") {
-    OBBox box(Point3(-4.125f, -3.625f, -3.5f),
-              Point3(3.875f, 4.375f, 4.5f),
-              Mat4(
-                  -0.6247f,  0.23281f, -0.7454f,   9.0f,
-                   0.0f,     0.95452f,  0.29814f, -4.0f,
-                   0.78087f, 0.18625f, -0.5963f,  -4.0f,
-                   0.0f,     0.0f,      0.0f,      1.0f));
-
-    Plane plane(Point3(9.0f, -12.0f, -15.0f), Vec3(-5.0f, -4.0f, -2.0f));
-
-    // std::cout << box.collides(plane) << std::endl;
 }

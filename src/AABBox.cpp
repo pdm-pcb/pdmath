@@ -36,39 +36,39 @@ bool AABBox::collides(const Point4 &point) const {
 }
 
 bool AABBox::collides(const Line &line) const {
-    if(line._v._x == 0.0f) {
-        if(line._p._x < _min._x || line._p._x > _max._x) {
+    if(line.vec()._x == 0.0f) {
+        if(line.point_a()._x < _min._x || line.point_a()._x > _max._x) {
             // std::cout << "\nline's x value is zero and outside." << std::endl;
             return false;
         }
     }
-    if(line._v._y == 0.0f) {
-        if(line._p._y < _min._y || line._p._y > _max._y) {
+    if(line.vec()._y == 0.0f) {
+        if(line.point_a()._y < _min._y || line.point_a()._y > _max._y) {
             // std::cout << "\nline's y value is zero and outside." << std::endl;
             return false;
         }
     }
-    if(line._v._z == 0.0f) {
-        if(line._p._z < _min._z || line._p._z > _max._z) {
+    if(line.vec()._z == 0.0f) {
+        if(line.point_a()._z < _min._z || line.point_a()._z > _max._z) {
             // std::cout << "\nline's z value is zero and outside." << std::endl;
             return false;
         }
     }
 
-    float ax = (_min._x - line._p._x) / line._v._x;
-    float bx = (_max._x - line._p._x) / line._v._x;
+    float ax = (_min._x - line.point_a()._x) / line.vec()._x;
+    float bx = (_max._x - line.point_a()._x) / line.vec()._x;
 
     float sx = (ax < bx ? ax : bx);
     float tx = (ax > bx ? ax : bx);
 
-    float ay = (_min._y - line._p._y) / line._v._y;
-    float by = (_max._y - line._p._y) / line._v._y;
+    float ay = (_min._y - line.point_a()._y) / line.vec()._y;
+    float by = (_max._y - line.point_a()._y) / line.vec()._y;
 
     float sy = (ay < by ? ay : by);
     float ty = (ay > by ? ay : by);
 
-    float az = (_min._z - line._p._z) / line._v._z;
-    float bz = (_max._z - line._p._z) / line._v._z;
+    float az = (_min._z - line.point_a()._z) / line.vec()._z;
+    float bz = (_max._z - line.point_a()._z) / line.vec()._z;
 
     float sz = (az < bz ? az : bz);
     float tz = (az > bz ? az : bz);

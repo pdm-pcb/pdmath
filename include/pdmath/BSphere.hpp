@@ -21,7 +21,9 @@ public:
     
     bool above_plane(const Plane &plane) const;
 
-    Vec3 center_to_center(const BSphere &other) const;
+    Vec3   center_to_center(const BSphere &other) const;
+    Point3 center_clamped(const OBBox  &box)      const;
+    Point3 center_clamped(const AABBox &box)      const;
 
     inline float  scale()  const { return _world.get_x_scale(); }
     inline Point3 center() const { return _center; }

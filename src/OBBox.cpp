@@ -2,6 +2,7 @@
 
 #include "pdmath/util.hpp"
 #include "pdmath/Vector3.hpp"
+#include "pdmath/Vector4.hpp"
 #include "pdmath/BSphere.hpp"
 #include "pdmath/Plane.hpp"
 
@@ -24,8 +25,7 @@ bool OBBox::collides(const OBBox &other) const {
     Vec3 fwdfwd_cross   = forward().cross(other.forward());
 
     // the vector connecting the two worldspace midpoints of the boxes
-    Vec3 center_dist =
-        static_cast<Vec3>(other.center_world()) - center_world();
+    Vec3 center_dist = other.center_world() - center_world();
 
     // length of the projection of the center-to-center vector onto the
     // related axes
@@ -106,43 +106,47 @@ bool OBBox::collides(const OBBox &other) const {
     float fwdfwd_proj     = OBBox::scaled_projection(*this, fwdfwd_cross) +
                             OBBox::scaled_projection(other, fwdfwd_cross);
 
-    std::cout << "\n=========================================================\n"
-              << "center dist     : " << center_dist          << "\n"
-              << "o1 local center : " << center()             << "\n"
-              << "o2 local center : " << other.center()       << "\n"
-              << "o1 world center : " << center_world()       << "\n"
-              << "o2 world center : " << other.center_world() << "\n\n"
-              << "o1 side : " << side()          << "\tlength: " << side().length()          << "\n"
-              << "o1 up   : " << up()            << "\tlength: " << up().length()            << "\n"
-              << "o1 fwd  : " << forward()       << "\tlength: " << forward().length()       << "\n\n"
-              << "o2 side : " << other.side()    << "\tlength: " << other.side().length()    << "\n"
-              << "o2 up   : " << other.up()      << "\tlength: " << other.up().length()      << "\n"
-              << "o2 fwd  : " << other.forward() << "\tlength: " << other.forward().length() << "\n\n"
-              << "sxs     : " << sideside_cross  << "\tlength: " << sideside_cross.length()  << "\n"
-              << "uxs     : " << upside_cross    << "\tlength: " << upside_cross.length()    << "\n"
-              << "fxs     : " << fwdside_cross   << "\tlength: " << fwdside_cross.length()   << "\n"
-              << "sxu     : " << sideup_cross    << "\tlength: " << sideup_cross.length()    << "\n"
-              << "uxu     : " << upup_cross      << "\tlength: " << upup_cross.length()      << "\n"
-              << "fxu     : " << fwdup_cross     << "\tlength: " << fwdup_cross.length()     << "\n"
-              << "sxf     : " << sidefwd_cross   << "\tlength: " << sidefwd_cross.length()   << "\n"
-              << "uxf     : " << upfwd_cross     << "\tlength: " << upfwd_cross.length()     << "\n"
-              << "fxf     : " << fwdfwd_cross    << "\tlength: " << fwdfwd_cross.length()    << "\n\n"
-              << "side o1 dist  :  " << side_center_dist_this  << "\t<=   proj length sum: " << side_proj_this  << "\t?  " << ((side_center_dist_this  <= side_proj_this)  ? "true\n" : "false\n")
-              << "up   o1 dist  :  " << up_center_dist_this    << "\t<=   proj length sum: " << up_proj_this    << "\t?  " << ((up_center_dist_this    <= up_proj_this)    ? "true\n" : "false\n")
-              << "fwd  o1 dist  :  " << fwd_center_dist_this   << "\t<=   proj length sum: " << fwd_proj_this   << "\t?  " << ((fwd_center_dist_this   <= fwd_proj_this)   ? "true\n" : "false\n")
-              << "side o2 dist  :  " << side_center_dist_other << "\t<=   proj length sum: " << side_proj_other << "\t?  " << ((side_center_dist_other <= side_proj_other) ? "true\n" : "false\n")
-              << "up   o2 dist  :  " << up_center_dist_other   << "\t<=   proj length sum: " << up_proj_other   << "\t?  " << ((up_center_dist_other   <= up_proj_other)   ? "true\n" : "false\n")
-              << "fwd  o2 dist  :  " << fwd_center_dist_other  << "\t<=   proj length sum: " << fwd_proj_other  << "\t?  " << ((fwd_center_dist_other  <= fwd_proj_other)  ? "true\n" : "false\n")
-              << "sxs dist      :  " << sideside_center_dist   << "\t<=   proj length sum: " << sideside_proj   << "\t?  " << ((sideside_center_dist   <= sideside_proj)   ? "true\n" : "false\n")
-              << "uxs dist      :  " << upside_center_dist     << "\t<=   proj length sum: " << upside_proj     << "\t?  " << ((upside_center_dist     <= upside_proj)     ? "true\n" : "false\n")
-              << "fxs dist      :  " << fwdside_center_dist    << "\t<=   proj length sum: " << fwdside_proj    << "\t?  " << ((fwdside_center_dist    <= fwdside_proj)    ? "true\n" : "false\n")
-              << "sxu dist      :  " << sideup_center_dist     << "\t<=   proj length sum: " << sideup_proj     << "\t?  " << ((sideup_center_dist     <= sideup_proj)     ? "true\n" : "false\n")
-              << "uxu dist      :  " << upup_center_dist       << "\t<=   proj length sum: " << upup_proj       << "\t?  " << ((upup_center_dist       <= upup_proj)       ? "true\n" : "false\n")
-              << "fxu dist      :  " << fwdup_center_dist      << "\t<=   proj length sum: " << fwdup_proj      << "\t?  " << ((fwdup_center_dist      <= fwdup_proj)      ? "true\n" : "false\n")
-              << "sxf dist      :  " << sidefwd_center_dist    << "\t<=   proj length sum: " << sidefwd_proj    << "\t?  " << ((sidefwd_center_dist    <= sidefwd_proj)    ? "true\n" : "false\n")
-              << "uxf dist      :  " << upfwd_center_dist      << "\t<=   proj length sum: " << upfwd_proj      << "\t?  " << ((upfwd_center_dist      <= upfwd_proj)      ? "true\n" : "false\n")
-              << "fxf dist      :  " << fwdfwd_center_dist     << "\t<=   proj length sum: " << fwdfwd_proj     << "\t?  " << ((fwdfwd_center_dist     <= fwdfwd_proj)     ? "true\n" : "false\n")
-              << std::endl;
+    //std::cout << "\n=========================================================\n"
+    //          << "center dist     : " << center_dist          << "\n"
+    //          << "o1 local center : " << center()             << "\n"
+    //          << "o2 local center : " << other.center()       << "\n"
+    //          << "o1 world center : " << center_world()       << "\n"
+    //          << "o2 world center : " << other.center_world() << "\n\n"
+    //          << "o1 side : " << side()          << "\tlength: " << side().length()          << "\n"
+    //          << "o1 up   : " << up()            << "\tlength: " << up().length()            << "\n"
+    //          << "o1 fwd  : " << forward()       << "\tlength: " << forward().length()       << "\n\n"
+    //          << "o2 side : " << other.side()    << "\tlength: " << other.side().length()    << "\n"
+    //          << "o2 up   : " << other.up()      << "\tlength: " << other.up().length()      << "\n"
+    //          << "o2 fwd  : " << other.forward() << "\tlength: " << other.forward().length() << "\n\n"
+    //          << "sxs     : " << sideside_cross  << "\tlength: " << sideside_cross.length()  << "\n"
+    //          << "uxs     : " << upside_cross    << "\tlength: " << upside_cross.length()    << "\n"
+    //          << "fxs     : " << fwdside_cross   << "\tlength: " << fwdside_cross.length()   << "\n"
+    //          << "sxu     : " << sideup_cross    << "\tlength: " << sideup_cross.length()    << "\n"
+    //          << "uxu     : " << upup_cross      << "\tlength: " << upup_cross.length()      << "\n"
+    //          << "fxu     : " << fwdup_cross     << "\tlength: " << fwdup_cross.length()     << "\n"
+    //          << "sxf     : " << sidefwd_cross   << "\tlength: " << sidefwd_cross.length()   << "\n"
+    //          << "uxf     : " << upfwd_cross     << "\tlength: " << upfwd_cross.length()     << "\n"
+    //          << "fxf     : " << fwdfwd_cross    << "\tlength: " << fwdfwd_cross.length()    << "\n\n"
+    //          << "f1 proj_max local 1 : " << max_projection(*this, this->forward()) << " via " << this->to_local(this->forward()) << "\t/  scaled : " << scaled_projection(*this, this->forward()) << " by scaling factor: " << this->get_local().get_z_scale() << "\n"
+    //          << "f2 proj_max local 1 : " << max_projection(*this, other.forward()) << " via " << this->to_local(other.forward()) << "\t/  scaled : " << scaled_projection(*this, other.forward()) << " by scaling factor: " << this->get_local().get_z_scale() << "\n"
+    //          << "f1 proj_max local 2 : " << max_projection(other, this->forward()) << " via " << other.to_local(this->forward()) << "\t/  scaled : " << scaled_projection(other, this->forward()) << " by scaling factor: " << other.get_local().get_z_scale() << "\n"
+    //          << "f2 proj_max local 2 : " << max_projection(other, other.forward()) << " via " << other.to_local(other.forward()) << "\t/  scaled : " << scaled_projection(other, other.forward()) << " by scaling factor: " << other.get_local().get_z_scale() << "\n\n"
+    //          << "side o1 dist  :  " << side_center_dist_this  << "\t<=   proj length sum: " << side_proj_this  << "\t?  " << ((side_center_dist_this  <= side_proj_this)  ? "true\n" : "false\n")
+    //          << "up   o1 dist  :  " << up_center_dist_this    << "\t<=   proj length sum: " << up_proj_this    << "\t?  " << ((up_center_dist_this    <= up_proj_this)    ? "true\n" : "false\n")
+    //          << "fwd  o1 dist  :  " << fwd_center_dist_this   << "\t<=   proj length sum: " << fwd_proj_this   << "\t?  " << ((fwd_center_dist_this   <= fwd_proj_this)   ? "true\n" : "false\n")
+    //          << "side o2 dist  :  " << side_center_dist_other << "\t<=   proj length sum: " << side_proj_other << "\t?  " << ((side_center_dist_other <= side_proj_other) ? "true\n" : "false\n")
+    //          << "up   o2 dist  :  " << up_center_dist_other   << "\t<=   proj length sum: " << up_proj_other   << "\t?  " << ((up_center_dist_other   <= up_proj_other)   ? "true\n" : "false\n")
+    //          << "fwd  o2 dist  :  " << fwd_center_dist_other  << "\t<=   proj length sum: " << fwd_proj_other  << "\t?  " << ((fwd_center_dist_other  <= fwd_proj_other)  ? "true\n" : "false\n")
+    //          << "sxs dist      :  " << sideside_center_dist   << "\t<=   proj length sum: " << sideside_proj   << "\t?  " << ((sideside_center_dist   <= sideside_proj)   ? "true\n" : "false\n")
+    //          << "uxs dist      :  " << upside_center_dist     << "\t<=   proj length sum: " << upside_proj     << "\t?  " << ((upside_center_dist     <= upside_proj)     ? "true\n" : "false\n")
+    //          << "fxs dist      :  " << fwdside_center_dist    << "\t<=   proj length sum: " << fwdside_proj    << "\t?  " << ((fwdside_center_dist    <= fwdside_proj)    ? "true\n" : "false\n")
+    //          << "sxu dist      :  " << sideup_center_dist     << "\t<=   proj length sum: " << sideup_proj     << "\t?  " << ((sideup_center_dist     <= sideup_proj)     ? "true\n" : "false\n")
+    //          << "uxu dist      :  " << upup_center_dist       << "\t<=   proj length sum: " << upup_proj       << "\t?  " << ((upup_center_dist       <= upup_proj)       ? "true\n" : "false\n")
+    //          << "fxu dist      :  " << fwdup_center_dist      << "\t<=   proj length sum: " << fwdup_proj      << "\t?  " << ((fwdup_center_dist      <= fwdup_proj)      ? "true\n" : "false\n")
+    //          << "sxf dist      :  " << sidefwd_center_dist    << "\t<=   proj length sum: " << sidefwd_proj    << "\t?  " << ((sidefwd_center_dist    <= sidefwd_proj)    ? "true\n" : "false\n")
+    //          << "uxf dist      :  " << upfwd_center_dist      << "\t<=   proj length sum: " << upfwd_proj      << "\t?  " << ((upfwd_center_dist      <= upfwd_proj)      ? "true\n" : "false\n")
+    //          << "fxf dist      :  " << fwdfwd_center_dist     << "\t<=   proj length sum: " << fwdfwd_proj     << "\t?  " << ((fwdfwd_center_dist     <= fwdfwd_proj)     ? "true\n" : "false\n")
+    //          << std::endl;
 
     // If the length of the center distance projection is less than the sum
     // length of the best diagonal projection, then there is overlap. If all
@@ -221,47 +225,27 @@ bool OBBox::collides(const Point3 &point) const {
 }
 
 bool OBBox::collides(const BSphere &sphere) const {
-    Point3 center_clamped = _local * sphere.center();
-    center_clamped._x = clamp(center_clamped._x, x_interval());
-    center_clamped._y = clamp(center_clamped._y, y_interval());
-    center_clamped._z = clamp(center_clamped._z, z_interval());
-    center_clamped *= _world;
-
-    return sphere.collides(center_clamped);
+    return sphere.collides(*this);
 }
 
 bool OBBox::collides(const Plane &plane) const {
-    // float h = max_projection(*this, static_cast<Vec3>(plane._n));
-    float h2 = scaled_projection(*this, plane._n);
-    Point3 s1 = _center_world - h2 * static_cast<Point3>(plane._n) /
-                plane._n.length();
-    Point3 s2 = _center_world + h2 * static_cast<Point3>(plane._n) /
-                plane._n.length();
-    float d1 = Vec3(s1 - plane._p).dot(plane._n);
-    float d2 = Vec3(s2 - plane._p).dot(plane._n);
+    Point3 world_center = center_world();
+    float  scale = get_proj_scale();
+    float  proj_max = max_projection(*this, plane.normal());
+    float  proj_scaled = scaled_projection(*this, plane.normal());
 
-    // std::cout << "\nh : " << h << "\n"
-    //           << "h2: "   << h2 << "\n"
-    //           << "n: "    << plane._n << "\n"
-    //           << "|n|: "  << plane._n.length() << "\n"
-    //           << "n/|n|: " << (plane._n/plane._n.length()) << "\n"
-    //           << "n': "   << _local * static_cast<Vec3>(plane._n) << "\n"
-    //           << "s1: "   << s1 << "\n"
-    //           << "s2: "   << s2 << "\n"
-    //           << "s1 - p0: " << Vec3(s1 - plane._p) << "\n"
-    //           << "s2 - p0: " << Vec3(s2 - plane._p) << "\n"
-    //           << "d1: "   << d1 << "\n"
-    //           << "d2: "   << d2 << "\n"
-    //           << "local c: " << _local * _center_world << "\n"
-    //           << "half-diag: " << _center << "\n"
-    //           << "scaling: " << _world.get_x_scale() << "\n"
-    //           << "world c: " << _center_world << "\n\n"
-    //           << "world:\n" << _world << "\n\n"
-    //           << "local:\n" << _local << "\n"
-    //           << "--------------------------------------------------------\n"
-    //           << std::endl;
+    Vec3 plane_normal_normalized = plane.normal().normalized();
 
-    return d1 < 0 && d2 > 0;
+    Vec3 s1(center_world() - proj_scaled * plane_normal_normalized);
+    Vec3 s2(center_world() + proj_scaled * plane_normal_normalized);
+
+    Vec3 s1_minus_p0(s1 - plane.point());
+    Vec3 s2_minus_p0(s2 - plane.point());
+
+    float d1 = s1_minus_p0.dot(plane.normal());
+    float d2 = s2_minus_p0.dot(plane.normal());
+
+    return d1 < 0 and d2 > 0;
 }
 
 Vec3 OBBox::side() const {
@@ -310,6 +294,14 @@ Point3 OBBox::to_world(const Point3 &p) const {
     return _world * p;
 }
 
+Point4 OBBox::to_local(const Point4 &p) const {
+    return _local * p;
+}
+
+Point4 OBBox::to_world(const Point4 &p) const {
+    return _world * p;
+}
+
 float OBBox::get_proj_scale() const {
     return powf(_world.get_x_scale(), 2.0f);
 }
@@ -318,28 +310,42 @@ float OBBox::max_projection(const OBBox &local, const Vec3 &v) {
     // put the projection vector into this OBB's local space
     Vec3 local_v = local.to_local(v);
 
-    // std::cout << "\n---------------\n"
-    //           << "v_x * a: " << std::abs(local_v._x * local.center()._x) << "\n"
-    //           << "v_y * b: " << std::abs(local_v._y * local.center()._y) << "\n"
-    //           << "v_z * c: " << std::abs(local_v._z * local.center()._z) << "\n"
-    //           << std::endl;
-
     //--------------------------------------------------------------------------
-    //
     // (|v'_x * a| + |v'_y * b| + |v'_z * c|) / ||v||
     //
     // where v is the vector onto which we're projecting, v' is that vector in
     // the object local space for this OBB, and (a,b,c) are the x, y, z
     // values for this OBB's center point, again in local space
 
-    return ((std::abs(local_v._x * local.center()._x)) +
-            (std::abs(local_v._y * local.center()._y)) +
-            (std::abs(local_v._z * local.center()._z))) / v.length();
-                                            // use the original length!
+    return (std::abs(local_v._x * local.best_diag()._x) +
+            std::abs(local_v._y * local.best_diag()._y) +
+            std::abs(local_v._z * local.best_diag()._z)) / v.length();
+                                                 // use the original length!
 }
 
 float OBBox::scaled_projection(const OBBox &local, const Vec3 &v) {
     return max_projection(local, v) * local.get_proj_scale();
+}
+
+float OBBox::max_projection(const Vec3 &v) {
+    // put the projection vector into this OBB's local space
+    Vec3 local_v = to_local(v);
+
+    //--------------------------------------------------------------------------
+    // (|v'_x * a| + |v'_y * b| + |v'_z * c|) / ||v||
+    //
+    // where v is the vector onto which we're projecting, v' is that vector in
+    // the object local space for this OBB, and (a,b,c) are the x, y, z
+    // values for this OBB's center point, again in local space
+
+    return (std::abs(local_v._x * best_diag()._x) +
+            std::abs(local_v._y * best_diag()._y) +
+            std::abs(local_v._z * best_diag()._z)) / v.length();
+                                                 // use the original length!
+}
+
+float OBBox::scaled_projection(const Vec3 &v) {
+    return max_projection(v) * get_proj_scale();
 }
 
 std::pair<float, float> OBBox::x_interval() const {
@@ -360,7 +366,8 @@ OBBox::OBBox(const Point3 &min, const Point3 &max, const Mat4 &world) noexcept:
     _world{world},
     _local{_world.inverted()}
 {
-    _center = (_max + _min) / 2.0f;
+    _center    = (_max + _min) / 2.0f;
+    _best_diag = (_max - _min) / 2.0f;
 
     _min_world    = _world * _min;
     _max_world    = _world * _max;

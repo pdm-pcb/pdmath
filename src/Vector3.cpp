@@ -225,10 +225,23 @@ Vec3 operator+(const Vec3 &v, const Point3 &p) {
                 v._y + p._y,
                 v._z + p._z);
 }
+
 Vec3 operator-(const Vec3 &v, const Point3 &p) {
     return Vec3(v._x - p._x,
                 v._y - p._y,
                 v._z - p._z);
+}
+
+Vec3 operator-(const Point3 &p, const Point3 &t) {
+    return Vec3(p._x - t._x,
+                p._y - t._y,
+                p._z - t._z);
+}
+
+Vec3 operator-(const Point3 &p, const Point4 &t) {
+    return Vec3(p._x - t._x,
+                p._y - t._y,
+                p._z - t._z);
 }
 
 Vec3 operator+(const Vec3 &v, const float scalar){
