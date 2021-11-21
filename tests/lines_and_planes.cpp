@@ -13,7 +13,7 @@ TEST_CASE("Lines understand their relationship to planes", "[lines][planes]") {
     Plane plane(Point3(-1, -3, -8), Vec3(-18, -35, -50));
     Line line(Point3(-9, -9, 0), Vec3(-3, 8, 2));
     REQUIRE(line.parallel_to_plane(plane) == false);
-    REQUIRE(line.intersects_at(plane) ==
+    REQUIRE(line.collides_at(plane) ==
         Point3(-8.5766869f, -10.1288347f, -0.2822086f));
 
     line = Line(Point3(4, 3, -14), Vec3(5, -14, 8));

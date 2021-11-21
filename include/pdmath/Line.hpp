@@ -11,12 +11,14 @@ class Plane;
 
 class Line {
 public:
-    float  distance_to(const Line &other) const;
+    float  distance_to(const Line &other)        const;
+    bool   parallel_to(const Line &other)        const;
     bool   parallel_to_plane(const Plane &plane) const;
     bool   within_plane (const Plane &plane)     const;
-    bool   intersects(const Plane &plane)        const;
-    float  intersects_depth(const Plane &plane) const;
-    Point3 intersects_at(const Plane &plane)     const;
+    bool   collides(const Line &other)           const;
+    bool   collides(const Plane &plane)          const;
+    float  collides_depth(const Plane &plane)    const;
+    Point3 collides_at(const Plane &plane)       const;
 
     Line();
     Line(const Point3 &a, const Point3 &b);

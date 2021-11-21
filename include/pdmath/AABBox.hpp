@@ -16,11 +16,14 @@ public:
     bool collides(const BSphere &sphere) const;
     bool collides(const Point3  &point)  const;
     bool collides(const Point4  &point)  const;
-    bool collides(const Line   &line)   const;
+    bool collides(const Line    &line)   const;
 
     std::pair<float, float> x_interval() const;
     std::pair<float, float> y_interval() const;
     std::pair<float, float> z_interval() const;
+
+    Point3 min() const { return _min; }
+    Point3 max() const { return _max; }
 
     AABBox(const Point3 &min, const Point3 &max) :
         _min{min},

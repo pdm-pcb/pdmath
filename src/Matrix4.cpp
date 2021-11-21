@@ -86,8 +86,8 @@ namespace pdm {
 
     float Mat4::get_x_scale() const {
         return Vec3(this->_m[0][0],
-                     this->_m[1][0],
-                     this->_m[2][0]).length();
+                    this->_m[1][0],
+                    this->_m[2][0]).length();
     }
 
     Vec3 Mat4::get_x_vec() const {

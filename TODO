@@ -2,5 +2,5 @@
     - Camera::direction_to_point() returns negative results unexpectedly
     - Dot product in tests/camera.cpp:275+ are off by one whole number each
 
-2021-11-09:
-    - Move on to plane/ray/etc intersections
+2021-11-19:
+    - OBB::to_local for Lines

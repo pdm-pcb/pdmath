@@ -12,6 +12,7 @@ class Mat4;
 
 class Vec3 {
 public:
+    static const Vec3 zero;
     static const Vec3 one;
 
     float length() const;

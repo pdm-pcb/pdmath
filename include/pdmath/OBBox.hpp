@@ -2,9 +2,7 @@
 #define PDMATH_OBBOX_HPP
 
 #include "pdmath/Point3.hpp"
-#include "pdmath/Point4.hpp"
 #include "pdmath/Vector3.hpp"
-#include "pdmath/Vector4.hpp"
 #include "pdmath/Matrix4.hpp"
 
 #include <utility>
@@ -13,13 +11,16 @@ namespace pdm {
 
 class BSphere;
 class Plane;
+class Point4;
+class Line;
 
 class OBBox {
 public:
-    bool collides(const OBBox &other)    const;
-    bool collides(const Point3 &point)   const;
+    bool collides(const OBBox   &other)  const;
+    bool collides(const Point3  &point)  const;
+    bool collides(const Line    &line)   const;
     bool collides(const BSphere &sphere) const;
-    bool collides(const Plane &plane)    const;
+    bool collides(const Plane   &plane)  const;
 
     Vec3 side()    const;
     Vec3 up()      const;

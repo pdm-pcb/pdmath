@@ -3,6 +3,7 @@
 #include "pdmath/util.hpp"
 #include "pdmath/BSphere.hpp"
 #include "pdmath/Line.hpp"
+#include "pdmath/Point4.hpp"
 
 namespace pdm {
 
@@ -15,7 +16,7 @@ bool AABBox::collides(const AABBox &other) const {
 }
 
 bool AABBox::collides(const BSphere &sphere) const {
-    Point4 center_clamped(
+    Point3 center_clamped(
         clamp(sphere.center()._x, x_interval()),
         clamp(sphere.center()._y, y_interval()),
         clamp(sphere.center()._z, z_interval()));
@@ -72,11 +73,6 @@ bool AABBox::collides(const Line &line) const {
 
     float sz = (az < bz ? az : bz);
     float tz = (az > bz ? az : bz);
-
-    // std::cout << "\nx interval: " << sx << ", " << tx << "\n"
-    //           << "y interval: "   << sy << ", " << ty << "\n"
-    //           << "z interval: "   << sz << ", " << tz << "\n"
-    //           << std::endl;
 
     return overlap(sx, tx, sy, ty) &&
            overlap(sy, ty, sz, tz) &&

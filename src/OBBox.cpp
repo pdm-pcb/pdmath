@@ -1,10 +1,12 @@
 #include "pdmath/OBBox.hpp"
 
 #include "pdmath/util.hpp"
+#include "pdmath/Point4.hpp"
 #include "pdmath/Vector3.hpp"
 #include "pdmath/Vector4.hpp"
 #include "pdmath/BSphere.hpp"
 #include "pdmath/Plane.hpp"
+#include "pdmath/Line.hpp"
 
 #include <cmath>
 
@@ -127,10 +129,10 @@ bool OBBox::collides(const OBBox &other) const {
     //          << "sxf     : " << sidefwd_cross   << "\tlength: " << sidefwd_cross.length()   << "\n"
     //          << "uxf     : " << upfwd_cross     << "\tlength: " << upfwd_cross.length()     << "\n"
     //          << "fxf     : " << fwdfwd_cross    << "\tlength: " << fwdfwd_cross.length()    << "\n\n"
-    //          << "f1 proj_max local 1 : " << max_projection(*this, this->forward()) << " via " << this->to_local(this->forward()) << "\t/  scaled : " << scaled_projection(*this, this->forward()) << " by scaling factor: " << this->get_local().get_z_scale() << "\n"
-    //          << "f2 proj_max local 1 : " << max_projection(*this, other.forward()) << " via " << this->to_local(other.forward()) << "\t/  scaled : " << scaled_projection(*this, other.forward()) << " by scaling factor: " << this->get_local().get_z_scale() << "\n"
-    //          << "f1 proj_max local 2 : " << max_projection(other, this->forward()) << " via " << other.to_local(this->forward()) << "\t/  scaled : " << scaled_projection(other, this->forward()) << " by scaling factor: " << other.get_local().get_z_scale() << "\n"
-    //          << "f2 proj_max local 2 : " << max_projection(other, other.forward()) << " via " << other.to_local(other.forward()) << "\t/  scaled : " << scaled_projection(other, other.forward()) << " by scaling factor: " << other.get_local().get_z_scale() << "\n\n"
+    //          << "s1 proj_max local 1 : " << max_projection(*this, this->side()) << " via " << this->to_local(this->side()) << "\t/  scaled : " << scaled_projection(*this, this->side()) << " by scaling factor: " << this->get_world().get_x_scale() << "\n"
+    //          << "s2 proj_max local 1 : " << max_projection(*this, other.side()) << " via " << this->to_local(other.side()) << "\t/  scaled : " << scaled_projection(*this, other.side()) << " by scaling factor: " << this->get_world().get_x_scale() << "\n"
+    //          << "s1 proj_max local 2 : " << max_projection(other, this->side()) << " via " << other.to_local(this->side()) << "\t/  scaled : " << scaled_projection(other, this->side()) << " by scaling factor: " << other.get_world().get_x_scale() << "\n"
+    //          << "s2 proj_max local 2 : " << max_projection(other, other.side()) << " via " << other.to_local(other.side()) << "\t/  scaled : " << scaled_projection(other, other.side()) << " by scaling factor: " << other.get_world().get_x_scale() << "\n\n"
     //          << "side o1 dist  :  " << side_center_dist_this  << "\t<=   proj length sum: " << side_proj_this  << "\t?  " << ((side_center_dist_this  <= side_proj_this)  ? "true\n" : "false\n")
     //          << "up   o1 dist  :  " << up_center_dist_this    << "\t<=   proj length sum: " << up_proj_this    << "\t?  " << ((up_center_dist_this    <= up_proj_this)    ? "true\n" : "false\n")
     //          << "fwd  o1 dist  :  " << fwd_center_dist_this   << "\t<=   proj length sum: " << fwd_proj_this   << "\t?  " << ((fwd_center_dist_this   <= fwd_proj_this)   ? "true\n" : "false\n")
@@ -223,6 +225,51 @@ bool OBBox::collides(const Point3 &point) const {
            _min._y < local_point._y && local_point._y < _max._y &&
            _min._z < local_point._z && local_point._z < _max._z;
 }
+
+//bool OBBox::collides(const Line &line) const {
+//    Line local = to_local(line);
+//
+//    if(line.vec()._x == 0.0f) {
+//        if(line.point_a()._x < _min._x || line.point_a()._x > _max._x) {
+//            // std::cout << "\nline's x value is zero and outside." << std::endl;
+//            return false;
+//        }
+//    }
+//    if(line.vec()._y == 0.0f) {
+//        if(line.point_a()._y < _min._y || line.point_a()._y > _max._y) {
+//            // std::cout << "\nline's y value is zero and outside." << std::endl;
+//            return false;
+//        }
+//    }
+//    if(line.vec()._z == 0.0f) {
+//        if(line.point_a()._z < _min._z || line.point_a()._z > _max._z) {
+//            // std::cout << "\nline's z value is zero and outside." << std::endl;
+//            return false;
+//        }
+//    }
+//
+//    float ax = (_min._x - line.point_a()._x) / line.vec()._x;
+//    float bx = (_max._x - line.point_a()._x) / line.vec()._x;
+//
+//    float sx = (ax < bx ? ax : bx);
+//    float tx = (ax > bx ? ax : bx);
+//
+//    float ay = (_min._y - line.point_a()._y) / line.vec()._y;
+//    float by = (_max._y - line.point_a()._y) / line.vec()._y;
+//
+//    float sy = (ay < by ? ay : by);
+//    float ty = (ay > by ? ay : by);
+//
+//    float az = (_min._z - line.point_a()._z) / line.vec()._z;
+//    float bz = (_max._z - line.point_a()._z) / line.vec()._z;
+//
+//    float sz = (az < bz ? az : bz);
+//    float tz = (az > bz ? az : bz);
+//
+//    return overlap(sx, tx, sy, ty) &&
+//        overlap(sy, ty, sz, tz) &&
+//        overlap(sz, tz, sx, tx);
+//}
 
 bool OBBox::collides(const BSphere &sphere) const {
     return sphere.collides(*this);
@@ -364,7 +411,7 @@ OBBox::OBBox(const Point3 &min, const Point3 &max, const Mat4 &world) noexcept:
     _min{min},
     _max{max},
     _world{world},
-    _local{_world.inverted()}
+    _local{_world.inverted_trs()}
 {
     _center    = (_max + _min) / 2.0f;
     _best_diag = (_max - _min) / 2.0f;

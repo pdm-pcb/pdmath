@@ -42,12 +42,12 @@ Point3 Point3::nearest_approach(const Line &line) const {
     t /= line.vec().dot(line.vec());
     Vec3 offset = line.vec() * t;
 
-    std::cout << "\nQ-P: "    << q_minus_p << "\n"
-                << "P1-P2: "  << line.vec() << "\n"
-                << "t : "     << t << "\n"
-                << "offset: " << offset << "\n"
-                << "result: " << line.point_a() + offset << "\n"
-                << std::endl;
+    //std::cout << "\nQ-P: "    << q_minus_p << "\n"
+    //            << "P1-P2: "  << line.vec() << "\n"
+    //            << "t : "     << t << "\n"
+    //            << "offset: " << offset << "\n"
+    //            << "result: " << line.point_a() + offset << "\n"
+    //            << std::endl;
 
     return line.point_a() + offset;
 }

@@ -12,16 +12,8 @@ float Line::distance_to(const Line &other) const {
     float a = _v.dot(_v);
     float b = _v.dot(other._v);
     float c = other._v.dot(other._v);
-    float d = Vec3(_p - other._p).dot(_v);
-    float e = Vec3(_p - other._p).dot(other._v);
-
-    // std::cout << "\na: " << a << "\n"
-    //             << "b: " << b << "\n"
-    //             << "c: " << c << "\n"
-    //             << "d: " << d << "\n"
-    //             << "e: " << e << "\n"
-    //             << "p1 - p2: " << Vec4(_p - other.point()) << "\n"
-    //             << std::endl;
+    float d = (_p - other._p).dot(_v);
+    float e = (_p - other._p).dot(other._v);
 
     float angle = b * b - a * c;
 
@@ -29,23 +21,17 @@ float Line::distance_to(const Line &other) const {
         return angle;
     }
 
-    // std::cout << "angle: " << angle << std::endl;
-
-    float t1 = (c * d - b * e) / angle;
-
+    float t1 = (c * d - b * e) / angle; 
     float t2 = (d * b - a * e) / angle;
 
     Point3 c1 = _p + t1 * _v;
     Point3 c2 = other._p + t2 * other._v;
 
-    // std::cout << "t1: " << t1 << "\n"
-    //           << "t2: " << t2 << "\n\n"
-    //           << "c1: " << c1 << "\n"
-    //           << "c2: " << c2 << "\n"
-    //           << "dist: " << Vec4(c1 - c2).length() << "\n"
-    //           << std::endl;
-
     return Vec3(c1 - c2).length();
+}
+
+bool Line::parallel_to(const Line &other) const {
+    return _v.cross(other.vec()) == Vec3::zero;
 }
 
 bool Line::parallel_to_plane(const Plane &plane) const {
@@ -56,34 +42,45 @@ bool Line::within_plane(const Plane &plane) const {
     return Vec3(this->_p - plane.point()).dot(plane.normal()) == 0.0f;
 }
 
-bool Line::intersects(const Plane &plane) const {
+bool Line::collides(const Line &other) const {
+    float a = _v.dot(_v);
+    float b = _v.dot(other.vec());
+    float c = other.vec().dot(other.vec());
+    float d = (_p - other.point_a()).dot(vec());
+    float e = (_p - other.point_a()).dot(other.vec());
+
+    Point3 point1;
+    Point3 point2;
+
+    if(parallel_to(other)) {
+        point1 = _p;
+        point2 = other.point_a() + (e / c) * other.vec();
+    }
+    else {
+        point1 = _p + ((c * d - b * e) / (b * b - a * c)) * _v;
+        point2 = other.point_a() +
+                 ((d * b - a * e) / (b * b - a * c)) *
+                 other.vec();
+    }
+
+    return point1 == point2;
+}
+
+bool Line::collides(const Plane &plane) const {
     Vec3 s1_minus_p(_p - plane.point());
     Vec3 s2_minus_p(_t - plane.point());
     float d1 = s1_minus_p.dot(plane.normal());
     float d2 = s2_minus_p.dot(plane.normal());
 
-    // std::cout << "\nS1 - P0: " << s1_minus_p << "\n"
-    //           << "S2 - P0: "   << s2_minus_p << "\n"
-    //           << "d1: " << d1 << "\n"
-    //           << "d2: " << d2 << "\n"
-    //           << std::endl;
-
     return (d1 < 0.0f && d2 > 0.0f) ||
            (d2 < 0.0f && d1 > 0.0f);
 }
 
-float Line::intersects_depth(const Plane &plane) const {
+float Line::collides_depth(const Plane &plane) const {
     Vec3 p_minus_s1(plane.point() - _p);
     Vec3 s2_minus_s1(_t - _p);
     float t_num = p_minus_s1.dot(plane.normal());
     float t_den = s2_minus_s1.dot(plane.normal());
-
-    // std::cout << "\nP0 - S1: " << p_minus_s1 << "\n"
-    //           << "S2 - S1: "   << s2_minus_s1 << "\n"
-    //           << "t num  : "   << t_num << "\n"
-    //           << "t den  : "   << t_den << "\n"
-    //           << "t: " << ((t_den != 0) ? (t_num / t_den) : (0.0f)) << "\n"
-    //           << std::endl;
 
     if(t_den != 0.0f) {
         return t_num / t_den;
@@ -92,7 +89,7 @@ float Line::intersects_depth(const Plane &plane) const {
     return 0.0f;
 }
 
-Point3 Line::intersects_at(const Plane &plane) const {
+Point3 Line::collides_at(const Plane &plane) const {
     float lambda = (Vec3(plane.point() - this->_p).dot(plane.normal()));
     lambda /= this->_v.dot(plane.normal());
 
