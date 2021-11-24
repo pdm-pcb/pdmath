@@ -40,3 +40,34 @@ target_link_libraries(
     glfw
     ${GLFW_LIBRARIES}
 )
+
+if(UNIX)
+    message(STATUS "Using gcc/Clang flags for pdmath app.")
+    target_compile_options(
+        app PRIVATE
+        -march=native -mtune=native
+        -Wall -Wextra -Wconversion -Wsign-conversion -pedantic
+        $<IF:$<CONFIG:Debug>,-ggdb3,-Ofast>
+    )
+endif(UNIX)
+
+if(WIN32)
+    message(STATUS "Using MSVC flags for pdmath app.")
+    target_compile_options(
+        app PRIVATE
+        /MP /permissive /sdl /Wall
+        /external:I "${CATCH2_IID}" /external:W0
+        /D__STDC_WANT_SECURE_LIB__#0
+        $<IF:$<CONFIG:Debug>,/Za /Zi,/GL /Gw /fp:fast>
+    )
+endif(WIN32)
+
+set_target_properties(
+    app PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED on
+    CXX_EXTENSIONS off
+    RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_SOURCE_DIR}/bin/
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_SOURCE_DIR}/bin/debug/
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_SOURCE_DIR}/bin/release/
+)
