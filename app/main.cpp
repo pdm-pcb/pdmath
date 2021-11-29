@@ -69,13 +69,12 @@ int main() {
 
     Shader orange(vertex_source, fragment_source);
 
-    // FILE *outfile = fopen("../../app/shaders/orange_string.vert", "w");
+    // FILE *outfile = fopen("../../app/shaders/orange.vert", "w");
     // fwrite(vertex_source, sizeof(char), strlen(vertex_source), outfile);
     // fclose(outfile);
-    // outfile = fopen("../../app/shaders/orange_string.frag", "w");
+    // outfile = fopen("../../app/shaders/orange.frag", "w");
     // fwrite(fragment_source, sizeof(char), strlen(fragment_source), outfile);
     // fclose(outfile);
-
 
     GLuint vao;
     GLuint vbo;
