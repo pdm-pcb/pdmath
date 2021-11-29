@@ -8,6 +8,7 @@ add_library(
 target_include_directories(
     glad SYSTEM PUBLIC
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/app/include
 )
 
 if(UNIX)

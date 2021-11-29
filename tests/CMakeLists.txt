@@ -58,7 +58,7 @@ if(WIN32)
     target_compile_options(
         tests PRIVATE
         /MP /permissive /sdl /Wall
-        /external:I "${CATCH2_IID}" /external:W0
+        /external:W0
         /D__STDC_WANT_SECURE_LIB__#0
         $<IF:$<CONFIG:Debug>,/Za /Zi,/GL /Gw /fp:fast>
     )

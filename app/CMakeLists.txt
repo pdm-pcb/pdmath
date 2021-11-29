@@ -26,11 +26,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(
     app
     main.cpp
+    shaders/Shader.cpp
+)
+
+target_include_directories(
+    app PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/app/include
 )
 
 target_include_directories(
     app SYSTEM PRIVATE
-    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/app/include/glad
 )
 
 target_link_libraries(
@@ -56,8 +63,9 @@ if(WIN32)
     target_compile_options(
         app PRIVATE
         /MP /permissive /sdl /Wall
-        /external:I "${CATCH2_IID}" /external:W0
+        /external:W0
         /D__STDC_WANT_SECURE_LIB__#0
+        /D_CRT_SECURE_NO_WARNINGS
         $<IF:$<CONFIG:Debug>,/Za /Zi,/GL /Gw /fp:fast>
     )
 endif(WIN32)
