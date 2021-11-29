@@ -4,9 +4,22 @@
 #include "GLFW/glfw3.h"
 
 #include <iostream>
+#include <cstring>
 
 constexpr int window_x = 1920;
 constexpr int window_y = 1080;
+
+constexpr GLfloat vertices[] = {
+     0.5f,  0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f,
+    -0.5f, -0.5f, 0.0f,
+    -0.5f,  0.5f, 0.0f
+};
+
+constexpr GLuint indices[] = {
+    0, 1, 3,
+    1, 2, 3
+};
 
 void process_input(GLFWwindow *window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height); 
@@ -37,33 +50,55 @@ int main() {
     }
 
     // shaders!
-    Shader orange("../../app/shaders/orange.vert",
-                  "../../app/shaders/orange.frag");
+    // Shader orange("../../app/shaders/orange.vert",
+    //               "../../app/shaders/orange.frag");
 
-    //const char *vertex_source =
-    //    "#version 460 core\n"
-    //    "layout(location = 0) in vec3 position;\n"
-    //    "void main() {\n"
-    //    "    gl_Position = vec4(position.x, position.y, position.z, 1.0f);\n"
-    //    "}\n";
+    const char *vertex_source =
+       "#version 460 core\n"
+       "layout (location = 0) in vec3 position;\n"
+       "void main() {\n"
+       "    gl_Position = vec4(position.x, position.y, position.z, 1.0f);\n"
+       "}\n";
 
-    //const char *fragment_source =
-    //    "#version 460 core\n"
-    //    "out vec4 fragment_color;\n"
-    //    "void main() {\n"
-    //    "    fragment_color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    //    "}\n";
+    const char *fragment_source =
+       "#version 460 core\n"
+       "out vec4 fragment_color;\n"
+       "void main() {\n"
+       "    fragment_color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+       "}\n";
 
-    //FILE *outfile = fopen("../../app/shaders/orange_string.vert", "w");
-    //fwrite(vertex_source, sizeof(char), strlen(vertex_source), outfile);
-    //fclose(outfile);
-    //outfile = fopen("../../app/shaders/orange_string.frag", "w");
-    //fwrite(fragment_source, sizeof(char), strlen(fragment_source), outfile);
-    //fclose(outfile);
+    Shader orange(vertex_source, fragment_source);
 
-    //Shader orange(vertex_source, fragment_source);
+    // FILE *outfile = fopen("../../app/shaders/orange_string.vert", "w");
+    // fwrite(vertex_source, sizeof(char), strlen(vertex_source), outfile);
+    // fclose(outfile);
+    // outfile = fopen("../../app/shaders/orange_string.frag", "w");
+    // fwrite(fragment_source, sizeof(char), strlen(fragment_source), outfile);
+    // fclose(outfile);
 
-    //finally our first pure OpenGL command
+
+    GLuint vao;
+    GLuint vbo;
+    GLuint ebo;
+
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
+
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
     glViewport(0, 0, window_x, window_y);
 
     while(!glfwWindowShouldClose(window)) {
@@ -72,9 +107,17 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        orange.use_program();
+        glBindVertexArray(vao);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
+
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
   
     return 0;
 }
