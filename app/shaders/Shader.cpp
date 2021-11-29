@@ -35,7 +35,7 @@ void Shader::load_source(const std::string &filename, char *shader_dest) const
     }
 
     fseek(input_file, 0, SEEK_END);
-    size_t filesize = ftell(input_file);
+    size_t filesize = static_cast<size_t>(ftell(input_file));
     fseek(input_file, 0, SEEK_SET);
 
     shader_dest = new char[filesize + 1];
