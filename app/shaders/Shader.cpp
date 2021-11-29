@@ -3,8 +3,6 @@
 #include <cassert>
 #include <iostream>
 #include <cstdio>
-#include <filesystem>
-#include <system_error>
 
 void Shader::use_program() const {
     if(_program != 0) {
