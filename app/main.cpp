@@ -41,6 +41,7 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
 
     // let GLAD sort it out for us
@@ -50,31 +51,8 @@ int main() {
     }
 
     // shaders!
-    // Shader orange("../../app/shaders/orange.vert",
-    //               "../../app/shaders/orange.frag");
-
-    const char *vertex_source =
-       "#version 460 core\n"
-       "layout (location = 0) in vec3 position;\n"
-       "void main() {\n"
-       "    gl_Position = vec4(position.x, position.y, position.z, 1.0f);\n"
-       "}\n";
-
-    const char *fragment_source =
-       "#version 460 core\n"
-       "out vec4 fragment_color;\n"
-       "void main() {\n"
-       "    fragment_color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-       "}\n";
-
-    Shader orange(vertex_source, fragment_source);
-
-    // FILE *outfile = fopen("../../app/shaders/orange.vert", "w");
-    // fwrite(vertex_source, sizeof(char), strlen(vertex_source), outfile);
-    // fclose(outfile);
-    // outfile = fopen("../../app/shaders/orange.frag", "w");
-    // fwrite(fragment_source, sizeof(char), strlen(fragment_source), outfile);
-    // fclose(outfile);
+     Shader orange("../../app/shaders/orange.vert",
+                   "../../app/shaders/orange.frag");
 
     GLuint vao;
     GLuint vbo;

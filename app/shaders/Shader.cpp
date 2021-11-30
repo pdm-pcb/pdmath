@@ -13,37 +13,32 @@ void Shader::use_program() const {
     }
 }
 
-void Shader::load_source(const std::string &filename, char *shader_dest) const
+char * Shader::load_source(const std::string &filename) const
 {
     if(filename.empty()) {
         std::cerr << "No file name provided to load_shader()" << std::endl;
-        return;
-    }
-
-    if(shader_dest != nullptr) {
-        std::cerr << "Shader source destination may not be free" << std::endl;
-        return;
+        return nullptr;
     }
 
     FILE *input_file = fopen(filename.c_str(), "rt");
 
     if(input_file == nullptr) {
         std::cerr << "Unable to open source '" << filename << "'" << std::endl;
-        return;
+        return nullptr;
     }
 
     fseek(input_file, 0, SEEK_END);
     size_t filesize = static_cast<size_t>(ftell(input_file));
     fseek(input_file, 0, SEEK_SET);
 
-    shader_dest = new char[filesize + 1];
+    char *shader_dest = new char[filesize + 1];
 
     fread(shader_dest, sizeof(char), filesize, input_file);
     fclose(input_file);
 
     shader_dest[filesize] = '\0';
 
-    return;
+    return shader_dest;
 }
 
 void Shader::create_program(const char *vertex_source,
@@ -160,24 +155,13 @@ Shader::Shader(const std::string &vertex_filename,
     _fragment_shader{0},
     _program{0}
 {
-    char *vertex_source   = nullptr;
-    char *fragment_source = nullptr;
-
-    load_source(vertex_filename,   vertex_source);
-    load_source(fragment_filename, fragment_source);
+    char *vertex_source   = load_source(vertex_filename);
+    char *fragment_source = load_source(fragment_filename);
+    
     create_program(vertex_source,  fragment_source);
 
     delete[] vertex_source;
     delete[] fragment_source;
-}
-
-Shader::Shader(const char *vertex_source,
-               const char *fragment_source) noexcept :
-    _vertex_shader{0},
-    _fragment_shader{0},
-    _program{0}
-{
-    create_program(vertex_source, fragment_source);
 }
 
 Shader::~Shader() {

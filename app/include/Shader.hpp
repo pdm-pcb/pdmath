@@ -11,7 +11,6 @@ public:
 
     Shader(const std::string &vertex_filename,
            const std::string &fragment_filename) noexcept;
-    Shader(const char *vertex_source, const char *fragment_source) noexcept;
     Shader() = delete;
     ~Shader();
     Shader(const Shader &other) = delete;
@@ -25,7 +24,7 @@ private:
     GLuint  _fragment_shader;
     GLuint  _program;
 
-    void load_source(const std::string &filename, char *shader_dest) const;
+    char * load_source(const std::string &filename) const;
     void create_program(const char *vertex_source,
                         const char *fragment_source);
     void compile_error() const;
