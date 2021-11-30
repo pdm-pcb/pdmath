@@ -9,20 +9,25 @@
 constexpr int window_x = 1920;
 constexpr int window_y = 1080;
 
-constexpr GLfloat vertices[] = {
-     0.5f,  0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-    -0.5f, -0.5f, 0.0f,
-    -0.5f,  0.5f, 0.0f
+constexpr GLfloat triangle_a[] = {
+    -0.25f,  0.5f,  0.0f,
+    -0.5f,  -0.25f, 0.0f,
+    -0.75f,  0.5f,  0.0f,
 };
 
-constexpr GLuint indices[] = {
-    0, 1, 3,
-    1, 2, 3
+constexpr GLfloat triangle_b[] = {
+     0.5f,   0.5f,  0.0f,
+     0.75f, -0.25f, 0.0f,
+     0.25f, -0.25f, 0.0f
 };
 
 void process_input(GLFWwindow *window);
-void framebuffer_size_callback(GLFWwindow* window, int width, int height); 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+void GLAPIENTRY error_callback(GLenum source,
+                               GLenum type, GLuint id, GLenum severity,
+                               GLsizei length, const GLchar *message,
+                               const void *user_data);
 
 int main() {
     // GLFW initialization
@@ -31,6 +36,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
     // create GLFW window
     GLFWwindow* window = glfwCreateWindow(window_x, window_y, "Learn OpenGL",
@@ -50,25 +56,45 @@ int main() {
         return -1;
     }
 
+    std::cout << glGetString(GL_VERSION) << " : "
+              << glGetString(GL_RENDERER)
+              << std::endl;
+
+    // Enable debug output
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(error_callback, nullptr);
+
     // shaders!
-     Shader orange("../../app/shaders/orange.vert",
-                   "../../app/shaders/orange.frag");
+    Shader orange("../../app/shaders/colored_shape.vert",
+                  "../../app/shaders/orange.frag");
+    Shader blue("../../app/shaders/colored_shape.vert",
+                "../../app/shaders/blue.frag");
 
-    GLuint vao;
-    GLuint vbo;
-    GLuint ebo;
+    // buffers
+    GLuint vao[2];
+    GLuint vbo[2];
 
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &ebo);
+    glGenVertexArrays(2, vao);
+    glGenBuffers(2, vbo);
 
-    glBindVertexArray(vao);
+    // triangle a
+    glBindVertexArray(vao[0]);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_a), triangle_a, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    // triangle b
+    glBindVertexArray(vao[1]);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_b), triangle_b, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
     glEnableVertexAttribArray(0);
@@ -85,16 +111,19 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         orange.use_program();
-        glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(vao[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        blue.use_program();
+        glBindVertexArray(vao[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwPollEvents();
         glfwSwapBuffers(window);
     }
 
-    glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(1, &vbo);
-    glDeleteBuffers(1, &ebo);
+    glDeleteVertexArrays(2, vao);
+    glDeleteBuffers(2, vbo);
   
     return 0;
 }
@@ -106,4 +135,105 @@ void process_input(GLFWwindow *window) {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+}
+
+
+void GLAPIENTRY error_callback(GLenum source,
+                               GLenum type, GLuint id, GLenum severity,
+                               GLsizei length, const GLchar *message,
+                               const void *user_data) {
+    const char *_severity;
+    const char *_source;
+    const char *_type;
+
+    switch(severity) {
+    case GL_DEBUG_SEVERITY_HIGH:
+        _severity = "High";
+        break;
+
+    case GL_DEBUG_SEVERITY_MEDIUM:
+        _severity = "Medium";
+        break;
+
+    case GL_DEBUG_SEVERITY_LOW:
+        _severity = "Low";
+        break;
+
+    case GL_DEBUG_SEVERITY_NOTIFICATION:
+        _severity = "Notification";
+        break;
+
+    default:
+        _severity = "Unknown";
+        break;
+    }
+
+    switch(source) {
+        case GL_DEBUG_SOURCE_API:
+            _source = "API";
+            break;
+
+        case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+            _source = "Window System";
+            break;
+
+        case GL_DEBUG_SOURCE_SHADER_COMPILER:
+            _source = "Shader Compiler";
+            break;
+
+        case GL_DEBUG_SOURCE_THIRD_PARTY:
+            _source = "Third Party";
+            break;
+
+        case GL_DEBUG_SOURCE_APPLICATION:
+            _source = "Application";
+            break;
+
+        case GL_DEBUG_SOURCE_OTHER:
+            _source = "Other";
+            break;
+
+        default:
+            _source = "Unknown";
+            break;
+    }
+
+    switch(type) {
+        case GL_DEBUG_TYPE_ERROR:
+            _type = "Error";
+            break;
+
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+            _type = "Depricated Behavior";
+            break;
+
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+            _type = "Undefined Behavior";
+            break;
+
+        case GL_DEBUG_TYPE_PORTABILITY:
+            _type = "Portability";
+            break;
+
+        case GL_DEBUG_TYPE_PERFORMANCE:
+            _type = "Performance";
+            break;
+
+        case GL_DEBUG_TYPE_OTHER:
+            _type = "Other";
+            break;
+
+        case GL_DEBUG_TYPE_MARKER:
+            _type = "Marker";
+            break;
+
+        default:
+            _type = "Unknown";
+            break;
+    }
+
+    std::cerr << "\nOpenGL: " << _type << " #" << id << " (Severity: "
+              << _severity << ")" << " from " << _source << "\n---\n"
+              << message << "\n---"
+              << std::endl;
 }

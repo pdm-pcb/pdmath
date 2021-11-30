@@ -27,8 +27,6 @@ private:
     char * load_source(const std::string &filename) const;
     void create_program(const char *vertex_source,
                         const char *fragment_source);
-    void compile_error() const;
-    void link_error()    const;
 };
 
 #endif //SHADER_HPP

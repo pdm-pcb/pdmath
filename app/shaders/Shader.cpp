@@ -5,12 +5,7 @@
 #include <cstdio>
 
 void Shader::use_program() const {
-    if(_program != 0) {
-        glUseProgram(_program);
-    }
-    else {
-        std::cerr << "Shader in an unusable state" << std::endl;
-    }
+    glUseProgram(_program);
 }
 
 char * Shader::load_source(const std::string &filename) const
@@ -20,7 +15,7 @@ char * Shader::load_source(const std::string &filename) const
         return nullptr;
     }
 
-    FILE *input_file = fopen(filename.c_str(), "rt");
+    FILE *input_file = fopen(filename.c_str(), "r");
 
     if(input_file == nullptr) {
         std::cerr << "Unable to open source '" << filename << "'" << std::endl;
@@ -50,18 +45,7 @@ void Shader::create_program(const char *vertex_source,
     glShaderSource(_fragment_shader, 1, &fragment_source, nullptr);
 
     glCompileShader(_vertex_shader);
-    GLenum error = glGetError();
-    if(error != GL_NO_ERROR) {
-        std::cerr << " GLError " << error << " on vertex shader compile"
-                  << std::endl;
-    }
-
     glCompileShader(_fragment_shader);
-    error = glGetError();
-    if(error != GL_NO_ERROR) {
-        std::cerr << " GLError " << error << " on fragment shader compile"
-                  << std::endl;
-    }
 
     GLint vertex_status;
     GLint fragment_status;
@@ -70,8 +54,6 @@ void Shader::create_program(const char *vertex_source,
     glGetShaderiv(_fragment_shader, GL_COMPILE_STATUS, &fragment_status);
 
     if((vertex_status == GL_FALSE) || (fragment_status == GL_FALSE)) {
-        compile_error();
-
         glDeleteShader(_vertex_shader);
         glDeleteShader(_fragment_shader);
 
@@ -83,11 +65,6 @@ void Shader::create_program(const char *vertex_source,
     glAttachShader(_program, _fragment_shader);
     glLinkProgram(_program);
 
-    error = glGetError();
-    if(error != GL_NO_ERROR) {
-        std::cerr << " GLError - " << error << " on shader link" << std::endl;
-    }
-
     glDeleteShader(_vertex_shader);
     glDeleteShader(_fragment_shader);
 
@@ -95,57 +72,9 @@ void Shader::create_program(const char *vertex_source,
     glGetProgramiv(_program, GL_LINK_STATUS, &program_status);
 
     if(program_status == GL_FALSE) {
-        link_error();
-
         glDeleteProgram(_program);
 
         return;
-    }
-}
-
-void Shader::compile_error() const {
-    GLint vertex_log_length   = 0;
-    GLint fragment_log_length = 0;
-
-    glGetShaderiv(_vertex_shader, GL_INFO_LOG_LENGTH, &vertex_log_length);
-    glGetShaderiv(_fragment_shader, GL_INFO_LOG_LENGTH, &fragment_log_length);
-
-    std::cerr << "Something went wrong compiling the shaders!\n";
-
-    if(vertex_log_length > 1) {
-        GLchar *shader_log =
-            new GLchar[(static_cast<size_t>(vertex_log_length) + 1)];
-        glGetShaderInfoLog(_vertex_shader, vertex_log_length, nullptr,
-                           shader_log);
-        std::cerr << "Vertex Log:\n---\n"
-                  << shader_log << "\n---" << std::endl;
-        delete[] shader_log;
-    }
-
-    if(fragment_log_length > 1) {
-        GLchar *shader_log =
-            new GLchar[(static_cast<size_t>(fragment_log_length) + 1)];
-        glGetShaderInfoLog(_fragment_shader, fragment_log_length, nullptr,
-                           shader_log);
-        std::cerr << "Fragment Log:\n---\n"
-                  << shader_log << "\n---" << std::endl;
-        delete[] shader_log;
-    }
-}
-
-void Shader::link_error() const {
-    GLint linker_log_length = 0;
-    glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &linker_log_length);
-
-    std::cerr << "Something went wrong linking the shaders!\n";
-
-    if(linker_log_length > 1) {
-        GLchar *linker_log =
-            new GLchar[(static_cast<size_t>(linker_log_length) + 1)];
-        glGetProgramInfoLog(_program, linker_log_length, nullptr, linker_log);
-        std::cerr << "Linker Log:\n---\n"
-                  << linker_log << "\n---" << std::endl;
-        delete[] linker_log;
     }
 }
 
