@@ -7,7 +7,8 @@
 
 class Shader {
 public:
-    void use_program() const;
+    void bind() const;
+    static void unbind();
 
     Shader(const std::string &vertex_filename,
            const std::string &fragment_filename) noexcept;

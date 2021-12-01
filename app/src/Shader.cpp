@@ -4,8 +4,12 @@
 #include <iostream>
 #include <cstdio>
 
-void Shader::use_program() const {
+void Shader::bind() const {
     glUseProgram(_program);
+}
+
+void Shader::unbind() {
+    glUseProgram(0);
 }
 
 char * Shader::load_source(const std::string &filename) const

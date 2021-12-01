@@ -1,4 +1,7 @@
 #include "Shader.hpp"
+#include "VertexArray.hpp"
+#include "VertexBuffer.hpp"
+#include "VertexBufferLayout.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -79,28 +82,34 @@ int main() {
     glGenBuffers(2, vbo);
 
     // triangle a
-    glBindVertexArray(vao[0]);
+    //glBindVertexArray(vao[0]);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_a), triangle_a, GL_STATIC_DRAW);
+    //glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_a), triangle_a, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
-    glEnableVertexAttribArray(0);
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
+    //glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    VertexBuffer vb_a(triangle_a, sizeof(triangle_a));
+    VertexBufferLayout layout_a;
+    layout_a.push<GLfloat>(3);
+    VertexArray va_a;
+    va_a.add_buffer(vb_a, layout_a);
 
     // triangle b
-    glBindVertexArray(vao[1]);
+    //glBindVertexArray(vao[1]);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_b), triangle_b, GL_STATIC_DRAW);
+    //glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_b), triangle_b, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
-    glEnableVertexAttribArray(0);
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), nullptr);
+    //glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    VertexBuffer vb_b(triangle_b, sizeof(triangle_b));
+    VertexBufferLayout layout_b;
+    layout_b.push<GLfloat>(3);
+    VertexArray va_b;
+    va_b.add_buffer(vb_b, layout_b);
 
     glViewport(0, 0, window_x, window_y);
 
@@ -110,12 +119,14 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        orange.use_program();
-        glBindVertexArray(vao[0]);
+        orange.bind();
+        va_a.bind();
+        //glBindVertexArray(vao[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        blue.use_program();
-        glBindVertexArray(vao[1]);
+        blue.bind();
+        va_b.bind();
+        //glBindVertexArray(vao[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwPollEvents();

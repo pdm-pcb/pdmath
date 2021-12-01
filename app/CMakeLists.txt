@@ -26,7 +26,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(
     app
     main.cpp
-    shaders/Shader.cpp
+    src/Shader.cpp
+    src/VertexBuffer.cpp
+    src/IndexBuffer.cpp
+    src/VertexArray.cpp
 )
 
 target_include_directories(
