@@ -19,11 +19,11 @@ constexpr int window_x = 1920;
 constexpr int window_y = 1080;
 
 constexpr GLfloat square[] = {
-    // world coordinates    texture coordinates
-    -0.25f,  0.5f, 0.0f,    0.0f, 1.0f,    // top left
-     0.25f,  0.5f, 0.0f,    1.0f, 1.0f,    // top right
-     0.25f, -0.5f, 0.0f,    1.0f, 0.0f,    // bottom right
-    -0.25f, -0.5f, 0.0f,    0.0f, 0.0f     // bottom left
+    // world coordinates   texture coordinates
+    -0.5f,  0.5f, 0.0f,    0.0f, 1.0f,    // top left
+     0.5f,  0.5f, 0.0f,    1.0f, 1.0f,    // top right
+     0.5f, -0.5f, 0.0f,    1.0f, 0.0f,    // bottom right
+    -0.5f, -0.5f, 0.0f,    0.0f, 0.0f     // bottom left
 };
 
 constexpr GLuint indices[] = {
@@ -97,8 +97,8 @@ int main() {
                                       -1.5f, 1.5f,
                                       -1.0f, 1.0f);
 
-    //crate0_shader.set_uniform_mat4f("ortho_proj", camera.ortho_ndc());
-    crate0_shader.set_uniform_mat4f("ortho_proj", ortho_proj);
+    crate0_shader.set_uniform_mat4f("ortho_proj", camera.ortho_ndc());
+    //crate0_shader.set_uniform_mat4f("ortho_proj", ortho_proj);
 
     while(!glfwWindowShouldClose(window)) {
         process_input(window);

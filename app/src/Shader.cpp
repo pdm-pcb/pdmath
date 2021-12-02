@@ -54,6 +54,8 @@ GLint Shader::locate_uniform(const std::string &name) {
     }
 
     _uniform_cache[name] = location;
+
+    return location;
 }
 
 char * Shader::load_source(const std::string &filename) const

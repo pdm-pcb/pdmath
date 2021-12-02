@@ -8,6 +8,6 @@ out vec2 tex_coord;
 uniform mat4 ortho_proj;
 
 void main() {
-	gl_Position = vec4(world_coordinates, 1.0f);
+	gl_Position = ortho_proj * vec4(world_coordinates, 1.0f);
 	tex_coord = texture_coordinates;
 }
