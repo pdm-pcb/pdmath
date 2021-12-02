@@ -63,10 +63,6 @@ int main() {
         return -1;
     }
 
-    std::cout << glGetString(GL_VERSION) << " : "
-              << glGetString(GL_RENDERER)
-              << std::endl;
-
     // Enable debug output
     Renderer renderer;
 
@@ -82,7 +78,7 @@ int main() {
     VertexArray va_b;
     VertexBuffer vb_b(triangle_b, sizeof(triangle_b));
     VertexBufferLayout layout_b;
-    layout_a.push<GLfloat>(3);
+    layout_b.push<GLfloat>(3);
     IndexBuffer ib_b(indices_b, 3);
     va_b.add_buffer(vb_b, layout_b);
 
@@ -97,7 +93,7 @@ int main() {
     while(!glfwWindowShouldClose(window)) {
         process_input(window);
 
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.1f, 0.15f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         renderer.draw(va_a, ib_a, orange);

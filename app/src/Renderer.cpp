@@ -13,13 +13,13 @@ void Renderer::draw(const VertexArray &va, const IndexBuffer &ib,
     ib.bind();
     shader.bind();
     glDrawElements(GL_TRIANGLES, ib.count(), GL_UNSIGNED_INT, nullptr);
-
-    shader.unbind();
-    ib.unbind();
-    va.unbind();
 }
 
 Renderer::Renderer() {
+    std::cout << glGetString(GL_VERSION) << " : "
+              << glGetString(GL_RENDERER)
+              << std::endl;
+
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(error_callback, nullptr);
