@@ -6,6 +6,10 @@
 #include "Renderer.hpp"
 #include "GLDebugger.hpp"
 
+#include "pdmath/Camera.hpp"
+#include "glm/mat4x4.hpp"
+#include "glm/gtx/string_cast.hpp"
+
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -40,22 +44,25 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
     // create GLFW window
-    GLFWwindow* window = glfwCreateWindow(window_x, window_y, "Learn OpenGL",
+    GLFWwindow* window = glfwCreateWindow(window_x, window_y,
+                                          "Learn OpenGL",
                                           nullptr, nullptr);
     if (window == nullptr) {
-        std::cout << "Failed to create GLFW window" << std::endl;
+        std::cout << "Failed to create GLFW window\n";
         glfwTerminate();
         return -1;
     }
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);  
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // let GLAD sort it out for us
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cout << "Failed to initialize GLAD\n";
         return -1;
     }
+
+    Renderer renderer(window_x, window_y);
 
     // Enable debug output
     GLDebugger debugger;
@@ -75,19 +82,30 @@ int main() {
                          "../../app/shaders/crate0.frag");
 
     // textures!
-    Texture crate0_texture("../../app/resources/textures/crate1/crate1.png");
+    Texture crate0_texture("../../app/resources/textures/crate0/crate0.png");
     crate0_texture.bind();
     crate0_shader.set_uniform1i("texture_slot", crate0_texture.texture_slot());
 
-    glViewport(0, 0, window_x, window_y);
+    pdm::Camera camera;
+    camera.set_ortho(-2.0f, 2.0f,   // width
+                     -1.5f, 1.5f,   // height
+                     -1.0f, 1.0f,   // depth
+                     window_x, window_y,
+                     1.0f);         // z-depth
 
-    Renderer renderer;
+    glm::mat4 ortho_proj = glm::ortho(-2.0f, 2.0f,
+                                      -1.5f, 1.5f,
+                                      -1.0f, 1.0f);
+
+    //crate0_shader.set_uniform_mat4f("ortho_proj", camera.ortho_ndc());
+    crate0_shader.set_uniform_mat4f("ortho_proj", ortho_proj);
 
     while(!glfwWindowShouldClose(window)) {
         process_input(window);
 
         glClear(GL_COLOR_BUFFER_BIT);
 
+        crate0_texture.bind();
         renderer.draw(va, ib, crate0_shader);
 
         glfwPollEvents();

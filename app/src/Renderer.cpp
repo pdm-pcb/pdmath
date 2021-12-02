@@ -4,8 +4,11 @@
 #include "IndexBuffer.hpp"
 #include "Shader.hpp"
 
-#include <iostream>
 #include <cstring>
+
+void Renderer::viewport(const GLint width, const GLint height) const {
+    glViewport(0, 0,  width, height);
+}
 
 void Renderer::draw(const VertexArray &va, const IndexBuffer &ib,
 					const Shader &shader) const {
@@ -15,10 +18,11 @@ void Renderer::draw(const VertexArray &va, const IndexBuffer &ib,
     glDrawElements(GL_TRIANGLES, ib.count(), GL_UNSIGNED_INT, nullptr);
 }
 
-Renderer::Renderer() {
-    std::cout << glGetString(GL_VERSION) << " : "
-              << glGetString(GL_RENDERER)
-              << std::endl;
-
+Renderer::Renderer(const GLint width, const GLint height) {
     glClearColor(0.1f, 0.15f, 0.1f, 1.0f);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    viewport(width, height);
 }

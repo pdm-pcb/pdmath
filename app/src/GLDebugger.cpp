@@ -109,4 +109,8 @@ GLDebugger::GLDebugger() {
     glDebugMessageCallback(&error_callback, nullptr);
 
     std::ios_base::sync_with_stdio(false);
+    std::cout << "***\n"
+              << glGetString(GL_VERSION) << " : "
+              << glGetString(GL_RENDERER)
+              << "\n***\n";
 }

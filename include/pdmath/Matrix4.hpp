@@ -43,8 +43,8 @@ public:
     float get_y_scale() const;
     float get_z_scale() const;
     inline float determinant() const { return get_x_scale() *
-                                                get_y_scale() *
-                                                get_z_scale();}
+                                              get_y_scale() *
+                                              get_z_scale();}
 
     Vec3 get_x_vec() const;
 

@@ -13,26 +13,45 @@ void Shader::unbind() const {
 }
 
 void Shader::set_uniform1i(const std::string &name, const GLint value) {
-    glUniform1i(get_uniform_handle(name), value);
+    bind();
+    glUniform1i(locate_uniform(name), value);
 }
 
 void Shader::set_uniform1f(const std::string &name, const GLfloat value) {
-    glUniform1f(get_uniform_handle(name), value);
+    bind();
+    glUniform1f(locate_uniform(name), value);
 }
 
 void Shader::set_uniform4f(const std::string &name,
                            const GLfloat v0, const GLfloat v1,
                            const GLfloat v2, const GLfloat v3) {
-    glUniform4f(get_uniform_handle(name), v0, v1, v2, v3);
+    bind();
+    glUniform4f(locate_uniform(name), v0, v1, v2, v3);
 }
 
-GLint Shader::get_uniform_handle(const std::string &name) {
+void Shader::set_uniform_mat4f(const std::string &name,
+                               const pdm::Mat4 &matrix) {
+    bind();
+    glUniformMatrix4fv(locate_uniform(name), 1, GL_FALSE, &matrix._m[0][0]);
+}
+
+void Shader::set_uniform_mat4f(const std::string &name,
+                               const glm::mat4 &matrix) {
+    bind();
+    glUniformMatrix4fv(locate_uniform(name), 1, GL_FALSE, &matrix[0][0]);
+}
+
+GLint Shader::locate_uniform(const std::string &name) {
     if(_uniform_cache.contains(name)) {
         return _uniform_cache[name];
     }
 
     GLint location = glGetUniformLocation(_program, name.c_str());
-    assert(location != -1 && "Failed to locate uniform!");
+
+    if(location == -1) {
+        std::ios_base::sync_with_stdio(false);
+        std::cerr << "[Shader] Failed to locate uniform '" << name << "'\n";
+    }
 
     _uniform_cache[name] = location;
 }
@@ -40,14 +59,16 @@ GLint Shader::get_uniform_handle(const std::string &name) {
 char * Shader::load_source(const std::string &filename) const
 {
     if(filename.empty()) {
-        std::cerr << "No file name provided to load_shader()" << std::endl;
+        std::ios_base::sync_with_stdio(false);
+        std::cerr << "No file name provided to load_shader()\n";
         return nullptr;
     }
 
     FILE *input_file = fopen(filename.c_str(), "r");
 
     if(input_file == nullptr) {
-        std::cerr << "Unable to open source '" << filename << "'" << std::endl;
+        std::ios_base::sync_with_stdio(false);
+        std::cerr << "Unable to open source '" << filename << "'\n";
         return nullptr;
     }
 

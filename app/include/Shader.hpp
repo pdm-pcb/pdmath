@@ -1,6 +1,9 @@
 #ifndef SHADER_HPP
 #define SHADER_HPP
 
+#include "pdmath/Matrix4.hpp"
+#include "glm/mat4x4.hpp"
+
 #include "glad/glad.h"
 
 #include <string>
@@ -16,8 +19,8 @@ public:
     void set_uniform4f(const std::string &name,
                        const GLfloat v0, const GLfloat v1, const GLfloat v2,
                        const GLfloat v3);
-
-    GLint get_uniform_handle(const std::string &name);
+    void set_uniform_mat4f(const std::string &name, const pdm::Mat4 &matrix);
+    void set_uniform_mat4f(const std::string &name, const glm::mat4 &matrix);
 
     Shader(const std::string &vertex_filename,
            const std::string &fragment_filename) noexcept;
@@ -39,6 +42,8 @@ private:
     char * load_source(const std::string &filename) const;
     void create_program(const char *vertex_source,
                         const char *fragment_source);
+
+    GLint locate_uniform(const std::string &name);
 };
 
 #endif //SHADER_HPP

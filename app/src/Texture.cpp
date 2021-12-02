@@ -15,7 +15,7 @@ void Texture::unbind() const {
 Texture::Texture(const std::string &filepath) :
 	_buffer{nullptr}, _handle{0},
 	_width{0}, _height{0}, _bits_per_pixel{0},
-	_slot{0}
+	_slot{-1}
 {
 	static_assert(GL_TEXTURE1 - GL_TEXTURE0 == 1);
 
@@ -51,7 +51,7 @@ Texture::~Texture() {
 Texture::Texture(Texture &&other) noexcept :
 	_buffer{nullptr}, _handle{0},
 	_width{0}, _height{0}, _bits_per_pixel{0},
-	_slot{0}
+	_slot{-1}
 {
 	std::swap(_buffer, other._buffer);
 	std::swap(_handle, other._handle);
@@ -71,7 +71,7 @@ Texture & Texture::operator=(Texture &&other) noexcept
 	_height = 0;
 	_width  = 0;
 	_bits_per_pixel = 0;
-	_slot   = 0;
+	_slot   = -1;
 
 	glDeleteTextures(1, &_handle);
 	_handle = 0;
