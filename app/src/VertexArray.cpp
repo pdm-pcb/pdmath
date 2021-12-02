@@ -5,25 +5,20 @@
 
 #include <algorithm>
 
-void VertexArray::add_buffer(const VertexBuffer &vb,
-							 const VertexBufferLayout &layout)
-{
-	GLuint offset = 0;
-
+void VertexArray::add_buffer(const VertexBuffer &vb) {
 	bind();
 	vb.bind();
 
-	const auto &elements = layout.elements();
+	const auto *layout   = vb.layout();
+	const auto &elements = layout->elements();
 	for(GLuint el_index = 0; el_index < elements.size(); el_index++) {
 		const auto &element = elements[el_index];
 
-		glVertexAttribPointer(el_index, element.count, element.type,
-							  element.normalized, layout.stride(),
-							  reinterpret_cast<void *>(offset));
+		glVertexAttribPointer(el_index, element._count, element._type,
+							  element._normalized, layout->stride(),
+							  reinterpret_cast<void *>(element._offset));
 
 		glEnableVertexAttribArray(el_index);
-
-		offset += element.count * sizeof(element.type);
 	}
 
 	vb.unbind();

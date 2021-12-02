@@ -4,39 +4,57 @@
 #include "glad/glad.h"
 
 #include <vector>
-#include <cstdint>
+#include <string>
 
 struct VertexBufferElement {
-	GLuint    type;
-	GLuint    count;
-	GLboolean normalized;
+	std::string _name;
+	GLuint      _type;
+	GLuint      _count;
+	GLuint      _size;
+	GLuint      _offset;
+	GLboolean   _normalized;
+
+	VertexBufferElement(const std::string &name, const GLuint type,
+						const GLuint count, const GLboolean normalized) :
+		_name{name},
+		_type{type},
+		_count{count},
+		_size{count * sizeof(type)},
+		_offset{0},
+		_normalized{normalized}
+	{ }
 };
+
+using element_list = std::initializer_list<VertexBufferElement>;
 
 class VertexBufferLayout {
 public:
-	template<typename T>
-	void push(GLuint count) {
-		static_assert(false);
-	}
-
-	template<>
-	void push<GLfloat>(GLuint count) {
-		_elements.push_back({GL_FLOAT, count, GL_FALSE});
-		_stride += sizeof(GLfloat) * count;
-	}
-
-	inline const std::vector<VertexBufferElement> & elements() const {
+	const std::vector<VertexBufferElement> & elements() const {
 		return _elements;
 	}
-	inline GLuint stride() const { return _stride; }
+	GLuint stride() const { return _stride; }
 
-	VertexBufferLayout() :
-		_stride{0}
-	{ }
+	VertexBufferLayout() = default;
+	VertexBufferLayout(const element_list &elements) :
+		_elements{elements}, _stride { 0 }
+	{
+		calculate_offset_and_stride();
+	}
 
 private:
 	std::vector<VertexBufferElement> _elements;
 	GLuint _stride;
+
+	void calculate_offset_and_stride() {
+		GLuint offset = 0;
+		_stride = 0;
+
+		for(auto &element : _elements) {
+			element._offset = offset;
+			offset  += element._size;
+			_stride += element._size;
+		}
+	}
 };
 
 #endif // VERTEXBUFFERLAYOUT_HPP

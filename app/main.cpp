@@ -1,7 +1,6 @@
 #include "Shader.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
-#include "VertexBufferLayout.hpp"
 #include "IndexBuffer.hpp"
 #include "Renderer.hpp"
 
@@ -69,18 +68,20 @@ int main() {
     // triangle a
     VertexArray va_a;
     VertexBuffer vb_a(triangle_a, sizeof(triangle_a));
-    VertexBufferLayout layout_a;
-    layout_a.push<GLfloat>(3);
+    vb_a.set_layout({
+        { "position", GL_FLOAT, 3, GL_FALSE }
+    });
+    va_a.add_buffer(vb_a);
     IndexBuffer ib_a(indices_a, 3);
-    va_a.add_buffer(vb_a, layout_a);
 
     // triangle b
     VertexArray va_b;
     VertexBuffer vb_b(triangle_b, sizeof(triangle_b));
-    VertexBufferLayout layout_b;
-    layout_b.push<GLfloat>(3);
+    vb_b.set_layout({
+        { "position", GL_FLOAT, 3, GL_FALSE }
+    });
+    va_b.add_buffer(vb_b);
     IndexBuffer ib_b(indices_b, 3);
-    va_b.add_buffer(vb_b, layout_b);
 
     // shaders!
     Shader orange("../../app/shaders/colored_shape.vert",

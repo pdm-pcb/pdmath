@@ -7,8 +7,7 @@ class VertexBufferLayout;
 
 class VertexArray {
 public:
-	void add_buffer(const VertexBuffer &vb,
-					const VertexBufferLayout &layout);
+	void add_buffer(const VertexBuffer &vb);
 
 	void bind()   const;
 	void unbind() const;
