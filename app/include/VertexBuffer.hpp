@@ -8,7 +8,7 @@
 class VertexBuffer {
 public:
 	void bind()   const;
-	static void unbind();
+	void unbind() const;
 
 	VertexBuffer(const GLfloat *data, const uint32_t size);
 	VertexBuffer() = delete;

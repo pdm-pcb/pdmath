@@ -6,18 +6,20 @@ void IndexBuffer::bind() const {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _handle);
 }
 
-void IndexBuffer::unbind() {
+void IndexBuffer::unbind() const {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-IndexBuffer::IndexBuffer(const GLuint *data, const uint32_t count) :
+IndexBuffer::IndexBuffer(const GLuint *data, const GLsizei count) :
 	_handle{0},
 	_count{count}
 {
-	glGenVertexArrays(1, &_handle);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _handle);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data,
+	glGenBuffers(1, &_handle);
+	bind();
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				 static_cast<GLsizeiptr>(count * sizeof(GLuint)), data,
 				 GL_STATIC_DRAW);
+	unbind();
 }
 
 IndexBuffer::~IndexBuffer() {

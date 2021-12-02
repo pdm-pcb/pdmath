@@ -19,19 +19,22 @@ void VertexArray::add_buffer(const VertexBuffer &vb,
 
 		glVertexAttribPointer(el_index, element.count, element.type,
 							  element.normalized, layout.stride(),
-							  static_cast<const void *>(&offset));
+							  reinterpret_cast<void *>(offset));
 
 		glEnableVertexAttribArray(el_index);
 
 		offset += element.count * sizeof(element.type);
 	}
+
+	vb.unbind();
+	unbind();
 }
 
 void VertexArray::bind() const {
 	glBindVertexArray(_handle);
 }
 
-void VertexArray::unbind() {
+void VertexArray::unbind() const {
 	glBindVertexArray(0);
 }
 

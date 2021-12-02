@@ -7,7 +7,7 @@ void VertexBuffer::bind() const {
 	glBindBuffer(GL_ARRAY_BUFFER, _handle);
 }
 
-void VertexBuffer::unbind() {
+void VertexBuffer::unbind() const {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -15,8 +15,9 @@ VertexBuffer::VertexBuffer(const GLfloat *data, const uint32_t size) :
 	_handle{0}
 {
 	glGenBuffers(1, &_handle);
-	glBindBuffer(GL_ARRAY_BUFFER, _handle);
+	bind();
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+	unbind();
 }
 
 VertexBuffer::~VertexBuffer() {

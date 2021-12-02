@@ -8,9 +8,11 @@
 class IndexBuffer {
 public:
 	void bind()   const;
-	static void unbind();
+	void unbind() const;
 
-	IndexBuffer(const GLuint *data, const uint32_t count);
+	GLsizei count() const { return _count; }
+
+	IndexBuffer(const GLuint *data, const GLsizei count);
 	IndexBuffer() = delete;
 	~IndexBuffer();
 	IndexBuffer(const IndexBuffer &other) = delete;
@@ -20,8 +22,8 @@ public:
 	IndexBuffer & operator=(IndexBuffer &&other) noexcept;
 
 private:
-	GLuint _handle;
-	GLuint _count;
+	GLuint  _handle;
+	GLsizei _count;
 };
 
 #endif // INDEXBUFFER_HPP
