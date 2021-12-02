@@ -3,6 +3,7 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "Renderer.hpp"
+#include "GLDebugger.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -63,7 +64,7 @@ int main() {
     }
 
     // Enable debug output
-    Renderer renderer;
+    GLDebugger debugger;
 
     // triangle a
     VertexArray va_a;
@@ -91,10 +92,11 @@ int main() {
 
     glViewport(0, 0, window_x, window_y);
 
+    Renderer renderer;
+
     while(!glfwWindowShouldClose(window)) {
         process_input(window);
 
-        glClearColor(0.1f, 0.15f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         renderer.draw(va_a, ib_a, orange);

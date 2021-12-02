@@ -30,7 +30,9 @@ add_executable(
     src/VertexBuffer.cpp
     src/IndexBuffer.cpp
     src/VertexArray.cpp
- "src/Renderer.cpp")
+    src/Renderer.cpp
+    src/GLDebugger.cpp
+)
 
 target_include_directories(
     app PRIVATE
