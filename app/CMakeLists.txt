@@ -32,6 +32,8 @@ add_executable(
     src/VertexArray.cpp
     src/Renderer.cpp
     src/GLDebugger.cpp
+    src/stb/stb_image.c
+    src/Texture.cpp
 )
 
 target_include_directories(

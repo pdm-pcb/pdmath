@@ -8,8 +8,33 @@ void Shader::bind() const {
     glUseProgram(_program);
 }
 
-void Shader::unbind() {
+void Shader::unbind() const {
     glUseProgram(0);
+}
+
+void Shader::set_uniform1i(const std::string &name, const GLint value) {
+    glUniform1i(get_uniform_handle(name), value);
+}
+
+void Shader::set_uniform1f(const std::string &name, const GLfloat value) {
+    glUniform1f(get_uniform_handle(name), value);
+}
+
+void Shader::set_uniform4f(const std::string &name,
+                           const GLfloat v0, const GLfloat v1,
+                           const GLfloat v2, const GLfloat v3) {
+    glUniform4f(get_uniform_handle(name), v0, v1, v2, v3);
+}
+
+GLint Shader::get_uniform_handle(const std::string &name) {
+    if(_uniform_cache.contains(name)) {
+        return _uniform_cache[name];
+    }
+
+    GLint location = glGetUniformLocation(_program, name.c_str());
+    assert(location != -1 && "Failed to locate uniform!");
+
+    _uniform_cache[name] = location;
 }
 
 char * Shader::load_source(const std::string &filename) const

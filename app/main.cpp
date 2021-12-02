@@ -1,4 +1,5 @@
 #include "Shader.hpp"
+#include "Texture.hpp"
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
@@ -13,24 +14,17 @@
 constexpr int window_x = 1920;
 constexpr int window_y = 1080;
 
-constexpr GLfloat triangle_a[] = {
-    -0.25f,  0.5f,  0.0f,
-    -0.5f,  -0.25f, 0.0f,
-    -0.75f,  0.5f,  0.0f,
+constexpr GLfloat square[] = {
+    // world coordinates    texture coordinates
+    -0.25f,  0.5f, 0.0f,    0.0f, 1.0f,    // top left
+     0.25f,  0.5f, 0.0f,    1.0f, 1.0f,    // top right
+     0.25f, -0.5f, 0.0f,    1.0f, 0.0f,    // bottom right
+    -0.25f, -0.5f, 0.0f,    0.0f, 0.0f     // bottom left
 };
 
-constexpr GLfloat triangle_b[] = {
-     0.5f,   0.5f,  0.0f,
-     0.75f, -0.25f, 0.0f,
-     0.25f, -0.25f, 0.0f
-};
-
-constexpr GLuint indices_a[] = {
-    0, 1, 2
-};
-
-constexpr GLuint indices_b[] = {
-    0, 1, 2
+constexpr GLuint indices[] = {
+    0, 1, 2,    // upper triangle
+    0, 2, 3     // lower triangle
 };
 
 void process_input(GLFWwindow *window);
@@ -66,29 +60,24 @@ int main() {
     // Enable debug output
     GLDebugger debugger;
 
-    // triangle a
-    VertexArray va_a;
-    VertexBuffer vb_a(triangle_a, sizeof(triangle_a));
-    vb_a.set_layout({
-        { "position", GL_FLOAT, 3, GL_FALSE }
+    // buffers
+    VertexArray va;
+    VertexBuffer vb(square, sizeof(square));
+    vb.set_layout({
+        { "world_coordinates",   GL_FLOAT, 3, GL_FALSE },
+        { "texture_coordinates", GL_FLOAT, 2, GL_FALSE }
     });
-    va_a.add_buffer(vb_a);
-    IndexBuffer ib_a(indices_a, 3);
-
-    // triangle b
-    VertexArray va_b;
-    VertexBuffer vb_b(triangle_b, sizeof(triangle_b));
-    vb_b.set_layout({
-        { "position", GL_FLOAT, 3, GL_FALSE }
-    });
-    va_b.add_buffer(vb_b);
-    IndexBuffer ib_b(indices_b, 3);
+    va.add_buffer(vb);
+    IndexBuffer ib(indices, 6);
 
     // shaders!
-    Shader orange("../../app/shaders/colored_shape.vert",
-                  "../../app/shaders/orange.frag");
-    Shader blue("../../app/shaders/colored_shape.vert",
-                "../../app/shaders/blue.frag");
+    Shader crate0_shader("../../app/shaders/crate.vert",
+                         "../../app/shaders/crate0.frag");
+
+    // textures!
+    Texture crate0_texture("../../app/resources/textures/crate1/crate1.png");
+    crate0_texture.bind();
+    crate0_shader.set_uniform1i("texture_slot", crate0_texture.texture_slot());
 
     glViewport(0, 0, window_x, window_y);
 
@@ -99,8 +88,7 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderer.draw(va_a, ib_a, orange);
-        renderer.draw(va_b, ib_b, blue);
+        renderer.draw(va, ib, crate0_shader);
 
         glfwPollEvents();
         glfwSwapBuffers(window);
