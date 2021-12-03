@@ -1,5 +1,7 @@
 include(FetchContent)
 
+message(NOTICE "Fetch Dear ImGui")
+
 FetchContent_Declare(
     imgui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
@@ -9,7 +11,7 @@ FetchContent_MakeAvailable(imgui)
 FetchContent_GetProperties(imgui)
 
 if(NOT imgui_POPULATED)
-    message(WARNING "Cloning Dear ImGUI")
+    message(STATUS "Configuring Dear ImGUI")
     FetchContent_Populate(imgui)
     add_subdirectory(
         ${imgui_SOURCE_DIR}

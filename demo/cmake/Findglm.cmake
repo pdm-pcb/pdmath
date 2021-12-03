@@ -1,5 +1,7 @@
 include(FetchContent)
 
+message(NOTICE "Fetch GLM")
+
 FetchContent_Declare(
     glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git
@@ -9,7 +11,7 @@ FetchContent_MakeAvailable(glm)
 FetchContent_GetProperties(glm)
 
 if(NOT glm_POPULATED)
-    message(WARNING "Cloning GLM")
+    message(STATUS "Configuring GLM")
     FetchContent_Populate(glm)
 endif()
 

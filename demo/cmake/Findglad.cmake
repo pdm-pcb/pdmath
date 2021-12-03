@@ -1,5 +1,6 @@
 include(FetchContent)
 
+message(NOTICE "Fetch GLAD")
 FetchContent_Declare(
     glad
     GIT_REPOSITORY https://github.com/Dav1dde/glad.git
@@ -14,7 +15,7 @@ target_link_libraries(
 )
 
 if(NOT glad_POPULATED)
-    message(WARNING "Cloning GLAD")
+    message(STATUS "Configuring GLAD")
     FetchContent_Populate(glad)
     set(GLAD_PROFILE "core")
     set(GLAD_API "gl=4.6")
@@ -24,13 +25,3 @@ if(NOT glad_POPULATED)
         ${glad_BINARY_DIR}
     )
 endif()
-
-get_target_property(
-    glad_INCLUDE_DIRS glad
-    INTERFACE_INCLUDE_DIRECTORIES
-)
-
-set_target_properties(
-    glad PROPERTIES
-    INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "${glad_INCLUDE_DIRS}"
-)
