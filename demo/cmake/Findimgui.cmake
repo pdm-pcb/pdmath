@@ -9,7 +9,7 @@ FetchContent_MakeAvailable(imgui)
 FetchContent_GetProperties(imgui)
 
 if(NOT imgui_POPULATED)
-    message(STATUS "Pulling in external imGUI")
+    message(WARNING "Cloning Dear ImGUI")
     FetchContent_Populate(imgui)
     add_subdirectory(
         ${imgui_SOURCE_DIR}
@@ -42,5 +42,4 @@ target_include_directories(
 target_link_libraries(
     imgui PRIVATE
     glfw
-    ${OPENGL_LIBRARY}
 )

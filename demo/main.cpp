@@ -7,11 +7,13 @@
 #include "GLDebugger.hpp"
 
 #include "pdmath/Camera.hpp"
-#include "glm/mat4x4.hpp"
-#include "glm/gtx/string_cast.hpp"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 #include <iostream>
 
@@ -53,7 +55,7 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    glfwSwapInterval(2);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     // let GLAD sort it out for us
@@ -89,21 +91,63 @@ int main() {
     pdm::Camera camera;
     camera.set_ortho(-2.0f, 2.0f,   // width
                      -1.5f, 1.5f,   // height
-                     -1.0f, 1.0f,   // depth
+                     -1.0f, 1.0f,   // frustum depth
                      window_x, window_y,
                      1.0f);         // z-depth
 
-    glm::mat4 ortho_proj = glm::ortho(-2.0f, 2.0f,
-                                      -1.5f, 1.5f,
-                                      -1.0f, 1.0f);
-
     crate0_shader.set_uniform_mat4f("ortho_proj", camera.ortho_ndc());
-    //crate0_shader.set_uniform_mat4f("ortho_proj", ortho_proj);
 
+    // Dear ImGUI -------------------------------
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 460 core");
+    ImFont *font =
+        ImGui::GetIO().Fonts->AddFontFromFileTTF(
+            "../../demo/resources/fonts/OpenSans.ttf", 24.0f);
+    assert(font != nullptr && "ImGUI couldn't find font.");
+    //-------------------------------------------
+   
     while(!glfwWindowShouldClose(window)) {
+        renderer.viewport(window_x, window_y);
+
         process_input(window);
 
-        glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        {
+            static float f = 0.0f;
+            static int counter = 0;
+
+            // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Hello, world!");
+
+            // Display some text (you can use a format strings too)
+            ImGui::Text("This is some useful text.");
+
+            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+
+            // Buttons return true when clicked (most widgets return true when
+            // edited/activated)
+            if(ImGui::Button("Button")) {
+                counter++;
+            }
+            ImGui::SameLine();
+            ImGui::Text("counter = %d", counter);
+
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
+                        1000.0f / ImGui::GetIO().Framerate,
+                        ImGui::GetIO().Framerate);
+            ImGui::End();
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         crate0_texture.bind();
         renderer.draw(va, ib, crate0_shader);

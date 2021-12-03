@@ -8,6 +8,7 @@
 
 void Renderer::viewport(const GLint width, const GLint height) const {
     glViewport(0, 0,  width, height);
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void Renderer::draw(const VertexArray &va, const IndexBuffer &ib,

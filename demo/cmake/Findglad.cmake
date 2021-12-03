@@ -14,6 +14,7 @@ target_link_libraries(
 )
 
 if(NOT glad_POPULATED)
+    message(WARNING "Cloning GLAD")
     FetchContent_Populate(glad)
     set(GLAD_PROFILE "core")
     set(GLAD_API "gl=4.6")

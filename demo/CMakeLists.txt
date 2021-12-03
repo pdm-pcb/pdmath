@@ -5,6 +5,7 @@ find_package(glad REQUIRED)
 find_package(glfw REQUIRED)
 find_package(imgui REQUIRED)
 find_package(glm REQUIRED)
+
 add_subdirectory(stb_image)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -37,6 +38,7 @@ target_link_libraries(
     glad
     glfw
     ${GLFW_LIBRARIES}
+    imgui
     glm
 )
 
