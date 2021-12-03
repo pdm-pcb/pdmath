@@ -92,8 +92,8 @@ int main() {
     camera.set_ortho(-2.0f, 2.0f,   // width
                      -1.5f, 1.5f,   // height
                      -1.0f, 1.0f,   // frustum depth
-                     window_x, window_y,
-                     1.0f);         // z-depth
+                      window_x, window_y,
+                      1.0f);        // z-depth
 
     crate0_shader.set_uniform_mat4f("ortho_proj", camera.ortho_ndc());
 
