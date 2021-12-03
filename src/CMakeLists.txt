@@ -1,5 +1,5 @@
-set(
-    PDMATH_SRC
+add_library(
+    pdMath STATIC
     Point3.cpp
     Vector3.cpp
     Matrix3.cpp
@@ -13,11 +13,6 @@ set(
     BSphere.cpp
     AABBox.cpp
     OBBox.cpp
-)
-
-add_library(
-    pdMath STATIC
-    ${PDMATH_SRC}
 )
 
 target_include_directories(
@@ -39,8 +34,10 @@ if(WIN32)
     message(STATUS "Using MSVC flags for pdmath pdmath library.")
     target_compile_options(
         tests PRIVATE
-        /MP /permissive /sdl /Wall
+        /MP /permissive /sdl /Wall /wd4514 /wd4505
+        /external:W0
         /D__STDC_WANT_SECURE_LIB__#0
+        /D_CRT_SECURE_NO_WARNINGS
         $<IF:$<CONFIG:Debug>,/Za /Zi,/GL /Gw /fp:fast>
     )
 endif(WIN32)

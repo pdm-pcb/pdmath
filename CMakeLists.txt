@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21)
 
 project(pdmath)
 
@@ -7,5 +7,5 @@ add_subdirectory(tests)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(src)
-add_subdirectory(app)
+add_subdirectory(demo)
 
